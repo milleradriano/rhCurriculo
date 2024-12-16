@@ -1,0 +1,78 @@
+<div class="container">
+  <form [formGroup]="experienciaForm">
+    <div class="titulo">
+      <h1>Dados Pessoais</h1>
+      <p>Preencha seus dados pessoais abaixo.</p>
+    </div>
+    <div class="card flex justify-content-center">
+      
+        <div class="radioPrimeiroEmprego">
+          <label for="primeiroEmprego"
+            >Está se candidatando para a primeiro emprego?</label
+          >
+          <p-radioButton
+            class="radioButton"
+            formControlName="primeiroEmprego"
+            name="primeiroEmprego"
+            value="S"
+            label="Sim"
+          ></p-radioButton>
+          <p-radioButton
+            class="radioButton"
+            formControlName="primeiroEmprego"
+            name="primeiroEmprego"
+            value="N"
+            label="Não"
+          ></p-radioButton>
+        </div>
+        @if(experienciaForm.get('primeiroEmprego')!.value === 'N'){
+        <div class="primeiroEmprego">
+          <label for="primeiroEmprego">Último Emprego ou atual?</label>
+          <div class="empresa">
+            <label for="empresa">Empresa:</label>
+            <input
+              id="empresa"
+              formControlName="empresa"
+              pInputText
+              type="text"
+              placeholder="Empresa"
+            />
+          </div>
+          <label for="cidade">Cidade:</label>
+          <div class="cidade">
+            <input
+              id="cidade"
+              formControlName="cidade"
+              pInputText
+              type="text"
+              placeholder="Cidade"
+            />
+          </div>
+          <div class="cargo">
+            <label for="cargo">Cargo:</label>
+            <div>
+              <input
+                id="cargo"
+                formControlName="cargo"
+                pInputText
+                type="text"
+                placeholder="Cargo"
+              />
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+    <div class="botaoSalvar">
+      <p-button
+        icon="pi pi-check"
+        severity="success"
+        label="Salvar os dados pessoais"
+        [disabled]="!experienciaForm.valid"
+      ></p-button>
+    </div>
+  </form>
+  <hr />
+  <app-observacaobotton></app-observacaobotton>
+</div>

@@ -1,0 +1,40 @@
+<div class="container">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <div class="logo">
+      <img class="imagemLogo" src="../../../assets/logo_bonato_transparente.png" alt="Logo Bonato" />
+      <img class="imagemLogo" src="../../../assets/logo_eco_transparente.png" alt="Logo Bonato" />
+     
+    </div>
+  
+    <mat-nav-list>
+      <p-panelMenu [model]="items" [style]="{'width':'289px'}"></p-panelMenu>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="toolbar">
+      @if (isHandset$ | async) {
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        color="primary"
+        (click)="drawer.toggle()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      }
+      <h1 class="titulo">Cadastro de curriculo</h1>
+      
+    </mat-toolbar><hr>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+</div>

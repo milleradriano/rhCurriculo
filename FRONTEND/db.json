@@ -1,0 +1,110 @@
+{
+  "vagas": [
+    {
+      "idvaga": 1, 
+      "logo": "../../../assets/logo_bonato_transparente.png",
+      "descempresa": "Supermercados Bonato Shopping.",
+      "nomevaga": "Operador de caixa.",
+      "descvaga": "Responsável por registrar vendas e processar pagamentos. Ele realiza atendimento ao cliente, manuseia o sistema de vendas, confere o troco e organiza documentos fiscais.",
+      "desccidade": "São Jerônmimo - RS.",
+      "requisito": "Ensino fundamental.",
+      "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+      "idvaga": 2, 
+      "logo": "../../../assets/logo_eco_transparente.png",
+      "descempresa": "Supermercados Eco Atarejo.",
+      "nomevaga": "Açougueiro.",
+      "descvaga": "Garantir o corte da carne que é vendida no açougue atendendo aos pedidos dos clientes e separar a carne que for solicitada, cortando do jeito que o cliente preferir.",
+      "desccidade": "Charquedas - RS",
+      "requisito": "Ensino fundamental.",
+      "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    
+    {
+     "idvaga": 3, 
+      "logo": "../../../assets/logo_eco_transparente.png",
+      "descempresa": "Supermercados Bonato.",
+      "nomevaga": "Supridor.",
+      "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
+      "desccidade": "São Jerônmimo - RS.",
+      "requisito": "Ensino fundamental.",
+      "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+      "idvaga": 4, 
+      "logo": "../../../assets/logo_bonato_transparente.png",
+      "descempresa": "Supermercados Bonato.",
+      "nomevaga": "Supridor.",
+      "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
+      "desccidade": "São Jerônmimo - RS.",
+      "escolaridade": "Ensino fundamental.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+      "idvaga": 5, 
+      "logo": "../../../assets/logo_bonato_transparente.png",
+      "descempresa": "Supermercados Bonato Shopping.",
+      "nomevaga": "Operador de caixa.",
+      "descvaga": "Responsável por registrar vendas e processar pagamentos. Ele realiza atendimento ao cliente, manuseia o sistema de vendas, confere o troco e organiza documentos fiscais.",
+      "desccidade": "São Jerônmimo - RS.",
+      "requisito": "Ensino fundamental.",
+      "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+      "idvaga": 6, 
+      "logo": "../../../assets/logo_eco_transparente.png",
+      "descempresa": "Supermercados Eco Atarejo.",
+      "nomevaga": "Açougueiro.",
+      "descvaga": "Garantir o corte da carne que é vendida no açougue atendendo aos pedidos dos clientes e separar a carne que for solicitada, cortando do jeito que o cliente preferir.",
+      "desccidade": "Charquedas - RS",
+      "requisito": "Ensino fundamental.",
+      "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+      "idvaga": 7, 
+      "logo": "../../../assets/logo_eco_transparente.png",
+      "descempresa": "Supermercados Bonato.",
+      "nomevaga": "Supridor.",
+      "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
+      "desccidade": "São Jerônmimo - RS.",
+      "requisito": "Ensino fundamental.",
+      "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+      "idvaga": 8, 
+      "logo": "../../../assets/logo_bonato_transparente.png",
+      "descempresa": "Supermercados Bonato.",
+      "nomevaga": "Supridor.",
+      "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
+      "desccidade": "São Jerônmimo - RS.",
+      "requisito": "Ensino fundamental.",
+      "informacao_contrato": "CLT.",
+      "formatosalario": "Forma de pagamento mensal."
+    },
+    {
+        "idvaga": 9, 
+        "logo": "../../../assets/logo_bonato_transparente.png",
+        "descempresa": "Supermercados Bonato.",
+        "nomevaga": "Supridor.",
+        "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
+        "desccidade": "São Jerônmimo - RS.",
+        "requisito": "Ensino fundamental.",
+        "informacao_contrato": "CLT.",
+        "formatosalario": "Forma de pagamento mensal."
+      } 
+  ]
+}

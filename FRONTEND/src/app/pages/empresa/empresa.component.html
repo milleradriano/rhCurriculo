@@ -1,0 +1,112 @@
+<div class="container">
+  @if ( loading){
+  <div class="loading">
+    <app-loading></app-loading>
+  </div>
+  }
+  <form [formGroup]="empresaForm">
+    <div class="empresaDescEmpresa">
+      <p-inputGroup class="idempresa">
+        <p-inputGroupAddon>
+          <i class="pi pi-key"></i>
+        </p-inputGroupAddon>
+        <input
+          id="idempresa"
+          pTooltip="Cod. Empresa identifica ao Sysmo"
+          type="text"
+          placeholder="Cod. Empresa"
+          formControlName="idempresa"
+          pInputText
+        />
+      </p-inputGroup>
+      <p-inputGroup class="descempresa">
+        <p-inputGroupAddon>
+          <i class="pi pi-building"></i>
+        </p-inputGroupAddon>
+        <input
+          id="descempresa"
+          pTooltip="Descrição da empresa"
+          type="text"
+          placeholder="Nome da Empresa"
+          formControlName="descempresa"
+          pInputText
+        />
+      </p-inputGroup>
+    </div>
+    <div class="descCidadeMaps">
+      <p-inputGroup class="cidade">
+        <p-inputGroupAddon>
+          <i class="pi pi-map-marker"></i>
+        </p-inputGroupAddon>
+          <input
+            pTooltip="Cidade"
+            type="text"
+            placeholder="Cidade"
+            formControlName="desccidade"
+            pInputText
+          />    
+        </p-inputGroup>
+      <div class="maps">
+        <p-inputGroup class="maps">
+          <p-inputGroupAddon>
+            <i class="pi pi-share-alt"></i>
+          </p-inputGroupAddon>
+        <input
+          pTooltip="Usar o de compartilhamento do Maps"          
+          type="text"
+          placeholder="Link de compartilhamento do Maps"
+          formControlName="maps"
+          pInputText
+        />
+        </p-inputGroup>
+      </div>
+    </div>
+    <div class="logo">
+      <p-fileUpload
+        id="upload"
+        [customUpload]="true"
+        [multiple]="false"
+        [auto]="true"
+        chooseLabel="Selecione o logo"
+        name="demo[]"
+        url="https://www.primefaces.org/cdn/api/upload.php"
+        accept="image/*"
+        maxFileSize="1000000"
+        (onUpload)="onUpload($event)"
+      ></p-fileUpload>
+    </div>
+    <div class="botao">
+      <button
+        pButton
+        type="submit"
+        label="Salvar"
+        class="p-button-success"
+        [disabled]="!empresaForm.valid"
+        (click)="postEmpresa(empresaForm.value)"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="Excluir"
+        class="p-button-danger"
+        [disabled]="!empresaForm.valid"
+        (click)="delEmpresa(empresaForm.value)"
+      ></button>
+      
+    </div>
+  </form>
+  <ng-container *ngIf="!showProgress; else progressSection" />
+  <ng-template #progressSection>
+    <app-progressbar></app-progressbar>
+  </ng-template>
+
+  <div class="cardGrid">
+    <app-grid
+    (eventoFilho)="recebeValores($event)"
+    [translatedTitles]="translatedTitles"
+    [datasourceGrid]="dataSourceGrid"
+    ></app-grid>
+  </div>
+  </div> 
+<app-confirmacao></app-confirmacao>
+<app-toast></app-toast>

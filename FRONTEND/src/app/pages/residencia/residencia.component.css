@@ -1,0 +1,125 @@
+* {
+  color: #606062;
+  --subtitulo-color: #ff355e;
+}
+.container {
+  padding-left: 1rem;
+}
+.titulo {
+  color: var(--titulo-color);
+}
+.titulo > h1 {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+/* input {
+  text-transform: uppercase;
+ } */
+/* #cep e . cep devem ser ajustados para dimensões diferentes */
+#cep {
+  width: 5rem;
+}
+.cep {
+  width: calc(15rem - 0.5rem);
+}
+
+#estado,
+#cidade {
+  width: calc(100% - 0.5rem);
+}
+.estado,
+.cidade {
+  width: calc(25% - 0.5rem);
+}
+.estadoCidade {
+  display: flex;
+  flex-direction: row;
+}
+.estado {
+  /* margin-right: 1rem; */
+}
+#endereco,
+#bairro {
+  width: 100%;
+ 
+}
+.endereco,
+.bairro {
+  width: calc(30% - 0.5rem);
+  margin-right: 1rem;
+}
+.enderecoNumBairro {
+  display: flex;
+  flex-direction: row;
+}
+.botaoSalvar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+.pi{
+  color:#fff
+}
+
+@media screen and (max-width: 1024px) {
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+  }
+  #endereco,
+  #numero,
+  #bairro,
+  #cep,
+  #estado,
+  #cidade {
+    width: 100%;
+  }
+  .cep {
+    width: 100%;
+  }
+  .estadoCidade {
+    display: flex;
+    flex-direction: column;
+  }
+  .estado,
+  .cidade {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .endereco,
+  .numero,
+  .bairro {
+    width: 100%;    
+  }
+  .enderecoNumBairro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+   
+  }
+  .botaoSalvar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+}

@@ -1,0 +1,79 @@
+/* You can add global styles to this file, and also import other style files */
+/*D:\BONATO\RH-CURRICULO\node_modules\primeng\resources\themes\lara-light-blue\theme.css*/
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+* {
+  font-family: Montserrat, Arial, Tahoma, sans-serif;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+:root {
+  --titulo-color: #606062;
+  --subtitulo-color: #ff355e;
+}
+
+/*fundo do botao dos menus*/
+.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
+  background: #c7e2c4;
+}
+/* ao passar com o nouse*/
+.p-panelmenu
+  .p-panelmenu-header:not(.p-highlight):not(.p-disabled):hover
+  .p-panelmenu-header-content {
+  background: #e2e2e2;
+}
+/*ao clicar no menu*/
+.p-panelmenu .p-panelmenu-header.p-highlight .p-panelmenu-header-content {
+  background: #fff;
+}
+.p-fileupload .p-fileupload-header.p-highlight .p-fileupload-header-content {
+  background: #c7e2c4;
+  border-color: #cecfce;
+  color: #374151;
+}
+/* muda a cor da borda do botao upload ao clicar*/
+.p-fileupload .p-fileupload-buttonbar .p-button.p-fileupload-choose.p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #b4e6b0;
+}
+
+.p-fileupload-choose:not(.p-disabled):hover {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
+
+.p-fileupload-choose {
+  background: #22c55e;  
+  color: #ffffff;
+  border-color: #eeeeee;
+}
+
+::ng-deep .mat-mdc-table .mdc-data-table__table .cdk-table .mat-sort {
+  table-layout: auto;
+  white-space: normal;
+  background-color: #b69ccb;
+}
+/* fim grid*/
+.pi {
+  font-size: 1rem;
+  color: var(--mat-full-pseudo-checkbox-selected-checkmark-color);
+}
+@media screen and (max-width: 1024px) {
+  .p-dropdown {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+      box-shadow 0.2s;
+    border-radius: 6px;
+    width: 96%;
+  }
+}

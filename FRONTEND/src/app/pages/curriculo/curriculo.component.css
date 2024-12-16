@@ -1,0 +1,147 @@
+* {
+  color: #606062;
+  --subtitulo-color: #ff355e;
+}
+.container {
+  padding-left: 1rem;
+}
+.titulo {
+  color: var(--titulo-color);
+}
+.titulo > h1 {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+h2 {
+  padding: 0;
+  margin: 0;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.sexo {
+  display: flex;
+  flex-direction: row;
+
+  margin-bottom: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+.documento,.informacaoDocumento,
+.parente,.informacaoDocumento,
+.filhos {
+  display: flex;
+
+  flex-direction: row;
+  margin-bottom: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  gap: 1rem;
+}
+
+.enviarArquivo {
+ margin-top: 2rem;
+
+ width: 15rem;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+.enviarArquivo > p {
+  margin: 0;
+ 
+}
+.radioButton {
+  margin-left: 1rem;
+}
+.estudaAtualmente {
+  display: flex;
+}
+.radioEstuda {
+  margin-right: 2rem;
+}
+/* PERSONALIZANDO OS CAPOS */
+#nome {
+  width: calc(50% - 0.5rem);
+}
+
+#email{
+  width:calc(50% - 0.5rem);
+ 
+}
+#telefone {
+  width: calc(20% - 0.5rem);
+}
+.nomePai,
+.nomeMae {
+  width: 25rem;
+}
+#nomePai,
+#nomeMae {
+  width: 100%;
+}
+
+.botaoSalvar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+#envioOpcionalMensagem{
+  color: red;
+}
+@media screen and (max-width: 1024px) {
+  #nome,
+  #nomePai,
+  #nomeMae,
+  #cpf,
+  #rg,  
+  #orgaoEmissor,
+  #dataEmissao,
+  #cep,
+  #cidade,
+  #bairro,
+  #logradouro,
+  #numero,
+  #complemento,
+  #telefone,
+  #email,
+  #dataNascimento,
+  #estado {
+    width: 96%;
+  }
+  .enviarArquivo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .botaoSalvar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+  .nomeMae,.nomePai{
+    width: 100%;
+  }
+  .estudaAtualmente,.documento,.informacaoDocumento,.parente,.filhos,.pcd {
+    flex-direction: column;
+  }
+  
+}

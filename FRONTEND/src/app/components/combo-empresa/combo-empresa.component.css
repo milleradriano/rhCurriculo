@@ -1,0 +1,32 @@
+.container {
+  font-family: var(--font-family);
+  font-weight: normal;
+
+  padding: 0.5rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-card);
+
+  border-radius: 0px;
+  margin-bottom: 0px;
+}
+
+p-multiselect:hover {
+  border-color: #009688;
+}
+
+p-multiselect {
+  border: 1px solid rgb(209, 213, 219);
+  height: 2.88rem;
+}
+p-multiselect:focus {
+  border-color: #009688;
+  box-shadow: 0 0 0.1rem 1px rgb(0, 150, 136, 0.7);
+  transition: box-shadow 0.4s, background-color 0.4s;
+}

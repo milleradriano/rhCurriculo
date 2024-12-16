@@ -1,0 +1,294 @@
+<div class="container">
+  <form [formGroup]="curriculoForm">
+    <!-- <app-uploaddocumento></app-uploaddocumento> -->
+    <div class="titulo">
+      <h1>Dados pessoais</h1>
+      <p>Preencha seus dados pessoais abaixo</p>
+    </div>
+    <div class="card flex justify-content-center">
+      <label>Nome completo:</label>
+      <div class="nome">
+        <input
+          formControlName="nome"
+          pInputText
+          id="nome"
+          type="text"
+          placeholder="Nome completo"
+        />
+      </div>
+      <label>Sexo:</label>
+      <div class="sexo">
+        <p-radioButton
+          [ngStyle]="{ 'border-color': 'red' }"
+          class="radioButton"
+          formControlName="sexo"
+          name="sexo"
+          value="M"
+          label="Masculino"
+          (onClick)="limparFilhos($event)"
+        ></p-radioButton>
+        <p-radioButton
+          class="radioButton"
+          formControlName="sexo"
+          name="sexo"
+          value="F"
+          label="Feminino"
+          (onClick)="limparFilhos($event)"
+        ></p-radioButton>
+      </div>
+      <label>Estado civil:</label>
+      <div class="estaCivil">
+        <p-dropdown
+          formControlName="estadoCivil"
+          placeholder="Selecione"
+          [options]="estadoCivil"
+        ></p-dropdown>
+      </div>
+      <label>Documentos:</label>
+      <div class="documento">
+        <div class="cpf">
+          <input
+            id="cpf"
+            formControlName="cpf"
+            pInputText
+            type="text"
+            placeholder="CPF"
+            maxlength="14"
+            appFormatacpf
+          />
+        </div>
+        <div class="rg">
+          <input
+            id="rg"
+            formControlName="rg"
+            pInputText
+            type="text"
+            maxlength="14"
+            placeholder="RG"
+            appApenasNumero
+          />
+        </div>
+      </div>
+      <h2>Informações sobre os documentos</h2>
+      <label for="dataEmissao">Data de emissão</label>
+      <div class="informacaoDocumento">
+        <div class="dataEmissao">
+          <input
+            formControlName="dataEmissao"
+            pInputText
+            type="date"
+            id="dataEmissao"
+            placeholder="Data de emissão"
+          />
+        </div>
+
+        <div class="orgaoEmissor">
+          <!-- <label for="orgaoEmissor">Orgão Emissor</label> -->
+          <input
+            id="orgaoEmissor"
+            formControlName="orgaoEmissor"
+            pInputText
+            type="text"
+            placeholder="Orgão emissor"
+          />
+        </div>
+        <div class="estadoEmissor">
+          <!-- <label for="estadoEmissor">Estado Emissor</label> -->
+          <p-dropdown
+            formControlName="estadoEmissor"
+            placeholder="Estado Emissor"
+            [options]="estadoEmissor"
+          ></p-dropdown>
+        </div>
+      </div>
+      <hr />
+      <label for="dataNascimento">Data de nascimento:</label>
+      <div class="dataNascimento">
+        <input
+          formControlName="dataNascimento"
+          pInputText
+          type="date"
+          id="dataNascimento"
+        />
+      </div>
+
+      <label>Parentes:</label>
+      <div class="parente">
+        <div class="nomePai">
+          <input
+            id="nomePai"
+            formControlName="nomePai"
+            pInputText
+            type="text"
+            placeholder="Nome do pai"
+          />
+        </div>
+        <div class="nomeMae">
+          <input
+            id="nomeMae"
+            formControlName="nomeMae"
+            pInputText
+            type="text"
+            placeholder="Nome da mãe"
+          />
+        </div>
+      </div>
+      <label for="grauInstrucao" class="grauInstrucao">
+        Grau de instrução</label
+      >
+      <div class="grauInstrucao">
+        <p-dropdown
+          formControlName="grauInstrucao"
+          placeholder="Grau de instrução"
+          [options]="grauInstrucao"
+        ></p-dropdown>
+      </div>
+
+      <div class="estudaAtualmente">
+        <div class="radioEstuda">
+          <label for="estuda">Estuda atualmente?</label>
+          <p-radioButton
+            class="radioButton"
+            formControlName="estudaAtualmente"
+            name="estudaAtualmente"
+            value="S"
+            label="Sim"
+          ></p-radioButton>
+          <p-radioButton
+            class="radioButton"
+            formControlName="estudaAtualmente"
+            name="estudaAtualmente"
+            value="N"
+            label="Não"
+          ></p-radioButton>
+        </div>
+
+        @if(curriculoForm.get('estudaAtualmente')!.value === 'S'){
+        <div class="turno">
+          <label for="turnoEscola">Turno da escola:</label>
+          <div>
+            <p-dropdown
+              formControlName="turno"
+              placeholder="Turno da escola"
+              [options]="turnoEscola"
+            />
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="filhos">
+        <div class="radiofilho">
+          <label for="telefone">Possui filhos? </label>
+          <p-radioButton
+            class="radioButton"
+            formControlName="filhos"
+            name="filhos"
+            value="S"
+            label="Sim"
+          ></p-radioButton>
+          <p-radioButton
+            class="radioButton"
+            formControlName="filhos"
+            name="filhos"
+            value="N"
+            label="Não"
+          ></p-radioButton>
+        </div>
+        @if(curriculoForm.get('filhos')!.value === 'S'){
+        <div class="qtdFilhos">
+          <label for="qtdFilhos">Nº de filhos:</label>
+          <div>
+            <input
+              formControlName="numFilhos"
+              pInputText
+              type="text"
+              placeholder="Nº de filhos"
+              appApenasNumero
+              maxlength="1"
+            />
+          </div>
+        </div>
+        }
+      </div>
+      <label for="telefone">Telefone:</label>
+      <div class="telefone">
+        <input
+          id="telefone"
+          pInputText
+          type="tel"
+          formControlName="telefone"
+          placeholder="Telefone"
+          appFormatatelefone
+          maxlength="14"
+        />
+      </div>
+      <label for="email">E-mail:</label>
+      <div class="email">
+        <input
+          id="email"
+          pInputText
+          type="email"
+          formControlName="email"
+          placeholder="E-mail"
+        />
+      </div>
+      <div class="pcd">
+        <div class="radioPcd">
+          <label for="pcd">Deseja se cadastrar como PCD?</label>
+          <p-radioButton
+            class="radioButton"
+            formControlName="pcd"
+            name="pcd"
+            value="S"
+            label="Sim"
+          ></p-radioButton>
+          <p-radioButton
+            class="radioButton"
+            formControlName="pcd"
+            name="pcd"
+            value="N"
+            label="Não"
+          ></p-radioButton>
+        </div>
+        @if(curriculoForm.get('pcd')!.value==='S'){
+        <div class="deficiencia">
+          <label for="deficiencia">Qual deficiência?</label>
+          <div>
+            <p-dropdown
+              formControlName="deficiencia"
+              placeholder="Deficiência"
+              [options]="deficiencia"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="enviarArquivo">
+          <p-fileUpload
+            mode="basic"
+            name="demo[]"
+            chooseIcon="pi pi-upload"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            accept="image/*"
+            maxFileSize="10000000"
+            (onUpload)="onBasicUploadAuto($event)"
+            [auto]="true"
+            chooseLabel="Upload do atestado"
+          />
+          <p>Tamanho maxímo de 1MB</p>
+          <p id="envioOpcionalMensagem">Envio opcional</p>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="botaoSalvar">
+      <p-button
+        icon="pi pi-check"
+        severity="success"
+        label="Salvar os dados pessoais"
+        [disabled]="!curriculoForm.valid"
+      ></p-button>
+    </div>
+  </form>
+  <hr />
+  <app-observacaobotton></app-observacaobotton>
+</div>

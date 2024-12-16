@@ -1,0 +1,59 @@
+* {
+  color: #606062;
+  --subtitulo-color: #ff355e;
+}
+.container {
+  padding-left: 1rem;
+}
+.titulo {
+  color: var(--titulo-color);
+}
+.titulo > h1 {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
+input {
+  text-transform: uppercase;
+ }
+.radioPrimeiroEmprego{
+margin-top: 2rem;
+}
+.radioButton {
+  margin-left: 1rem;
+}
+.botaoSalvar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+#empresa,
+#cidade,
+#cargo {
+  width: 100%;
+}
+.empresa,
+.cidade,
+.cargo {
+  width: calc(50% - 0.5rem);
+}
+@media screen and (max-width: 1024px) {
+  .empresa,
+  .cidade,
+  .cargo {
+    width: 100%;
+  }
+  
+}

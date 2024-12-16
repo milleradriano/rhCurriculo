@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="card">    
+      <p-inputGroupAddon>
+        <i class="pi pi-building"></i>
+      </p-inputGroupAddon>
+      <p-multiSelect
+        [options]="items"
+        
+        [showToggleAll]="true"
+        [selectAll]="selectAll"
+        [(ngModel)]="selectedItems"
+        optionValue="idEmpresa"
+        optionLabel="descEmpresa"
+        [virtualScroll]="true"
+        [filter]="true"
+        [virtualScrollItemSize]="43"
+        class="multiselect-custom-virtual-scroll"
+        placeholder="Selecione a sua empresa"
+        (onSelectAllChange)="onSelectAllChange($event)"
+        (onChange)="onChangeCombo($event)"
+        
+        styleClass="p-button-danger"
+      ></p-multiSelect>
+    </div>
+  </div>
