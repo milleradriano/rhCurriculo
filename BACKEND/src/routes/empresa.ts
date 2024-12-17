@@ -14,8 +14,8 @@ const getEmpresa= () =>{
         }
       );
     });
-
 }
+
 
 const postEmpresa = (dados:any) => {
     return new Promise((resolve, reject) => {

@@ -2,6 +2,7 @@ require("dotenv").config();
 import express from "express";
 
 const bodyParser = require("body-parser");
+import multer from 'multer';
 const path = require("path");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -17,7 +18,7 @@ import { Request, Response } from "express";
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+
 
 // app.get("/", (request: any, response: any) => {
 //   return response.send("Hello!");
@@ -48,6 +49,31 @@ function verifyJwt(
     });
   }
 }
+
+/************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
+const storageLogo = multer.diskStorage({
+ 
+  destination: function (req: any, file: any, cb: any) {
+    cb(null, './src/images/logo')
+  },
+  filename: function (req: any, file: any, cb: any) {
+    console.log("filename", file)
+    cb(null, file.originalname)
+  }
+}
+)
+const uploadLogo = multer({  storage: storageLogo, 
+  // Verifique se o campo no frontend é 'logo'
+  fileFilter: (req, file, cb) => {
+    if (file.fieldname === 'logo') {
+      cb(null, true);
+    } else {
+      cb(new Error('Unexpected field'));
+    }
+  } })
+/************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
+
+
 //***********************  INICIO CURRICULO                   *************************/
 
 app.get("/curriculo", async (req: Request, res: Response) => {
@@ -129,7 +155,7 @@ app.get("/empresa/", async (req: Request, res: Response) => {
   // console.log("get empresa 101", res);
 });
 
-/*************  ✨ Codeium Command 🌟  *************/
+
 app.post("/empresa", async (req: Request, res: Response) => {
   console.log("post empresa ", req.body);
   const valores = [
@@ -153,6 +179,26 @@ app.delete("/empresa/:id", async (req: Request, res: Response) => {
   })
 
 })
+
+
 //************************** FIM EMPRESA ************************ */
+
+
+/********************** INICIO LOGO ************************/
+app.post("/uploadlogo", uploadLogo.single('logo'),  async(req: any, res: any) => {
+  if (!req.file) {
+    return res.status(400).send({ error: 'Nenhum arquivo enviado' });
+  } else {  
+    console.log('req file ',req.file);
+    res.send(req.file);
+    return; 
+  }
+})
+
+
+app.use('/logo',express.static(path.join(__dirname, "/images/logo")));
+  
+
+
 
 export default app;
