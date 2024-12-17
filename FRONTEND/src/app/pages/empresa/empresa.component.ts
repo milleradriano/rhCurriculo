@@ -1,7 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { Component, inject, ViewChild } from '@angular/core';
+
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,19 +14,25 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import { FileUploadModule, UploadEvent } from 'primeng/fileupload';
+import {
+
+  FileUploadModule,
+
+  FileUpload,
+} from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
 import { GridComponent } from '../../components/grid/grid.component';
 import { ConfirmacaoComponent } from '../../components/confirmacao/confirmacao.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { EmpresaService } from '../../service/empresa.service';
+import { UploadLogoService } from '../../service/upload-logo.service';
 import { ProgressbarComponent } from '../../components/progressbar/progressbar.component';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { TooltipModule } from 'primeng/tooltip';
-import { error } from 'console';
+import { Image, ImageModule } from 'primeng/image';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-empresa',
   standalone: true,
@@ -50,13 +54,14 @@ import { error } from 'console';
     ToastModule,
     InputGroupModule,
     InputGroupAddonModule,
-    UploaddocumentoComponent,
     GridComponent,
     ConfirmacaoComponent,
     ToastComponent,
     ProgressbarComponent,
     LoadingComponent,
     TooltipModule,
+    FileUploadModule,
+    ImageModule,
   ],
   templateUrl: './empresa.component.html',
   styleUrl: './empresa.component.css',
@@ -69,20 +74,25 @@ export class EmpresaComponent {
   // isRateLimitReached = false;
   // resultsLength = 0;
   loading: boolean = false;
-  private formbuilder = inject(FormBuilder)
-  constructor(  
+
+  private formbuilder = inject(FormBuilder);
+  @ViewChild('fileUploader') fileUploader!: FileUpload;
+  urlLogo: any;
+  constructor(
     private messageService: MessageService,
     private toast: ToastComponent,
     private confirmacao: ConfirmacaoComponent,
-    private empresaService: EmpresaService
+    private empresaService: EmpresaService,
+    private uploadLogoService: UploadLogoService
   ) {}
   empresaForm = this.formbuilder.group({
     idempresa: [''],
     descempresa: ['', Validators.required],
     desccidade: ['', Validators.required],
     maps: ['', Validators.required],
+    logo: [''],
   });
-  
+
   ngOnDestroy() {
     this.retornoApi$.unsubscribe();
   }
@@ -100,19 +110,18 @@ export class EmpresaComponent {
 
   recebeValores(valores: any) {
     console.log('valores', valores);
-    console.log('valores EMPRESA', valores);
+    console.log('valores EMPRESA', environment.api + JSON.stringify( valores.logo));
     this.empresaForm.controls['idempresa'].setValue(valores.idempresa);
     this.empresaForm.controls['descempresa'].setValue(valores.descempresa);
     this.empresaForm.controls['desccidade'].setValue(valores.desccidade);
     this.empresaForm.controls['maps'].setValue(valores.maps);
+    this.empresaForm.controls['logo'].setValue(valores.logo);
+    if (valores.logo !== null) {
+      this.urlLogo = environment.api +'/'+  valores.logo;
+    }
+    
   }
-  onUpload(event: UploadEvent) {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Success',
-      detail: 'File Uploaded with Basic Mode',
-    });
-  }
+
   carregaGrid() {
     this.isLoadingResults = true;
     this.retornoApi$ = this.empresaService.getEmpresa().subscribe(
@@ -140,6 +149,7 @@ export class EmpresaComponent {
   }
   limparCampos() {
     this.empresaForm.reset();
+    this.urlLogo = '';
   }
   delEmpresa(valores: any) {
     this.confirmacao.confirmaExclusao(
@@ -174,12 +184,59 @@ export class EmpresaComponent {
       }
     );
   }
+  onErrorUpload($event: any) {
+    console.log('error no upload', $event);
+    this.toast.toast('error', 'Erro', $event.error.message);
+  }
+  renameFile(file: File, newName: string): File {
+    const blob = file.slice(0, file.size, file.type);
+    return new File([blob], newName, { type: file.type });
+  }
+  nomeImagem: string = '';
+  postImagem(nomeArquivo: string) {
+    if (this.fileUploader.files && this.fileUploader.files.length > 0) {
+      //****carregas as informações do arquivo
+      this.fileUploader.upload();
+      //****carregas as informações do arquivo
+      let file = this.renameFile(
+        this.fileUploader.files[0],
+        nomeArquivo + '.jpg'
+      );
+      this.nomeImagem = file.name;
+      if (this.fileUploader.files) {
+        this.uploadLogoService.uploadlogo([file]).subscribe(
+          (data) => {
+            console.log('data', data);
+            console.log('imagem enviada');
+            this.fileUploader.clear();
+          },
+
+          (error) => {
+            if (error.status == 403) {
+              this.showProgress = true;
+            } else if (error.status == 0) {
+              this.toast.toast('error', 'Erro', 'Sem conexão com o servidor');
+              this.showProgress = true;
+            } else
+              this.toast.toast(
+                'error',
+                'Erro',
+                error.status.toString() + '-' + error.statusText
+              );
+            console.log('error aqio', error);
+          }
+        );
+      }
+    }
+  }
 
   postEmpresa(valores: any) {
+    this.postImagem(valores.idempresa);
     this.loading = true;
-    console.log('post VALOR', valores);
+    console.log('post VALOR', valores.idempresa);
     this.isLoadingResults = true;
     let mensagem: string = '';
+    valores.logo = 'logo/' + this.nomeImagem;
     this.empresaService.postEmpresa(valores).subscribe(
       (data) => {
         if (Array.isArray(data)) {

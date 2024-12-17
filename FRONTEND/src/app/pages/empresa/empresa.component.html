@@ -6,6 +6,16 @@
   }
   <form [formGroup]="empresaForm">
     <div class="empresaDescEmpresa">
+@if(urlLogo){
+  <div class="logo">
+    <p-image
+    width="50"
+      src={{urlLogo}}
+      alt="Image"        
+    ></p-image>
+    </div>
+} 
+
       <p-inputGroup class="idempresa">
         <p-inputGroupAddon>
           <i class="pi pi-key"></i>
@@ -61,18 +71,25 @@
         </p-inputGroup>
       </div>
     </div>
-    <div class="logo">
+    
+    <div class="uploadLogo">
       <p-fileUpload
+      #fileUploader
         id="upload"
+        mode="advanced"
         [customUpload]="true"
         [multiple]="false"
-        [auto]="true"
+        [auto]="false"
         chooseLabel="Selecione o logo"
-        name="demo[]"
-        url="https://www.primefaces.org/cdn/api/upload.php"
+        name="logo"
+        url="http://localhost:3000/uploadlogo"
         accept="image/*"
-        maxFileSize="1000000"
-        (onUpload)="onUpload($event)"
+        maxFileSize="512000"       
+        (onError)="onErrorUpload($event)"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        [disabled]="!empresaForm.valid"
+        >
       ></p-fileUpload>
     </div>
     <div class="botao">

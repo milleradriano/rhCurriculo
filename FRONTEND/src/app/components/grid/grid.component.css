@@ -11,6 +11,7 @@ table {
   overflow: auto;
 }
 
+
 .mat-column-id {
   text-align: center;
 }
@@ -34,10 +35,20 @@ table {
   display: flex;
   justify-content: center;
 }
+tr{
+  border: 1px solid black;
+}
 td {
   align-items: center;
   text-align: center;
 }
+/*cursor e cor do input */
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
+    color: black;
+    text-transform: uppercase;
+  }
+
+
 
 mat-form-field .input {
   text-transform: uppercase;
@@ -64,6 +75,7 @@ mat-form-field .input {
 mat-paginator {
   background-color: #ffffff;
   color: black;
+  border-top: 1px solid #424242;
 }
 /* cor do label do input no filtro   */
 mat-label{
@@ -114,4 +126,8 @@ mat-label{
 }
 :host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: #F5F5F5;
+}
+
+:host ::ng-deep .mat-mdc-table{
+--mat-table-row-item-outline-color: #424242;
 }

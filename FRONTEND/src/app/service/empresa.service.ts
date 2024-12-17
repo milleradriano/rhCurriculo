@@ -19,6 +19,14 @@ export class EmpresaService {
         catchError(this.handleError)
       );
   }
+  getLogo() {
+    return this.httpClient
+      .get<interfaceEmpresa[]>(this.url+"/logo")
+      .pipe(
+        shareReplay(),
+        catchError(this.handleError)
+      );
+  }
   postEmpresa(empresa: interfaceEmpresa): Observable<interfaceEmpresa> {
     return this.httpClient
       .post<interfaceEmpresa>(this.url+'/empresa', empresa)

@@ -3,5 +3,6 @@ export interface interfaceEmpresa {
     descEmpresa: string;
     cidade: string;
     maps: string;
+    logo: string;
 
 }
