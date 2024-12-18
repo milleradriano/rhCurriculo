@@ -1,7 +1,81 @@
-* {
+:root{
   color: #606062;
   --subtitulo-color: #ff355e;
+  --corBorda-input: #1dc755a8;
 }
+
+
+input:hover {
+border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* 
+::ng-deep .p-inputtext:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+
+::ng-deep .p-dropdown:focus{ 
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+::ng-deep .p-dropdown:hover{ 
+  border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+::ng-deep .p-dropdown:not(.p-disabled).p-focus{ 
+  border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+::ng-deep .p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color:var(--corBorda-input);
+  background: var(--corBorda-input);
+  box-shadow: none;
+}
+
+
+::ng-deep .p-radiobutton:hover .p-radiobutton-box {
+  border-color: var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+::ng-deep .p-fileupload-choose:hover{
+  background: red;
+}
+
+::ng-deep .p-fileupload-choose:not(.p-disabled):hover {
+  background: var(--corBorda-input);
+  color: #ffffff;
+  border-color: var(--corBorda-input);
+}
+::ng-deep .p-button:not(:disabled):hover {
+  background: var(--corBorda-input);
+  color: #ffffff;
+  border-color: var(--corBorda-input);
+}
+::ng-deep .p-button {
+  color: #ffffff;
+  background: var(--corBorda-input);
+  border: 1px solid var(--corBorda-input);
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
+  outline-color: transparent;
+} */
+
+
+
 .container {
   padding-left: 1rem;
 }
@@ -53,7 +127,7 @@ label {
 .enviarArquivo {
  margin-top: 2rem;
 
- width: 15rem;
+ width: 100%;
  display: flex;
  flex-direction: column;
  justify-content: center;

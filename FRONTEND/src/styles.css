@@ -5,6 +5,10 @@
 @import "primeicons/primeicons.css";
 * {
   font-family: Montserrat, Arial, Tahoma, sans-serif;
+  --subtitulo-color: #ff355e;
+  --corBorda-input: #22c55e; 
+  --titulo-color: #606062;
+  /* --subtitulo-color: #ff355e; */
 }
 html,
 body {
@@ -15,10 +19,13 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 :root {
-  --titulo-color: #606062;
   --subtitulo-color: #ff355e;
+  --corBorda-input: #22c55e; 
+  --titulo-color: #606062;
 }
-
+label{
+  color: var(--titulo-color);
+}
 /*fundo do botao dos menus*/
 .p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
   background: #c7e2c4;
@@ -33,30 +40,87 @@ body {
 .p-panelmenu .p-panelmenu-header.p-highlight .p-panelmenu-header-content {
   background: #fff;
 }
-.p-fileupload .p-fileupload-header.p-highlight .p-fileupload-header-content {
-  background: #c7e2c4;
-  border-color: #cecfce;
-  color: #374151;
-}
-/* muda a cor da borda do botao upload ao clicar*/
-.p-fileupload .p-fileupload-buttonbar .p-button.p-fileupload-choose.p-focus {
+
+/***/
+.p-inputtext:focus {
   outline: 0 none;
   outline-offset: 0;
-  box-shadow: 0 0 0 0.2rem #b4e6b0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
 }
 
-.p-fileupload-choose:not(.p-disabled):hover {
-  background: #16a34a;
+.p-inputtext:hover {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+/* .p-inputtext:not(.p-disabled).p-focus{ 
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+} */
+.p-dropdown:focus{ 
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+.p-dropdown:hover{ 
+  border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+.p-dropdown:not(.p-disabled).p-focus{ 
+  border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color:var(--corBorda-input);
+  background: var(--corBorda-input);
+  box-shadow: none;
+}
+
+
+.p-radiobutton:hover .p-radiobutton-box {
+  border-color: var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.p-fileupload-choose{
+  background: var(--corBorda-input);
+  border: none;
+}
+.p-fileupload-choose:hover{
+  background: #2be067c7;
+  border: none;
+  box-shadow: none;
+}
+.p-fileupload-choose:not(.p-disabled).p-focus{ 
+  border:none;    
+  box-shadow: none;
+}
+ 
+::ng-deep .p-button:not(:disabled):hover {
+  background: var(--corBorda-input);
   color: #ffffff;
-  border-color: #16a34a;
+  border-color: var(--corBorda-input);
 }
-
-.p-fileupload-choose {
-  background: #22c55e;  
+::ng-deep .p-button {
   color: #ffffff;
-  border-color: #eeeeee;
-}
-
+  background: var(--corBorda-input);
+  border: 1px solid var(--corBorda-input);
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
+  outline-color: transparent;
+} 
+/***/
 ::ng-deep .mat-mdc-table .mdc-data-table__table .cdk-table .mat-sort {
   table-layout: auto;
   white-space: normal;

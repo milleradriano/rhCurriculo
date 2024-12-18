@@ -18,8 +18,7 @@
       </div>
       <label>Sexo:</label>
       <div class="sexo">
-        <p-radioButton
-          [ngStyle]="{ 'border-color': 'red' }"
+        <p-radioButton        
           class="radioButton"
           formControlName="sexo"
           name="sexo"
@@ -264,16 +263,23 @@
         </div>
         <div class="enviarArquivo">
           <p-fileUpload
-            mode="basic"
-            name="demo[]"
-            chooseIcon="pi pi-upload"
-            url="https://www.primefaces.org/cdn/api/upload.php"
+          #fileUploader
+            id="upload"
+            mode="advanced"
+            [customUpload]="true"
+            [multiple]="false"
+            [auto]="false"
+            chooseLabel="Selecione o logo"
+            name="logo"
+            url="http://localhost:3000/uploadlogo"
             accept="image/*"
-            maxFileSize="10000000"
-            (onUpload)="onBasicUploadAuto($event)"
-            [auto]="true"
-            chooseLabel="Upload do atestado"
-          />
+            maxFileSize="512000"       
+            
+            [showUploadButton]="false"
+            [showCancelButton]="false"
+            
+            >
+          ></p-fileUpload>
           <p>Tamanho maxímo de 1MB</p>
           <p id="envioOpcionalMensagem">Envio opcional</p>
         </div>

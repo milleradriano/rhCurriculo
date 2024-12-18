@@ -52,11 +52,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background: var(--surface-card);
   padding: 1rem;
   border-radius: 10px;
   margin-bottom: 1rem;
-  background-color: var(--background-card);
+
 }
 
 .botao {

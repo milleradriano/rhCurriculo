@@ -1,7 +1,41 @@
-* {
+:root {
   color: #606062;
   --subtitulo-color: #ff355e;
+  --corBorda-input: #1dc755a8;
 }
+
+
+input:hover {
+  border: 1px solid var(--corBorda-input);
+    cursor: pointer;
+    box-shadow: none;
+  }
+  
+  
+  ::ng-deep .p-inputtext:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+    border-color:  var(--corBorda-input);
+  }
+  ::ng-deep .p-dropdown:hover{ 
+    border: 1px solid var(--corBorda-input);
+    cursor: pointer;
+    box-shadow: none;
+  }
+  ::ng-deep .p-dropdown:focus{ 
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+    border-color:  var(--corBorda-input);
+  }
+  ::ng-deep .p-dropdown:not(.p-disabled).p-focus{ 
+    border: 1px solid var(--corBorda-input);
+    cursor: pointer;
+    box-shadow: none;
+  }
+
+
 .container {
   padding-left: 1rem;
 }
@@ -27,6 +61,7 @@ label {
 /* #cep e . cep devem ser ajustados para dimensões diferentes */
 #cep {
   width: 5rem;
+
 }
 .cep {
   width: calc(15rem - 0.5rem);
