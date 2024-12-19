@@ -1,6 +1,14 @@
 <div class="container">
+  @if ( loading){
+  <div class="loading">
+    <app-loading></app-loading>
+  </div>
+  }
+
+
   <form [formGroup]="residenciaForm">
-    <div class="titulo">
+
+       <div class="titulo">
       <h1>Dados Residênciais</h1>
       <p>Preencha seus dados residenciais abaixo.</p>
     </div>
@@ -23,6 +31,7 @@
             icon="pi pi-search"
             class="p-button-success"
             iconPos="right"
+            (click)="localizaCep(residenciaForm.value.cep)"
           ></button>
         </p-inputGroup>
       </div>
@@ -86,15 +95,18 @@
         </div>
       </div>
     </div>
+   
     <div class="botaoSalvar">
       <p-button
         icon="pi pi-check"
         severity="success"
         label="Salvar os dados Residenciais"
         [disabled]="!residenciaForm.valid"
+        (click)="postResidencia(residenciaForm.value)"
       ></p-button>
     </div>
   </form>
   <hr />
+  <app-toast></app-toast>
   <app-observacaobotton></app-observacaobotton>
 </div>

@@ -10,8 +10,12 @@ input:hover {
     cursor: pointer;
     box-shadow: none;
   }
-  
-  
+  ::ng-deep .p-inputtext.ng-not-empty {
+    border-color: blue; /* Alterar cor da borda */
+    background-color: #e3f2fd; /* Fundo claro */
+  }
+
+/*   
   ::ng-deep .p-inputtext:focus {
     outline: 0 none;
     outline-offset: 0;
@@ -33,7 +37,7 @@ input:hover {
     border: 1px solid var(--corBorda-input);
     cursor: pointer;
     box-shadow: none;
-  }
+  } */
 
 
 .container {
@@ -79,9 +83,7 @@ label {
   display: flex;
   flex-direction: row;
 }
-.estado {
-  /* margin-right: 1rem; */
-}
+
 #endereco,
 #bairro {
   width: 100%;

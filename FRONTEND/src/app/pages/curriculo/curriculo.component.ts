@@ -24,6 +24,9 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretivas/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretivas/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
+import { LocalstorageService } from '../../service/localstorage.service';
+import { ToastComponent } from '../../components/toast/toast.component';
+import { CurriculoService } from '../../service/curriculo.service';
 interface UploadEvent {
   originalEvent: Event;
   files: File[];
@@ -35,13 +38,11 @@ interface UploadEvent {
   standalone: true,
   providers: [MessageService],
   imports: [
-    AsyncPipe,
     MatGridListModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MenuComponent,
     InputTextModule,
     FormsModule,
     CommonModule,
@@ -56,10 +57,18 @@ interface UploadEvent {
     ObservacaobottonComponent,
     ApenasNumeroDirective,
     FormatatelefoneDirective,
-    UploaddocumentoComponent,
+    ToastComponent,
   ],
 })
 export class CurriculoComponent {
+  private retornoApi$!: any;
+
+  showProgress: boolean = false;
+  isLoadingResults: boolean = false;
+  // isRateLimitReached = false;
+  // resultsLength = 0;
+  loading: boolean = false;
+
   limparFilhos($event: any) {
     console.log('Limpar Filhos ', $event);
   }
@@ -69,11 +78,14 @@ export class CurriculoComponent {
 
   turnoEscola: any[] | undefined;
   deficiencia: any[] | undefined;
-
+  tokenCpf = this.localStorageService.getLogin('idc');
   constructor(
     private messageService: MessageService,
     private breakpointObserver: BreakpointObserver,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private localStorageService: LocalstorageService,
+    private toast: ToastComponent,
+    private curriculoService: CurriculoService
   ) {
     this.estadoCivil = [
       { label: 'Solteiro', value: 'Solteiro' },
@@ -134,10 +146,11 @@ export class CurriculoComponent {
     ];
   }
   curriculoForm = this.formBuilder.group({
-    nome: ['', Validators.required],
     sexo: ['', Validators.required],
+    nome: ['', Validators.required],
     estadoCivil: ['', Validators.required],
-    cpf: ['', Validators.required],
+    cpf: [this.tokenCpf],
+
     rg: ['', Validators.required],
     orgaoEmissor: ['', Validators.required],
     dataEmissao: ['', Validators.required],
@@ -146,7 +159,7 @@ export class CurriculoComponent {
     nomePai: ['', Validators.required],
     nomeMae: ['', Validators.required],
     grauInstrucao: ['', Validators.required],
-    estudaAtualmente: ['N'],
+    estudaAtualmente: [''],
     telefone: ['', Validators.required],
     email: [
       '',
@@ -156,9 +169,9 @@ export class CurriculoComponent {
       ],
     ],
     turno: [''],
-    filhos: ['N'],
+    filhos: ['N'], //não mudar
     numFilhos: [''],
-    pcd: ['N', Validators.required],
+    pcd: ['N', Validators.required], //nao mudar
     deficiencia: [''],
   });
   onBasicUploadAuto(event: any) {
@@ -167,5 +180,33 @@ export class CurriculoComponent {
       summary: 'Success',
       detail: 'File Uploaded with Auto Mode',
     });
+  }
+
+  postCurriculo(valores: any) {
+    console.log('post curriculo ', valores);
+    let mensagem: string = '';
+    this.loading = true;
+    this.curriculoService.postCurriculo(valores).subscribe(
+      (data: any) => {
+        if (Array.isArray(data)) {
+          mensagem = JSON.parse(data[0][0].result).status;
+          console.log('result linha 82', JSON.parse(data[0][0].result).status);
+          this.loading = false;
+          this.toast.toast('success', 'Sucesso', mensagem);
+        } else {
+          console.log('result2', JSON.parse(JSON.stringify(data)).error);
+          mensagem = JSON.parse(JSON.stringify(data)).error;
+          this.toast.toast('error', 'Erro', mensagem);
+          this.loading = false;
+        }
+        this.isLoadingResults = false;
+        this.loading = false;
+      },
+      (error: any) => {
+        console.log('error aqio', error);
+        this.loading = false;
+        this.toast.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
+      }
+    );
   }
 }

@@ -21,5 +21,16 @@ constructor(@Inject(PLATFORM_ID) private platformId: Object) {
       localStorage.getItem('id');
     }
   }
+  setLogin(key: string, value: string): void {
+    if (this.isBrowser) {
+      localStorage.setItem(key, value);
+    }
+  }
+  getLogin(key: string): string | null {
+    if (this.isBrowser) {
+      return localStorage.getItem(key);
+    }
+    return null;
+  }
 }
 

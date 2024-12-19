@@ -22,18 +22,20 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
 import { FormatacepDirective } from '../../diretivas/formatacep.directive';
-import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component'
+import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
+import { ResidenciaService } from '../../service/residencia.service';
+import { LoadingComponent } from '../../components/loading/loading.component';
+import { ToastComponent } from '../../components/toast/toast.component';
 @Component({
   selector: 'app-residencia',
   standalone: true,
+    providers: [MessageService],
   imports: [
-   
     MatGridListModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-   
     InputTextModule,
     FormsModule,
     CommonModule,
@@ -47,19 +49,23 @@ import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploa
     InputGroupAddonModule,
     ObservacaobottonComponent,
     FormatacepDirective,
-    UploaddocumentoComponent
-   
-  ],
+    LoadingComponent,
+    ToastComponent
+],
   templateUrl: './residencia.component.html',
   styleUrl: './residencia.component.css',
 })
 export class ResidenciaComponent {
-estado: any['']|undefined;
-  
-  
-  
+  estado: any[''] | undefined;
+  loading: boolean = false;
+  showProgress: boolean = false;
 
-  constructor(private formbuilder: FormBuilder) {
+  constructor(
+    private messageService: MessageService,
+    private formbuilder: FormBuilder,
+    private residenciaService: ResidenciaService,
+    private toast: ToastComponent
+  ) {
     this.estado = [
       { label: 'AC', value: 'AC' },
       { label: 'AL', value: 'AL' },
@@ -89,15 +95,52 @@ estado: any['']|undefined;
       { label: 'SE', value: 'SE' },
       { label: 'TO', value: 'TO' },
     ];
- 
   }
   residenciaForm = this.formbuilder.group({
-    cidade: ['',Validators.required],
-    cep: ['',Validators.required],  
-    estado: ['',Validators.required],
-    endereco: ['',Validators.required],
-    numero: ['',Validators.required],
-    bairro: ['',Validators.required],
+    cidade: ['', Validators.required],
+    cep: ['', Validators.required],
+    estado: ['', Validators.required],
+    endereco: ['', Validators.required],
+    numero: ['', Validators.required],
+    bairro: ['', Validators.required],
   });
- 
+
+  localizaCep(cep: any) {
+    this.loading = true;
+    this.residenciaService.getCep(cep).subscribe((res) => {
+      console.log(res);
+      this.residenciaForm.patchValue({
+        cep: res.cep,
+        estado: res.uf,
+        cidade: res.localidade,
+        endereco: res.logradouro,
+        bairro: res.bairro,
+      });
+    });
+    this.loading = false;
+  }
+  alerta(){
+    console.log('dentro do alerta')
+    this.toast.toast('success', 'Sucesso', 'Residência cadastrada');
+  }
+  postResidencia(valores: any) {
+   this.loading = true;
+    console.log('POST RESIDENCIA', valores);
+    this.residenciaService.postResidencia(valores).subscribe(
+      (data) => {
+        this.loading = false;
+        this.toast.toast('success', 'Sucesso', 'Residência cadastrada');
+      },
+      (error) => { 
+       
+        this.loading = false;
+        this.toast.toast(
+          'error',
+          'Erro',
+          'Indisponível tente mais tarde.'
+        );
+        console.log('error aqio', error);
+      }
+    );
+  }
 }

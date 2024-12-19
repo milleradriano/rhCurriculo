@@ -229,7 +229,9 @@ export class EmpresaComponent {
       }
     }
   }
-
+alerta(){
+  this.toast.toast('success', 'Sucesso', 'teste');
+}
   postEmpresa(valores: any) {
     this.postImagem(valores.idempresa);
     this.loading = true;
@@ -244,10 +246,12 @@ export class EmpresaComponent {
           console.log('result linha 82', JSON.parse(data[0][0].result).status);
           this.loading = false;
           this.toast.toast('success', 'Sucesso', mensagem);
+     
           this.carregaGrid();
         } else {
           console.log('result2', JSON.parse(JSON.stringify(data)));
           mensagem = JSON.parse(JSON.stringify(data));
+          this.toast.toast('error', 'Erro', mensagem);
           this.loading = false;
         }
 

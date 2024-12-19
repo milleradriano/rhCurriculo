@@ -4,5 +4,4 @@ export interface interfaceEmpresa {
     cidade: string;
     maps: string;
     logo: string;
-
 }
