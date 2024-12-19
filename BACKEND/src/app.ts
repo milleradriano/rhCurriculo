@@ -2,7 +2,7 @@ require("dotenv").config();
 import express from "express";
 
 const bodyParser = require("body-parser");
-import multer from 'multer';
+import multer from "multer";
 const path = require("path");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -15,10 +15,10 @@ const cep = require("./routes/cep");
 const vaga = require("./routes/vaga");
 const empresa = require("./routes/empresa");
 import { Request, Response } from "express";
+import { toFormData } from "axios";
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 // app.get("/", (request: any, response: any) => {
 //   return response.send("Hello!");
@@ -52,27 +52,26 @@ function verifyJwt(
 
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 const storageLogo = multer.diskStorage({
- 
   destination: function (req: any, file: any, cb: any) {
-    cb(null, './src/images/logo')
+    cb(null, "./src/images/logo");
   },
   filename: function (req: any, file: any, cb: any) {
-    console.log("filename", file)
-    cb(null, file.originalname)
-  }
-}
-)
-const uploadLogo = multer({  storage: storageLogo, 
+    console.log("filename", file);
+    cb(null, file.originalname);
+  },
+});
+const uploadLogo = multer({
+  storage: storageLogo,
   // Verifique se o campo no frontend é 'logo'
   fileFilter: (req, file, cb) => {
-    if (file.fieldname === 'logo') {
+    if (file.fieldname === "logo") {
       cb(null, true);
     } else {
-      cb(new Error('Unexpected field'));
+      cb(new Error("Unexpected field"));
     }
-  } })
+  },
+});
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
-
 
 //***********************  INICIO CURRICULO                   *************************/
 
@@ -83,31 +82,47 @@ app.get("/curriculo", async (req: Request, res: Response) => {
   });
 });
 
+const validaIdade = (dataNascimento: any) => {
+  const hoje = new Date();
+  const dataNasc = new Date(dataNascimento);
+  const idade = hoje.getFullYear() - dataNasc.getFullYear();
+  const m = hoje.getMonth() - dataNasc.getMonth();
+  if (m < 0 || (m === 0 && hoje.getDate() < dataNasc.getDate())) {
+    return idade - 1;
+  }
+  return idade;
+};
 app.post("/curriculo", async (req: Request, res: Response) => {
-  console.log(req.body);
   const dados = [
     req.body.cpf,
     req.body.nome,
-    req.body.datanascimento,
+    req.body.dataNascimento,
+    req.body.sexo,
     req.body.email,
     req.body.rg,
-    req.body.orgaoemissorrg,
-    req.body.estadorg,
-    req.body.dataexpedicaorg,
-    req.body.nomepai,
-    req.body.nomemae,
-    req.body.grauinstrucao,
+    req.body.orgaoEmissor,
+    req.body.estadoEmissor,
+    req.body.dataEmissao,
+    req.body.nomePai,
+    req.body.nomeMae,
+    req.body.grauInstrucao,
     req.body.pcd,
-    req.body.pcddeficiencia,
-    req.body.esttudaatualmente,
-    req.body.possuifilho,
+    req.body.deficiencia,
+    req.body.estudaAtualmente,
+    req.body.turno,
+    req.body.filhos,
+    req.body.numFilhos,
     req.body.telefone,
-    req.body.estadocivil,
+    req.body.estadoCivil,
   ];
-  curriculo.postcurriculo(dados).then((result: any) => {
-    console.log(result);
-    res.send(result);
-  });
+
+  if (validaIdade(req.body.dataNascimento) < 14) {
+    res.send({ error: "Voce precisa ser maior de 14 anos." });
+  } else {
+    curriculo.postcurriculo(dados).then((result: any) => {
+      res.send(result);
+    });
+  }
 });
 
 /**********************FIM CURRICULO ******************************/
@@ -142,19 +157,18 @@ app.post("/vaga", async (req: Request, res: Response) => {
   vaga.postVaga(valores).then((result: any) => {
     const dados = [req.body];
     res.send(result);
-  })
+  });
 });
 //************************ FIM VAGAS  *************************/
 
 //********************* INICIO EMPRESA *************************/
 
 app.get("/empresa/", async (req: Request, res: Response) => {
-  const result = await empresa.getEmpresa()
-    res.send(result);
-  
+  const result = await empresa.getEmpresa();
+  res.send(result);
+
   // console.log("get empresa 101", res);
 });
-
 
 app.post("/empresa", async (req: Request, res: Response) => {
   console.log("post empresa ", req.body);
@@ -166,39 +180,36 @@ app.post("/empresa", async (req: Request, res: Response) => {
     req.body.logo,
   ];
 
-  empresa.postEmpresa(valores).then((result: any) => {    
-     res.send(result);
-  })
-   console.log("post empresa ", valores);
+  empresa.postEmpresa(valores).then((result: any) => {
+    res.send(result);
+  });
+  console.log("post empresa ", valores);
 });
 app.delete("/empresa/:id", async (req: Request, res: Response) => {
   console.log("delete empresa ", req.params.id);
   const id = req.params.id;
   empresa.delEmpresa(id).then((result: any) => {
     res.send(result);
-  })
-
-})
-
+  });
+});
 
 //************************** FIM EMPRESA ************************ */
 
-
 /********************** INICIO LOGO ************************/
-app.post("/uploadlogo", uploadLogo.single('logo'),  async(req: any, res: any) => {
-  if (!req.file) {
-    return res.status(400).send({ error: 'Nenhum arquivo enviado' });
-  } else {  
-    console.log('req file ',req.file);
-    res.send(req.file);
-    return; 
+app.post(
+  "/uploadlogo",
+  uploadLogo.single("logo"),
+  async (req: any, res: any) => {
+    if (!req.file) {
+      return res.status(400).send({ error: "Nenhum arquivo enviado" });
+    } else {
+      console.log("req file ", req.file);
+      res.send(req.file);
+      return;
+    }
   }
-})
+);
 
-
-app.use('/logo',express.static(path.join(__dirname, "/images/logo")));
-  
-
-
+app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
 
 export default app;

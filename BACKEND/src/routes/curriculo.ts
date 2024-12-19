@@ -18,11 +18,12 @@ const getCurriculo = () => {
 };
 
 const postcurriculo = (valores: any) => {
-  console.log("valores dentro do post", valores);
+ 
   const [
     cpf,
     nome,
     datanascimento,
+    sexo,
     email,
     rg,
     orgaoemissorrg,
@@ -34,28 +35,31 @@ const postcurriculo = (valores: any) => {
     pcd,
     pcddeficiencia,
     estudaatualmente,
+    turnoestuda,
     possuifilho,
+    numFilhos,
     telefone,
-    estadocivil,
-    primeiroemprego,
-    ultimoempregoempresa,
-    ultimoempregocidade,
-    ultimoempregocargo,
-    ultimoempregoinicio,
-    ultimoempregoatribuicao,
-    penultimoempregoempresa,
-    penultimoempregocidade,
-    penultimoempregocargo,
-    penultimoempregoinicio,
-    penultimoempregoatribuicao
+     estadocivil
+    // primeiroemprego,
+    // ultimoempregoempresa,
+    // ultimoempregocidade,
+    // ultimoempregocargo,
+    // ultimoempregoinicio,
+    // ultimoempregoatribuicao,
+    // penultimoempregoempresa,
+    // penultimoempregocidade,
+    // penultimoempregocargo,
+    // penultimoempregoinicio,
+    // penultimoempregoatribuicao
   ] = valores;
   return new Promise((resolve, reject) => {
     PoolMysql.query(
-      "call postcurriculo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      "call postcurriculo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
       [
         cpf,
         nome,
         datanascimento,
+        sexo,
         email,
         rg,
         orgaoemissorrg,
@@ -67,20 +71,22 @@ const postcurriculo = (valores: any) => {
         pcd,
         pcddeficiencia,
         estudaatualmente,
+        turnoestuda,
         possuifilho,
+        numFilhos,
         telefone,
-        estadocivil,
-        primeiroemprego,
-        ultimoempregoempresa,
-        ultimoempregocidade,
-        ultimoempregocargo,
-        ultimoempregoinicio,
-        ultimoempregoatribuicao,
-        penultimoempregoempresa,
-        penultimoempregocidade,
-        penultimoempregocargo,
-        penultimoempregoinicio,
-        penultimoempregoatribuicao
+         estadocivil
+        // primeiroemprego,
+        // ultimoempregoempresa,
+        // ultimoempregocidade,
+        // ultimoempregocargo,
+        // ultimoempregoinicio,
+        // ultimoempregoatribuicao,
+        // penultimoempregoempresa,
+        // penultimoempregocidade,
+        // penultimoempregocargo,
+        // penultimoempregoinicio,
+        // penultimoempregoatribuicao
       ],
       (error: any, results: unknown) => {
         if (error) {
@@ -88,7 +94,7 @@ const postcurriculo = (valores: any) => {
           //   getLog("error", JSON.stringify(error));
           reject(error);
         } else {
-          console.log("resultado ", results);
+          console.log("resultado curriculo 91 ", results);
           resolve(results);
           //   getLog("info", JSON.stringify(results));
           // logger.info(JSON.stringify(results)+' - '+ new Date().toLocaleString('pt-BR'))
