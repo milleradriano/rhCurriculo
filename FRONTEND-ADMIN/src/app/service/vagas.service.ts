@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { interfaceVaga } from '../interface/vaga'; // corrigido o nome
-import { Observable, catchError, shareReplay, throwError } from 'rxjs';
-
+import { Observable, shareReplay, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })

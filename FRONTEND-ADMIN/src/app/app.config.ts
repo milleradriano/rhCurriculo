@@ -9,7 +9,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-import { HttpClient, HttpClientModule,provideHttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule,provideHttpClient,withFetch  } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastComponent } from '../app/components/toast/toast.component';

@@ -1,17 +1,30 @@
 * {
   font-family: Montserrat, Arial, Tahoma, sans-serif;
 }
+.conteiner{
+  width: 100vw;
+}
+.atualizarCadastro{
+  position: fixed;
+  top: 0.7rem;
+  right: 0;
+  z-index: 1000;
+
+}
+
+
+
 .topo {
   position: fixed;
   top: 0;   
-  width: 99%;
+  width: 100vw;
   z-index: 1000; 
   background:#fff;
 } 
 .conteudo{     
     margin-top: 11rem;   
    /* padding: 1rem 0 2rem 2rem; */
- width: 100%; 
+ width: 100vw; 
 }
 img {
   height: 150px;
@@ -25,7 +38,8 @@ img {
   background-color: #f4f6f9;
   margin-top: 11rem;
   padding: 1rem 0 2rem 2rem;
- width: 98vw;
+ width:  100vw - 1vw ;
+ height: 100vh;
 }
 
 .card-container {
@@ -48,7 +62,7 @@ img {
 
 .card {
   margin-right: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   width: 30%;
   height: auto;
   padding: 1rem;
@@ -85,11 +99,9 @@ img {
 }
 .descricaoVaga {
   display: -webkit-box !important;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical; 
   overflow: hidden;
   text-overflow: ellipsis;
-
   font-weight: 600;
   font-size: 1.125rem;
   color: var(--main-color);
@@ -128,6 +140,21 @@ span {
   flex-direction: column;
   width: 40%;
 }
+
+#btnAtualizaCadastro{
+  color: #2c2c2c;
+  border: none;
+  background: #ffff;
+  height:'1rem'
+}
+#btnAtualizaCadastro:hover{
+  color: red;
+  border: none;
+  /*background: #dad9d9af;
+  height:'1rem';
+  border-radius: 20px;*/
+}
+
 #btnVerVagas,
 #btnCandidatar,
 #btnCadastrar {

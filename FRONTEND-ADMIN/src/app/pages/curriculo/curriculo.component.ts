@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -27,6 +27,9 @@ import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploa
 import { LocalstorageService } from '../../service/localstorage.service';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { CurriculoService } from '../../service/curriculo.service';
+import { InputreadonlyDirective } from '../../diretivas/inputreadonly.directive';
+import { InputpreenchidoDirective } from '../../diretivas/inputpreenchido.directive';
+import { CombopreenchidoDirective } from '../../diretivas/combopreenchido.directive';
 interface UploadEvent {
   originalEvent: Event;
   files: File[];
@@ -53,14 +56,16 @@ interface UploadEvent {
     FileUploadModule,
     ToastModule,
     InputMaskModule,
-    FormatacpfDirective,
-    ObservacaobottonComponent,
+    FormatacpfDirective,  
     ApenasNumeroDirective,
     FormatatelefoneDirective,
     ToastComponent,
+    InputreadonlyDirective,
+    InputpreenchidoDirective,
   ],
 })
 export class CurriculoComponent {
+
   private retornoApi$!: any;
 
   showProgress: boolean = false;
@@ -68,6 +73,7 @@ export class CurriculoComponent {
   // isRateLimitReached = false;
   // resultsLength = 0;
   loading: boolean = false;
+  isReadonly: boolean = true;
 
   limparFilhos($event: any) {
     console.log('Limpar Filhos ', $event);
@@ -86,7 +92,8 @@ export class CurriculoComponent {
     private localStorageService: LocalstorageService,
     private toast: ToastComponent,
     private curriculoService: CurriculoService
-  ) {
+  
+  ) { 
     this.estadoCivil = [
       { label: 'Solteiro', value: 'Solteiro' },
       { label: 'Casado', value: 'Casado' },
@@ -145,12 +152,12 @@ export class CurriculoComponent {
       { label: 'Intelectual', value: 'Intelectual' },
     ];
   }
-  curriculoForm = this.formBuilder.group({
-    sexo: ['', Validators.required],
-    nome: ['', Validators.required],
-    estadoCivil: ['', Validators.required],
-    cpf: [this.tokenCpf],
 
+  curriculoForm = this.formBuilder.group({
+    nome: ['', Validators.required],
+    sexo: ['F', Validators.required], // nao mudar
+    estadoCivil: ['', Validators.required],
+    cpf: [this.tokenCpf, Validators.required],
     rg: ['', Validators.required],
     orgaoEmissor: ['', Validators.required],
     dataEmissao: ['', Validators.required],
@@ -159,7 +166,7 @@ export class CurriculoComponent {
     nomePai: ['', Validators.required],
     nomeMae: ['', Validators.required],
     grauInstrucao: ['', Validators.required],
-    estudaAtualmente: [''],
+    estudaAtualmente: ['N'], // nao mudar
     telefone: ['', Validators.required],
     email: [
       '',
@@ -174,6 +181,8 @@ export class CurriculoComponent {
     pcd: ['N', Validators.required], //nao mudar
     deficiencia: [''],
   });
+
+  
   onBasicUploadAuto(event: any) {
     this.messageService.add({
       severity: 'info',

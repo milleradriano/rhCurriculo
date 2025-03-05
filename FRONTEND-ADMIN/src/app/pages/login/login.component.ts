@@ -25,6 +25,8 @@ import { ApenasNumeroDirective } from '../../diretivas/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretivas/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
 import { LocalstorageService } from '../../service/localstorage.service';
+import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
+import { ToastComponent } from '../../components/toast/toast.component';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +37,6 @@ import { LocalstorageService } from '../../service/localstorage.service';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-
     InputTextModule,
     FormsModule,
     CommonModule,
@@ -46,6 +47,9 @@ import { LocalstorageService } from '../../service/localstorage.service';
     FileUploadModule,
     ToastModule,
     InputMaskModule,
+    FormatacpfDirective,  
+    ToastComponent,
+    
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -54,15 +58,14 @@ export class LoginComponent {
   constructor(
     private messageService: MessageService,
     private localStorageService: LocalstorageService
-  ) {
-    this.login();
-  }
-  login() {
-    this.localStorageService.setLogin('idc', '81580053068');
+  ) {}
+  login($event: any) {
+    console.log($event);
+    this.localStorageService.setLogin('idc', $event.login);
   }
   formBuilder = new FormBuilder();
   loginForm = this.formBuilder.group({
-    login: ['', Validators.required,Validators.minLength(11),Validators.maxLength(11)],
-    senha: ['', Validators.required],
+    login: ['', Validators.required],
+    password: ['', Validators.required],
   });
 }

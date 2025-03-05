@@ -53,11 +53,6 @@ label{
   border-color: red; /* Cor da borda */
   background-color: #ffebee; /* Fundo claro para erro */
 }
-/* Campo preenchido */
-.p-inputtext.ng-not-empty {
-  border-color: blue; /* Alterar cor da borda */
-  background-color: #e3f2fd; /* Fundo claro */
-}
 
 .p-inputtext:focus {
   outline: 0 none;

@@ -26,6 +26,7 @@ import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploa
 import { ResidenciaService } from '../../service/residencia.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ToastComponent } from '../../components/toast/toast.component';
+import {InputpreenchidoDirective } from '../../diretivas/inputpreenchido.directive';
 @Component({
   selector: 'app-residencia',
   standalone: true,
@@ -50,7 +51,8 @@ import { ToastComponent } from '../../components/toast/toast.component';
     ObservacaobottonComponent,
     FormatacepDirective,
     LoadingComponent,
-    ToastComponent
+    ToastComponent,
+    InputpreenchidoDirective,
 ],
   templateUrl: './residencia.component.html',
   styleUrl: './residencia.component.css',

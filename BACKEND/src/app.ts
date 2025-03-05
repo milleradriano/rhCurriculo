@@ -14,6 +14,7 @@ const curriculo = require("./routes/curriculo");
 const cep = require("./routes/cep");
 const vaga = require("./routes/vaga");
 const empresa = require("./routes/empresa");
+const residencia = require("./routes/residencia");
 import { Request, Response } from "express";
 import { toFormData } from "axios";
 app.use(cors());
@@ -193,7 +194,39 @@ app.delete("/empresa/:id", async (req: Request, res: Response) => {
   });
 });
 
-//************************** FIM EMPRESA ************************ */
+//************************** FIM EMPRESA *************************/
+
+//**************************INICIA RESIDENCIA*********************/
+
+app.get("/residencia/", async (req: Request, res: Response) => {
+  const result = await residencia.getResidencia();
+  res.send(result);
+});
+
+app.post("/residencia", async (req: Request, res: Response) => { 
+  console.log("post residencia ", req.body);
+  const valores = [
+    req.body.cpf,
+    req.body.primeiroemprego,
+    req.body.ultimoempregoempresa,
+    req.body.ultimoempregocidade,
+    req.body.ultimoempregocargo,
+    req.body.ultimoempregoinicio,
+    req.body.ultimoempregoatribuicao,
+    req.body.penultimoempregoempresa,
+    req.body.penultimoempregocidade,
+    req.body.penultimoempregocargo,
+    req.body.penultimoempregoinicio,
+    req.body.penultimoempregoatribuicao,
+  ];
+  residencia.postResidencia(valores).then((result: any) => {
+    res.send(result);
+  });
+  console.log("post residencia ", valores);
+});
+
+//**************************FIM RESIDENCIA*************************/
+
 
 /********************** INICIO LOGO ************************/
 app.post(
@@ -209,6 +242,8 @@ app.post(
     }
   }
 );
+/**************************************************************/
+
 
 app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
 
