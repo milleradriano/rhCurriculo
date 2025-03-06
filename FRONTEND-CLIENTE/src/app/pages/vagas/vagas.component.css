@@ -1,0 +1,281 @@
+* {
+  font-family: Montserrat, Arial, Tahoma, sans-serif;
+}
+.conteiner{
+  width: 100vw;
+}
+.atualizarCadastro{
+  position: fixed;
+  top: 0.7rem;
+  right: 0;
+  z-index: 1000;
+
+}
+
+
+
+.topo {
+  position: fixed;
+  top: 0;   
+  width: 100vw;
+  z-index: 1000; 
+  background:#fff;
+} 
+.conteudo{     
+    margin-top: 11rem;   
+   /* padding: 1rem 0 2rem 2rem; */
+ width: 100vw; 
+}
+img {
+  height: 150px;
+}
+.maps{
+  height: 24px;
+ 
+}
+
+.fundo-card {
+  background-color: #f4f6f9;
+  margin-top: 11rem;
+  padding: 1rem 0 2rem 2rem;
+ width:  100vw - 1vw ;
+ height: 100vh;
+}
+
+.card-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
+
+}
+
+.contaVagas > h3 {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--main-color);
+  text-align: left;
+}
+
+.card {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  width: 30%;
+  height: auto;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 2rem 0 2rem 0;
+  position: relative;
+  box-shadow: 0 2px 6px #00000040;
+}
+
+.img-card {
+  height: 36px;
+}
+
+.tituloEmpresa {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 35%;
+}
+.formatacaoTexto{
+  padding-top: 0.5rem;
+  text-indent: 1.5rem;
+}
+.descricaoEmpresaVaga {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 1rem;
+  font-family: "Montserrat", Arial, Tahoma, sans-serif;
+  font-size: 0.875rem;
+  color: #2c2c2c;
+  font-weight: 600;
+}
+.descricaoVaga {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--main-color);
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.botaoCidadeRegime {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  p {
+    margin-top: 10px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+.cidadeVaga,
+.regimeVaga {
+  gap: 1rem;
+}
+span {
+  font-size: 1.125rem;
+  color: var(--main-color);
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.botaoVagaCanditadar {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40%;
+}
+
+#btnAtualizaCadastro{
+  color: #2c2c2c;
+  border: none;
+  background: #ffff;
+  height:'1rem'
+}
+#btnAtualizaCadastro:hover{
+  color: red;
+  border: none;
+  /*background: #dad9d9af;
+  height:'1rem';
+  border-radius: 20px;*/
+}
+
+#btnVerVagas,
+#btnCandidatar,
+#btnCadastrar {
+  width: 9.5rem !important;
+  height: 45px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 18px;
+  border-color: #fff;
+  text-align: center;
+  border: none !important; /* Remove bordas */
+}
+#btnCandidatar,
+#btnCadastrar {
+  background-color: #45ae3b;
+}
+#btnVerVagas,
+#btnVerVagasCandidatar {
+  background-color: #ff1c1c;
+}
+
+#btnCandidatar:hover,
+#btnCadastrar:hover {
+  background-color: #3bbd64;
+}
+#btnVerVagas:hover,
+#btnVerVagasCandidatar:hover {
+  background-color: #e66a6a;
+}
+
+#btnCandidatar:active,
+#btnCadastrar:active {
+  background-color: #1a9e44;
+}
+#btnVerVagas:active {
+  background-color: #b12727;
+}
+
+/* INICIO MODAL DA VAGA*/
+
+.separar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.titulo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+border-bottom:  1px solid #313130;
+  height: 5rem;
+}
+.informacaoGeral {
+  margin: 1rem 0 1rem 0;
+  color: #cc2b4c;
+}
+.subtitulo {
+  color: #ff355e;
+  margin: 0 0 0 1rem;
+}
+#separador {
+  margin-top: 0;
+   border-top: 1px solid #313130; 
+  
+}
+
+#cabecalhoVaga {
+  text-align: left !important;
+  font-size: 1.1rem !important;
+  font-weight: 600;
+  color: var(--main-color);
+  margin: 0 0 0.3rem 0;
+}
+#cabecalhoEmpresa {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+
+  font-weight: 500;
+  line-height: 1.1;
+}
+p{
+  margin-top: 0;
+}
+
+/* ########### FINAL MODAL DA VAGA*/
+
+@media (max-width: 1024px) {
+  .contaVagas {
+    margin-left: 1rem;
+  }
+  .fundo-card {
+    margin-top: 5%;
+    padding: 0 0 0 0;
+    h3 {
+      padding-top: 0.5rem;
+    }
+  }
+
+  .card {
+    padding-top: 0;
+    width: 100%;
+  }
+  .descricaoEmpresaVaga {
+    margin: 6% 0 6% 5%;
+  }
+  .botaoCidadeRegime {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .botaoVagaCanditadar {
+    width: 100%;
+    /* margin-top: 1rem; */
+  }
+
+  #btnVerVagas,
+  #btnCandidatar,
+  #btnCadastrar {
+    width: 100% !important;
+  }
+}

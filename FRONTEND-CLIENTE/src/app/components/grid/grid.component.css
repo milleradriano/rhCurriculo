@@ -1,0 +1,133 @@
+table {
+  width: 100%;
+}
+
+.grid {
+  width: 100%;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  position: relative;
+  height: 400px;
+  overflow: auto;
+}
+
+
+.mat-column-id {
+  text-align: center;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+/*cor do mouse ao passar pelas linhas do grid*/
+.mat-mdc-row:hover .mat-mdc-cell {
+  cursor: pointer;
+  background-color: rgba(10, 212, 71, 0.123);
+}
+
+.mat-header-row {
+  position: sticky;
+  top: 0;
+}
+
+:host ::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}
+tr{
+  border: 1px solid black;
+}
+td {
+  align-items: center;
+  text-align: center;
+}
+/*cursor e cor do input */
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
+    color: black;
+    text-transform: uppercase;
+  }
+
+
+
+mat-form-field .input {
+  text-transform: uppercase;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: #22c55e;
+}
+
+/* seta do combo que define itens por pagina 5 10 25 100*/
+:host ::ng-deep .mat-mdc-select-arrow {
+  width: 10px;
+  height: 5px;
+  position: relative;
+  color: black;
+}
+
+:host ::ng-deep .mat-mdc-header-row,
+.mat-mdc-row {
+  background-color: #ffffff;
+  color: black;
+}
+/*valor do texto da paginação*/
+mat-paginator {
+  background-color: #ffffff;
+  color: black;
+  border-top: 1px solid #424242;
+}
+/* cor do label do input no filtro   */
+mat-label{
+  color: rgb(83, 81, 81);
+}
+/* valor do combo da paginacao */
+:host ::ng-deep .mat-mdc-select {
+  color: black;
+}
+
+/* borda do select do combo da paginacao ao clicar */
+:host ::ng-deep .mdc-text-field--outlined {
+  --mdc-outlined-text-field-focus-outline-color: #a8a8a8;
+}
+
+
+/* icones do paginator quando ouver itens na paginação*/
+::ng-deep .mat-mdc-paginator {
+  --mat-paginator-enabled-icon-color: black;
+  --mat-paginator-disabled-icon-color: rgb(194, 194, 194);
+}
+
+::ng-deep .mat-mdc-select-panel {
+  /* cor da lista dos itens por paginação 5. 10. 25. 100*/
+  --mat-select-panel-background-color: #ffff;
+
+  --mat-select-enabled-trigger-text-color: rgb(0, 0, 0);
+  --mat-select-disabled-trigger-text-color: rgba(255, 255, 255, 0.38);
+  --mat-select-placeholder-text-color: rgba(255, 255, 255, 0.6);
+  --mat-select-enabled-arrow-color: rgba(255, 255, 255, 0.54);
+  --mat-select-disabled-arrow-color: rgba(255, 255, 255, 0.38);
+}
+
+/* cor dos valores do list do combo 5-10-25-100*/
+::ng-deep .mdc-list-item__primary-text {
+  color: black;
+}
+
+::ng-deep .mat-mdc-option {
+  /* cor do valor do combo  */
+  --mat-option-selected-state-label-text-color: #000000;
+
+  /* cor do valor ao passar com o mouse */
+  --mat-option-hover-state-layer-color: #a9a8a873;
+
+  /* cor do valor que esta selecionado */
+  --mat-option-selected-state-layer-color: rgb(169, 168, 168);
+}
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: #F5F5F5;
+}
+
+:host ::ng-deep .mat-mdc-table{
+--mat-table-row-item-outline-color: #424242;
+}

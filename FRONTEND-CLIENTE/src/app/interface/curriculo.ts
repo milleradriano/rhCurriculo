@@ -1,0 +1,31 @@
+export interface interfaceCurriculo {
+    nome: string;
+    sexo: string;
+    estadoCivil: string;
+    cpf: string;
+    rg: string;
+    dataEmissao: string;
+    estadoEmissor: string;    
+    orgaoEmissor: string;
+    dataNascimento: string;
+    nomePai: string;
+    nomeMae: string;
+    grauInstrucao: string;
+    estudaAtualmente: string;
+    turno: string;    
+    filhos: string;
+    numFilhos: string;
+    telefone: string;
+    email: string;
+    pcd: string;
+    deficiencia: string;
+    // cep: string;
+    // uf: string;
+    // cidade: string;
+    // bairro: string;
+    // rua: string;
+    // numero: string;
+    // complemento: string;    
+    // cargo: string;
+    // empresa: string;
+}

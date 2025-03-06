@@ -1,0 +1,21 @@
+/************* ✨ Codeium Command ⭐ *************/
+<div class="container">
+  <form [formGroup]="loginForm">
+  <div class="card">
+    <div class="login">
+      <input formControlName="login" type="text" placeholder="Login" appFormatacpf />
+    </div>
+    <div class="password">
+      <input formControlName="password" type="password" placeholder="Senha"  />
+    </div>
+    <div class="botao">
+      <button [disabled]="!loginForm.valid" pButton type="submit" label="Entrar" (click)="login(loginForm.value)"></button>
+    </div>
+    <div class="-recuperarSenha">
+        <span>Recuperar Senha</span>
+    </div>
+  </div>
+  </form>
+<app-toast></app-toast>
+
+</div>

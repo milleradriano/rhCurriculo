@@ -1,0 +1,174 @@
+/* You can add global styles to this file, and also import other style files */
+/* html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
+/* You can add global styles to this file, and also import other style files */
+/*D:\BONATO\RH-CURRICULO\node_modules\primeng\resources\themes\lara-light-blue\theme.css*/
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+* {
+  font-family: Montserrat, Arial, Tahoma, sans-serif;
+  --subtitulo-color: #ff355e;
+  --corBorda-input: #22c55e; 
+  --titulo-color: #606062;
+  /* --subtitulo-color: #ff355e; */
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+:root {
+  --subtitulo-color: #ff355e;
+  --corBorda-input: #22c55e; 
+  --titulo-color: #606062;
+}
+label{
+  color: var(--titulo-color);
+}
+/*fundo do botao dos menus*/
+.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
+  background: #c7e2c4;
+}
+/* ao passar com o nouse*/
+.p-panelmenu
+  .p-panelmenu-header:not(.p-highlight):not(.p-disabled):hover
+  .p-panelmenu-header-content {
+  background: #e2e2e2;
+}
+/*ao clicar no menu*/
+.p-panelmenu .p-panelmenu-header.p-highlight .p-panelmenu-header-content {
+  background: #fff;
+}
+
+/***/
+
+.p-inputtext.ng-valid.ng-dirty {
+  border-color: green; /* Cor da borda */
+  background-color: #e8f5e9; /* Fundo claro para indicar preenchido */
+}
+
+/* Estilizar input preenchido inválido */
+.p-inputtext.ng-invalid.ng-dirty {
+  border-color: red; /* Cor da borda */
+  background-color: #ffebee; /* Fundo claro para erro */
+}
+
+.p-inputtext:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+
+.p-inputtext:hover {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+/* .p-inputtext:not(.p-disabled).p-focus{ 
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+} */
+.p-dropdown:focus{ 
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color:  var(--corBorda-input);
+}
+.p-dropdown:hover{ 
+  border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+.p-dropdown:not(.p-disabled).p-focus{ 
+  border: 1px solid var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  color: var(--titulo-color);
+  background: #8de6ad;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  color: var(--titulo-color);
+  background: #e2e2e2;
+}
+
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color:var(--corBorda-input);
+  background: var(--corBorda-input);
+  box-shadow: none;
+}
+
+
+.p-radiobutton:hover .p-radiobutton-box {
+  border-color: var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
+  border-color: var(--corBorda-input);
+  cursor: pointer;
+  box-shadow: none;
+}
+.p-fileupload-choose{
+  background: var(--corBorda-input);
+  border: none;
+}
+.p-fileupload-choose:hover{
+  background: #2be067c7;
+  border: none;
+  box-shadow: none;
+}
+.p-fileupload-choose:not(.p-disabled).p-focus{ 
+  border:none;    
+  box-shadow: none;
+}
+ 
+::ng-deep .p-button:not(:disabled):hover {
+  background: var(--corBorda-input);
+  color: #ffffff;
+  border-color: var(--corBorda-input);
+}
+::ng-deep .p-button {
+  color: #ffffff;
+  background: var(--corBorda-input);
+  border: 1px solid var(--corBorda-input);
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
+  outline-color: transparent;
+} 
+/***/
+::ng-deep .mat-mdc-table .mdc-data-table__table .cdk-table .mat-sort {
+  table-layout: auto;
+  white-space: normal;
+  background-color: #b69ccb;
+}
+/* fim grid*/
+.pi {
+  font-size: 1rem;
+  color: var(--mat-full-pseudo-checkbox-selected-checkmark-color);
+}
+@media screen and (max-width: 1024px) {
+  .p-dropdown {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+      box-shadow 0.2s;
+    border-radius: 6px;
+    width: 96%;
+  }
+}
