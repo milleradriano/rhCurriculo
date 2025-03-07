@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-   width:calc(100% - var(--scrollbar-width, 0px)); 
+  /* width:calc(100% - var(--scrollbar-width, 0px));  */
   
   }
  

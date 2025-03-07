@@ -5,14 +5,18 @@
   width: 100vw;
 }
 .atualizarCadastro{
-  position: fixed;
+  /* position: fixed;
   top: 0.7rem;
   right: 0;
-  z-index: 1000;
+  z-index: 1000; */
 
 }
-
-
+#btnAtualizaCadastro{
+  border: none; 
+  height:'1rem';
+  margin-right: 4rem;  
+  background-color: #f4f6f9;
+}
 
 .topo {
   position: fixed;
@@ -20,6 +24,7 @@
   width: 100vw;
   z-index: 1000; 
   background:#fff;
+  
 } 
 .conteudo{     
     margin-top: 11rem;   
@@ -30,16 +35,15 @@ img {
   height: 150px;
 }
 .maps{
-  height: 24px;
- 
+  height: 24px; 
 }
 
 .fundo-card {
   background-color: #f4f6f9;
-  margin-top: 11rem;
+   margin-top: 16rem; 
   padding: 1rem 0 2rem 2rem;
  width:  100vw - 1vw ;
- height: 100vh;
+ /* height: 100vh; */
 }
 
 .card-container {
@@ -53,9 +57,21 @@ img {
 
 }
 
-.contaVagas > h3 {
+.contaVagas{
+  background-color:   #f4f6f9;
+  height: 10vh;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.vagas {
+ margin-left: 5rem;
+}
+
+.vagas > h3 {
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--main-color);
   text-align: left;
 }
@@ -76,6 +92,7 @@ img {
 .img-card {
   height: 36px;
 }
+
 
 .tituloEmpresa {
   display: flex;
@@ -108,7 +125,9 @@ img {
   line-height: 1.5;
   word-break: break-all;
 }
-
+.botaoCadastra{
+  margin-right: 1rem;
+}
 .botaoCidadeRegime {
   display: flex;
   justify-content: space-between;
@@ -141,12 +160,7 @@ span {
   width: 40%;
 }
 
-#btnAtualizaCadastro{
-  color: #2c2c2c;
-  border: none;
-  background: #ffff;
-  height:'1rem'
-}
+
 #btnAtualizaCadastro:hover{
   color: red;
   border: none;
@@ -206,8 +220,8 @@ span {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2px;
-border-bottom:  1px solid #313130;
+  margin-bottom: 2px; 
+  border-bottom:  1px solid #313130;
   height: 5rem;
 }
 .informacaoGeral {

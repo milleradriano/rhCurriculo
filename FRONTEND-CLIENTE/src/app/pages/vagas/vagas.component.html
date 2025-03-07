@@ -1,19 +1,28 @@
 <!-- <app-topo></app-topo> -->
 <div class="container">
   <div class="topo">
-    <div class="atualizarCadastro">
-      <button type="button" id="btnAtualizaCadastro" >       
-        <span pButtonLabel>Atualize seu cadastro</span>       
-    </button>
-    </div>
+    
 <app-topo></app-topo>
-</div>
-</div>
-<div class="fundo-card">
-  <div class="contaVagas">
-    <h3>Vagas</h3>
+
+ <div class="contaVagas">
+   <div class="vagas"> <h3>Vagas</h3>
     <p>Localizamos: {{ totalVagas }} vaga(s)</p>
   </div>
+  <div class="atualizarCadastro">
+    <button type="button" id="btnAtualizaCadastro" >       
+      <span pButtonLabel>Atualize seu cadastro</span>       
+  </button>
+  </div>
+  </div> 
+
+</div>
+
+</div>
+<div class="fundo-card">
+  <!-- <div class="contaVagas">
+    <h3>Vagas</h3>
+    <p>Localizamos: {{ totalVagas }} vaga(s)</p>
+  </div>  -->
 
   <div class="card-container">
     @for (vaga of vagas; track vaga.descvaga) {
@@ -61,11 +70,11 @@
 
 <p-dialog
   [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
+  [draggable]="true"
+  [resizable]="true"
   [(visible)]="visible"
   [style]="{ width: '50rem', height: '80rem', marginTop: '1rem' }"
-  [breakpoints]="{ '1199px': '100vw', '575px': '100vw' }"
+  [breakpoints]="{ '1199px': '99vw', '575px': '99vw' }"
 >
   <ng-template pTemplate="header">
     <div class="titulo">
