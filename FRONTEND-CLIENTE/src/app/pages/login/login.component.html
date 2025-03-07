@@ -1,21 +1,50 @@
-/************* ✨ Codeium Command ⭐ *************/
 <div class="container">
-  <form [formGroup]="loginForm">
-  <div class="card">
-    <div class="login">
-      <input formControlName="login" type="text" placeholder="Login" appFormatacpf />
-    </div>
-    <div class="password">
-      <input formControlName="password" type="password" placeholder="Senha"  />
-    </div>
-    <div class="botao">
-      <button [disabled]="!loginForm.valid" pButton type="submit" label="Entrar" (click)="login(loginForm.value)"></button>
-    </div>
-    <div class="-recuperarSenha">
-        <span>Recuperar Senha</span>
+  <div class="login-container">
+    <h2>Login</h2>
+
+    <!-- Formulário de Login -->
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          name="email"
+          [(ngModel)]="email"
+          required
+          placeholder="Digite seu email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          name="password"
+          [(ngModel)]="password"
+          required
+          placeholder="Digite sua senha"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!loginForm.valid"
+      >
+        Entrar
+      </button>
+    </form>
+
+    <!-- Link para Cadastro -->
+    <div class="register-option">
+      <p>
+        Não tem uma conta?
+        <a href="/registroLogin">Cadastre-se</a>
+      </p>
     </div>
   </div>
-  </form>
-<app-toast></app-toast>
-
 </div>

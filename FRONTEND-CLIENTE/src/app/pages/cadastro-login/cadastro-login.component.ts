@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -25,14 +25,18 @@ import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
 import { LocalstorageService } from '../../service/localstorage.service';
-import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
-
+import { CurriculoService } from '../../service/curriculo.service';
+import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
+import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
+import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directive';
+import { CheckboxModule } from 'primeng/checkbox';
+import { PasswordModule } from 'primeng/password';
+import { DividerModule } from 'primeng/divider';
 @Component({
-  selector: 'app-login',
+  selector: 'app-cadastro-login',
   standalone: true,
-  imports: [
-    MatGridListModule,
+  imports: [  MatGridListModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
@@ -48,39 +52,49 @@ import { ToastComponent } from '../../components/toast/toast.component';
     ToastModule,
     InputMaskModule,
     FormatacpfDirective,  
+    ApenasNumeroDirective,
+    FormatatelefoneDirective,
     ToastComponent,
-    
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+    InputreadonlyDirective,
+    InputpreenchidoDirective,
+    CheckboxModule,
+    PasswordModule,DividerModule],
+  templateUrl: './cadastro-login.component.html',
+  styleUrl: './cadastro-login.component.css'
 })
-export class LoginComponent {
-  email: string = '';
-  password: string = '';
-  constructor(
-    private messageService: MessageService,
-    private localStorageService: LocalstorageService
-  ) {}
-  onSubmit() {
-    // Lógica de login (chamar serviço de autenticação, validar usuário, etc.)
-    console.log('Email:', this.email);
-    console.log('Senha:', this.password);
+export class CadastroLoginComponent {
 
-    // Exemplo: redireciona para a página principal se o login for bem-sucedido
-    if (this.email === 'teste@exemplo.com' && this.password === '123456') {
-      console.log('Login bem-sucedido');
-   //   this.router.navigate(['/dashboard']); // Redireciona para o painel
-    } else {
-      console.error('Credenciais inválidas');
-    }
+  showProgress: boolean = false;
+  isLoadingResults: boolean = false;
+
+  constructor(private formBuilder: FormBuilder,   
+    private toast: ToastComponent,
+  ) { }
+  
+
+
+cadastraLoginForm = this.formBuilder.group({
+  cpf: ['', Validators.required],
+  nome: ['', Validators.required], 
+  telefone: ['', Validators.required],
+  email: ['', [Validators.required, Validators.email]],
+  senha: ['', Validators.required],
+  confirmaSenha: ['', Validators.required],
+  termosUso: ['', Validators.required],
+});
+
+
+postCadastraLogin(value: any) {
+  this.isLoadingResults = true;
+  this.showProgress = true;
+
+  if (value.senha !== value.confirmaSenha) {
+    this.toast.toast("error", "Erro", 'As senhas não conferem');
+    this.isLoadingResults = false;
+    this.showProgress = false;
+    return;
   }
-  login($event: any) {
-    console.log($event);
-    this.localStorageService.setLogin('idc', $event.login);
-  }
-  formBuilder = new FormBuilder();
-  loginForm = this.formBuilder.group({
-    login: ['', Validators.required],
-    password: ['', Validators.required],
-  });
+
+
+}
 }
