@@ -6,8 +6,7 @@
       <p>Preencha seus dados pessoais abaixo</p>
     </div>
     <div class="card flex justify-content-center">
-    
-        <div class="documento">
+      <div class="documento">
         <label for="cpf">CPF:</label>
         <div class="cpf">
           <input
@@ -17,7 +16,7 @@
             type="text"
             placeholder="CPF"
             maxlength="14"
-            appFormatacpf           
+            appFormatacpf
             appInputpreenchido
           />
         </div>
@@ -34,80 +33,93 @@
           appInputpreenchido
         />
       </div>
-       
-   <label for="telefone">Telefone:</label>
-    <div class="telefone">
-      <input
-        id="telefone"
-        formControlName="telefone"
-        pInputText
-        type="text"
-        placeholder="Telefone"
-        appFormataTelefone
-        appInputpreenchido
-      />
-    </div>
-    <label for="email">E-mail:</label>
-    <div class="email">
-      <input
-        id="email"
-        formControlName="email"
-        pInputText
-        type="email"
-        placeholder="E-mail"
-        appInputpreenchido
-      />
-    </div>
 
-    <label for="senha">Senha:</label>
-    <div class="senha">
-      <input
-        id="senha"
-        pPassword
-        formControlName="senha"
-        type="password"
-        placeholder="Senha"
-        appInputpreenchido
-      />
-    </div>
+      <label for="telefone">Telefone:</label>
+      <div class="telefone">
+        <input
+          id="telefone"
+          formControlName="telefone"
+          pInputText
+          type="text"
+          placeholder="Telefone"
+          appFormataTelefone
+          appInputpreenchido
+        />
+      </div>
+      <label for="email">E-mail:</label>
+      <div class="email">
+        <input
+          id="email"
+          formControlName="email"
+          pInputText
+          type="email"
+          placeholder="E-mail"
+          appInputpreenchido
+        />
+      </div>
 
-    <label for="confirmarSenha">Confirmar senha:</label>
-    <p-password formControlName="confirmarSenha" [feedback]="false">
-        <ng-template pTemplate="header">
-            <h6>Pick a password</h6>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <p-divider /> 
-            <p class="mt-2">Suggestions</p>
+      <label for="Senha">Senha:</label>
+      <div class="senha">
+        <p-password
+          id="senha"
+          formControlName="senha"
+          [toggleMask]="true"
+          [feedback]="true"
+          placeholder="Digite sua senha"
+          promptLabel="Escolha uma senha"
+          weakLabel="Senha Fraca"
+          mediumLabel="Senha Média"
+          strongLabel="Senha Forte"
+          appInputpreenchido
+        >
+          <ng-template pTemplate="header">
+            <h6>Escolha uma senha.</h6>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <p-divider />
+            <p class="mt-2">Sugestão de senha!</p>
             <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>Minimum 8 characters</li>
+              <li>Dever ter pelo menos uma letra minúscula</li>
+              <li>Dever ter pelo menos uma letra maiúscula</li>
+              <li>Dever ter pelo menos um número</li>
+              <li>Mínimo de 8 caracteres</li>
             </ul>
-        </ng-template>
-    </p-password>
+          </ng-template>
+        </p-password>
+      </div>
 
-    <div class="checkbox">
-        <label for="termosUso">Leia os termos de uso </label>
-      <p-checkbox
-        formControlName="termosUso"
-        label="Aceito os termos de uso"
-        binary="true"
-      ></p-checkbox>
-    </div>
+      <label for="confirmarSenha">Confirmar Senha:</label>
+      <div class="senha">
+        <p-password
+          id="confirmaSenha"
+          formControlName="confirmaSenha"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Confirme sua senha"
+          appInputpreenchido
+        />
+      </div>
 
-    <div class="botaoSalvar">
-      <p-button
-        pButton
-        icon="pi pi-check"
-        severity="success"
-        label="Salvar os dados pessoais"
-        [disabled]="cadastraLoginForm.valid"
-        (click)="postCadastraLogin(cadastraLoginForm.value)"
-      ></p-button>
+      <div class="checkbox">
+       
+        <p-checkbox
+          formControlName="termoUso"
+          label="Aceito os termos de uso."
+          binary="true"
+        ></p-checkbox>
+      </div>
+
+      <div class="botaoSalvar">
+        <p-button
+          pButton
+          icon="pi pi-check"
+          severity="success"
+          label="Salvar os dados pessoais"
+          [disabled]="!cadastraLoginForm.valid"
+          (click)="postCadastraLogin(cadastraLoginForm.value)"
+        ></p-button>
+      </div>
     </div>
-</div>
   </form>
   <hr />
   <app-toast></app-toast>

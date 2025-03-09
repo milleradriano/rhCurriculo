@@ -33,6 +33,7 @@ import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directi
 import { CheckboxModule } from 'primeng/checkbox';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
+import { get } from 'http';
 @Component({
   selector: 'app-cadastro-login',
   standalone: true,
@@ -62,6 +63,8 @@ import { DividerModule } from 'primeng/divider';
   templateUrl: './cadastro-login.component.html',
   styleUrl: './cadastro-login.component.css'
 })
+
+
 export class CadastroLoginComponent {
 
   showProgress: boolean = false;
@@ -77,11 +80,13 @@ cadastraLoginForm = this.formBuilder.group({
   cpf: ['', Validators.required],
   nome: ['', Validators.required], 
   telefone: ['', Validators.required],
-  email: ['', [Validators.required, Validators.email]],
+  email: ['', Validators.required],
   senha: ['', Validators.required],
   confirmaSenha: ['', Validators.required],
-  termosUso: ['', Validators.required],
+  termoUso: ['', [Validators.required, Validators.requiredTrue]],
 });
+
+
 
 
 postCadastraLogin(value: any) {
@@ -94,7 +99,7 @@ postCadastraLogin(value: any) {
     this.showProgress = false;
     return;
   }
-
-
+console.log(value);
 }
+
 }
