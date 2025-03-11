@@ -55,7 +55,7 @@ import { ToastComponent } from '../../components/toast/toast.component';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  email: string = '';
+  cpf: string = '';
   password: string = '';
   constructor(
     private messageService: MessageService,
@@ -63,11 +63,11 @@ export class LoginComponent {
   ) {}
   onSubmit() {
     // Lógica de login (chamar serviço de autenticação, validar usuário, etc.)
-    console.log('Email:', this.email);
+    console.log('CPF:', this.cpf);
     console.log('Senha:', this.password);
 
     // Exemplo: redireciona para a página principal se o login for bem-sucedido
-    if (this.email === 'teste@exemplo.com' && this.password === '123456') {
+    if (this.cpf === 'teste@exemplo.com' && this.password === '123456') {
       console.log('Login bem-sucedido');
    //   this.router.navigate(['/dashboard']); // Redireciona para o painel
     } else {
@@ -80,7 +80,7 @@ export class LoginComponent {
   }
   formBuilder = new FormBuilder();
   loginForm = this.formBuilder.group({
-    login: ['', Validators.required],
+    cpf: ['', Validators.required],
     password: ['', Validators.required],
   });
 }

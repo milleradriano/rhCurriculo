@@ -53,10 +53,10 @@ import { get } from 'http';
     ToastModule,
     InputMaskModule,
     FormatacpfDirective,  
-    ApenasNumeroDirective,
+   
     FormatatelefoneDirective,
     ToastComponent,
-    InputreadonlyDirective,
+   
     InputpreenchidoDirective,
     CheckboxModule,
     PasswordModule,DividerModule],
@@ -80,7 +80,20 @@ cadastraLoginForm = this.formBuilder.group({
   cpf: ['', Validators.required],
   nome: ['', Validators.required], 
   telefone: ['', Validators.required],
-  email: ['', Validators.required],
+  email: [
+    '',
+    [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+    ],
+  ],
+  confirmaEmail:  [
+    '',
+    [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+    ],
+  ],
   senha: ['', Validators.required],
   confirmaSenha: ['', Validators.required],
   termoUso: ['', [Validators.required, Validators.requiredTrue]],
@@ -99,6 +112,64 @@ postCadastraLogin(value: any) {
     this.showProgress = false;
     return;
   }
+if (value.email !== value.confirmaEmail) {
+  this.toast.toast("error", "Erro", 'Os e-mails não conferem');
+  this.isLoadingResults = false;
+  this.showProgress = false;
+  return;
+}
+
+/*************  ✨ VALIDACAO DO CPF ⭐  *************/
+if (value.cpf.length < 15) {
+  let cpf = value.cpf.replace(/\D/g, '');
+  let soma: number = 0;
+  let peso: number = 10;
+  for (let i = 0; i < 9; i++) {
+    soma += parseInt(cpf.charAt(i)) * (peso - i);
+  }
+  let resultado: number = 11 - (soma % 11);
+  if (resultado == 10 || resultado == 11) {
+    resultado = 0;
+  }
+  if (resultado != parseInt(cpf.charAt(9))) {
+    
+    this.toast.toast("error", "Erro", 'CPF inválido');
+    this.isLoadingResults = false;
+    this.showProgress = false;
+    return;
+  }
+  soma = 0;
+  peso = 11;
+  for (let i = 0; i < 10; i++) {
+    soma += parseInt(cpf.charAt(i)) * (peso - i);
+  }
+  resultado = 11 - (soma % 11);
+  if (resultado == 10 || resultado == 11) {
+    resultado = 0;
+  }
+  if (resultado != parseInt(cpf.charAt(10))) {
+    
+    this.toast.toast("error", "Erro", 'CPF inválido');
+    this.isLoadingResults = false;
+    this.showProgress = false;
+    return;
+  }
+}
+/*************  ✨ VALIDACAO DO CPF ⭐  *************/
+
+
+if (value.telefone.length < 11) {
+  this.toast.toast("error", "Erro", 'Telefone inválido');
+  this.isLoadingResults = false;
+  this.showProgress = false;
+  return;
+}
+if (value.nome.length < 3) {
+  this.toast.toast("error", "Erro", 'Nome inválido');
+  this.isLoadingResults = false;
+  this.showProgress = false;
+  return;
+}
 console.log(value);
 }
 

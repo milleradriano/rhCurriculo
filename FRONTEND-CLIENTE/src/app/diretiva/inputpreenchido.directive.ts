@@ -39,9 +39,11 @@ export class InputpreenchidoDirective implements AfterViewInit {
     if (this.inputElement.value.trim()) {
       this.renderer.setStyle(this.inputElement, 'border-color', 'green');
       this.renderer.setStyle(this.inputElement, 'background-color', '#e8f5e9');
+      this.renderer.setStyle(this.inputElement, 'width', '100%');
     } else {
       this.renderer.setStyle(this.inputElement, 'border-color', 'red');
       this.renderer.setStyle(this.inputElement, 'background-color', '#ffebee');
+this.renderer.setStyle(this.inputElement, 'width', '100%');
     }
   }
 }

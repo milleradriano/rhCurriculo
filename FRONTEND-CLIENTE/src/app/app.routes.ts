@@ -6,6 +6,7 @@ import { ExperienciaComponent } from './pages/experiencia/experiencia.component'
 import { LoginComponent } from './pages/login/login.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { CadastroLoginComponent } from './pages/cadastro-login/cadastro-login.component';
+import { TermoUsoComponent } from './pages/termo-uso/termo-uso.component';
 export const routes: Routes = [
   {
     path: '',
@@ -16,6 +17,11 @@ export const routes: Routes = [
     path: 'registroLogin',
     component: CadastroLoginComponent,
   },
+  {
+    path: 'termos',
+    component: TermoUsoComponent,
+  },
+  
   {
     path: 'menu',
     component: MenuComponent,
