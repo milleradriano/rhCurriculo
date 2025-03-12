@@ -1,7 +1,7 @@
 <div class="container">
   <div class="recupera">
-    <h1>Recuperar Senha</h1>
-    <p>Informe o seu email para recuperar sua senha.</p>
+  
+    <p>Enviaremos para o e-mail cadastrado sua nova senha. </p>
     <form [formGroup]="recuperarSenhaForm" (ngSubmit)="recuperarSenha()">
       
         <div class="email">
@@ -26,6 +26,8 @@
           [disabled]="!recuperarSenhaForm.valid"
           title="Recuperar Senha"
         ></button>
+
+      
       </div>
     </form>
   </div>

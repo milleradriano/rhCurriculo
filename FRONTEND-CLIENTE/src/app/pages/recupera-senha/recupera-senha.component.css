@@ -1,53 +1,48 @@
 .container {
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-
-  background: rgb(252,252,252);
-background: -moz-linear-gradient(90deg, rgba(252,252,252,1) 0%, rgba(12,175,42,1) 68%, rgba(230,222,222,1) 100%);
-background: -webkit-linear-gradient(90deg, rgba(252,252,252,1) 0%, rgba(12,175,42,1) 68%, rgba(230,222,222,1) 100%);
-background: linear-gradient(90deg, rgba(252,252,252,1) 0%, rgba(12,175,42,1) 68%, rgba(230,222,222,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fcfcfc",endColorstr="#e6dede",GradientType=1); */
-
+/*  
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: url("../../../assets/carrinho.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 100vw;
-  height: 100vh;
+border: 1px solid black; */
 }
 
-.recupera {
+.recupera {  
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 25rem;
-  height: 15rem;
+  border: 1px solid black;
+   height: 15rem; 
+  width: 100%;
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); 
 }
-h1 {
-  color: #ff355e;
-}
-.email {
+
+.recupera p {
   display: flex;
   justify-content: center;
   align-items: left;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 15px;
-  width: 20rem;
+   margin-top: 5px;  
+  width: 21rem;
+}
+h1 {
+  color: #ff355e;
+}
+.email{
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column;
+   margin-top: 10px; 
+  /* margin-bottom: 15px; */
+  width: 21rem;
 }
 .envia {
-  margin-bottom: 10px;
+  margin-top: 15px; 
 }
 #botaoRecuperarSenha {
   width: 100%;
+  cursor: pointer;
 }

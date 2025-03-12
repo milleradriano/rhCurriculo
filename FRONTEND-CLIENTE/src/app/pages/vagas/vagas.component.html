@@ -1,22 +1,20 @@
 <!-- <app-topo></app-topo> -->
 <div class="container">
   <div class="topo">
-    
-<app-topo></app-topo>
+    <app-topo></app-topo>
 
- <div class="contaVagas">
-   <div class="vagas"> <h3>Vagas</h3>
-    <p>Localizamos: {{ totalVagas }} vaga(s)</p>
+    <div class="contaVagas">
+      <div class="vagas">
+        <h3>Vagas</h3>
+        <p>Localizamos: {{ totalVagas }} vaga(s)</p>
+      </div>
+      <div class="atualizarCadastro">
+        <button type="button" id="btnAtualizaCadastro">
+          <span pButtonLabel>Atualize seu cadastro</span>
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="atualizarCadastro">
-    <button type="button" id="btnAtualizaCadastro" >       
-      <span pButtonLabel>Atualize seu cadastro</span>       
-  </button>
-  </div>
-  </div> 
-
-</div>
-
 </div>
 <div class="fundo-card">
   <!-- <div class="contaVagas">
@@ -58,8 +56,12 @@
           <button type="button" id="btnVerVagas" (click)="mostraVaga(vaga)">
             Ver vaga
           </button>
-          <button type="button" id="btnCandidatar"   (click)="curriculo(vaga.idvaga)">Canditar-se
-            
+          <button
+            type="button"
+            id="btnCandidatar"
+            (click)="curriculo(vaga.idvaga)"
+          >
+            Canditar-se
           </button>
         </div>
       </div>
@@ -84,7 +86,14 @@
       </div>
 
       <div class="botaoCadastra">
-        <button p-Button type="button" id="btnCadastrar" (click)="curriculoBotaoModal()">Candidatar-se</button>
+        <button
+          p-Button
+          type="button"
+          id="btnCadastrar"
+          (click)="curriculoBotaoModal()"
+        >
+          Candidatar-se
+        </button>
       </div>
     </div>
   </ng-template>
@@ -94,7 +103,7 @@
   <h4 class="subtitulo">Atividade da vaga</h4>
   <p class="formatacaoTexto">&#11162; {{ descvaga }}</p>
   <h4 class="subtitulo">Requisitos</h4>
-  <p class="formatacaoTexto">&#11162; {{ requisito}}</p>
+  <p class="formatacaoTexto">&#11162; {{ requisito }}</p>
   <!-- <p class="formatacaoTexto">&#11162; {{ requisitos }}</p> -->
   <h4 class="subtitulo">Experiência:</h4>
   <p class="formatacaoTexto">&#11162; {{ experiencia }}</p>
@@ -106,15 +115,21 @@
   <h4 class="subtitulo">BENEFÍCIOS</h4>
   <p class="formatacaoTexto">&#11162; Plano de saúde</p>
   <p class="formatacaoTexto">&#11162; Convênio para compras</p>
-  <p class="formatacaoTexto">&#11162; Prêmio para trabalho nos domingos e feriados</p>
+  <p class="formatacaoTexto">
+    &#11162; Prêmio para trabalho nos domingos e feriados
+  </p>
   <h4 class="subtitulo">HORÁRIO</h4>
   <p class="formatacaoTexto">&#11162; Flexível</p>
   <h3 class="informacaoGeral">OBSERVAÇÕES SOBRE HORÁRIOS</h3>
   <p class="formatacaoTexto">&#11162; Disponilidade de horarios</p>
-  <p class="formatacaoTexto">&#11162; 
-    Disponilidade para trabalhar nos domingos e feriados
+  <p class="formatacaoTexto">
+    &#11162; Disponilidade para trabalhar nos domingos e feriados
   </p>
   <p class="formatacaoTexto">&#11162; Escala 6x1</p>
-  <p class="formatacaoTexto">&#11162; Escala de domingo 2 x 1 para o sexo masculino</p>
-  <p class="formatacaoTexto">&#11162; Escala de domingo 1 x 1 para o sexo feminino</p>
+  <p class="formatacaoTexto">
+    &#11162; Escala de domingo 2 x 1 para o sexo masculino
+  </p>
+  <p class="formatacaoTexto">
+    &#11162; Escala de domingo 1 x 1 para o sexo feminino
+  </p>
 </p-dialog>

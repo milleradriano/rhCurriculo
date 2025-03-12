@@ -28,6 +28,14 @@ import { LocalstorageService } from '../../service/localstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { PasswordModule } from 'primeng/password';
+import { RecuperaSenhaComponent } from "../recupera-senha/recupera-senha.component";
+import {
+  DialogService,
+  DynamicDialogModule,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
+
+import {  DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -47,17 +55,22 @@ import { PasswordModule } from 'primeng/password';
     FileUploadModule,
     ToastModule,
     InputMaskModule,
-    FormatacpfDirective,  
+    FormatacpfDirective,
     ToastComponent,
-    PasswordModule
-    
-  ],
+    PasswordModule,
+    RecuperaSenhaComponent,
+   DynamicDialogModule,
+     DialogModule,
+     
+
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   cpf: string = '';
   password: string = '';
+  visible: boolean = false;
   constructor(
     private messageService: MessageService,
     private localStorageService: LocalstorageService,
@@ -73,4 +86,7 @@ export class LoginComponent {
     cpf: ['', Validators.required],
     senha: ['', Validators.required],
   });
+  recuperaSenha() {
+    this.visible = true;
+  }
 }

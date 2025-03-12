@@ -17,7 +17,7 @@
     flex-direction: column; 
 }
 .titulo h1 {
-   margin-top: 1rem;  
+   margin-top: 0.1rem;  
 }
 .formulario {
   border-radius: 10px;
@@ -37,14 +37,15 @@
   align-items: left;
   flex-direction: column;
 }
-.cpf,
+
+
 .nome,
 .telefone,
 .email,
 .senha,
 .botao {
   width: 100%;
-  margin-top: 10px;
+   margin-top: 5px; 
   display: flex;
   justify-content: center;
   align-items: left;
@@ -93,6 +94,17 @@ a	{
     width: 100%;
   }  
 }
+
+.voltarLogin{
+  text-align: center;  
+}
+.voltarLogin a{
+  color: red;
+  text-decoration: none;
+  
+}
+
+
 /*Ajusta a cor do texto do checkbox*/
 :host ::ng-deep .p-checkbox-label {
   color: black;

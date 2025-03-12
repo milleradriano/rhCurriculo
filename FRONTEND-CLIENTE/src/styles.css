@@ -144,6 +144,8 @@ label{
   border:none;    
   box-shadow: none;
 }
+
+
  
 ::ng-deep .p-button:not(:disabled):hover {
   background: var(--corBorda-input);

@@ -3,6 +3,16 @@
     margin-left: 3rem;
 }
 h1{
-    color: #ff355e;
-    
+    color: #ff355e;    
 }
+
+.voltarLogin{
+    text-align: center;  
+    margin-top: 2rem ;
+    
+  }
+  .voltarLogin a{
+    color: red;
+    text-decoration: none;
+    margin-bottom: 2rem;
+  }

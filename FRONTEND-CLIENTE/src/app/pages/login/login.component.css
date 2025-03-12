@@ -19,8 +19,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 7vw;
-  height: 15vh;    
+  width: 28%;
+  height: 20%;
+
 }
 
 
@@ -70,6 +71,7 @@ h2 {
   .recuperaSenha{
     margin-top: 10px;
     text-align: center;
+    cursor: pointer;
   }
   .register-option {
     text-align: center;
@@ -86,5 +88,24 @@ h2 {
   }
   input {
     width: 100%;
+  }
+
+  :host ::ng-deep .p-dialog .p-dialog-header   {
+    /* padding: 5px 10px !important;  */
+    height: 45px !important;
+    min-height: unset !important; 
+    line-height: 1 !important; 
+ background-color: rgb(235, 235, 235);
+  }
+
+  :host ::ng-deep .p-dialog .p-dialog-footer  {
+   
+    height: 45px !important;
+    min-height: unset !important; 
+    line-height: 1 !important; 
+ background-color: rgb(235, 235, 235);
+  }
+  :host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 0px !important;
   }
   
