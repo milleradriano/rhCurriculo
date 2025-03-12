@@ -28,49 +28,48 @@ import { LocalstorageService } from '../../service/localstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { PasswordModule } from 'primeng/password';
-@Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    MatGridListModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    InputTextModule,
-    FormsModule,
-    CommonModule,
-    RadioButtonModule,
-    DropdownModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    FileUploadModule,
-    ToastModule,
-    InputMaskModule,
-    FormatacpfDirective,  
-    ToastComponent,
-    PasswordModule
-    
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
-})
-export class LoginComponent {
-  cpf: string = '';
-  password: string = '';
-  constructor(
-    private messageService: MessageService,
-    private localStorageService: LocalstorageService,
-    private formBuilder: FormBuilder
-  ) {}
 
-  login($event: any) {
-    console.log($event);
-    this.localStorageService.setLogin('idc', $event.login);
+@Component({
+  selector: 'app-recupera-senha',
+  standalone: true,
+ imports: [
+     MatGridListModule,
+     MatMenuModule,
+     MatIconModule,
+     MatButtonModule,
+     MatCardModule,
+     InputTextModule,
+     FormsModule,
+     CommonModule,
+     RadioButtonModule,
+     DropdownModule,
+     ReactiveFormsModule,
+     ButtonModule,
+     FileUploadModule,
+     ToastModule,
+     InputMaskModule,
+     FormatacpfDirective,  
+     ToastComponent,
+     PasswordModule     
+   ],
+  templateUrl: './recupera-senha.component.html',
+  styleUrl: './recupera-senha.component.css'
+})
+export class RecuperaSenhaComponent {
+  constructor(
+    private formBuilder: FormBuilder
+  ) { }
+  recuperarSenhaForm = this.formBuilder.group({
+    email:[
+      '',
+      [
+        Validators.required,
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+      ],
+    ],
+  })
+    recuperarSenha() {
+  throw new Error('Method not implemented.');
   }
   
-  loginForm = this.formBuilder.group({
-    cpf: ['', Validators.required],
-    senha: ['', Validators.required],
-  });
 }

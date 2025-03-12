@@ -103,6 +103,15 @@ label{
   background: #e2e2e2;
 }
 
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color:var(--corBorda-input);
+  background: var(--corBorda-input);
+  box-shadow: none;
+}
+.p-checkbox .p-checkbox-box {
+  border: 2px solid var(--subtitulo-color);
+  background: #ffffff;
+}
 
 .p-radiobutton .p-radiobutton-box.p-highlight {
   border-color:var(--corBorda-input);

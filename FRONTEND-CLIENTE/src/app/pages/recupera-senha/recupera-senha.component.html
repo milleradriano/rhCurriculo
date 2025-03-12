@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="recupera">
+    <h1>Recuperar Senha</h1>
+    <p>Informe o seu email para recuperar sua senha.</p>
+    <form [formGroup]="recuperarSenhaForm" (ngSubmit)="recuperarSenha()">
+      
+        <div class="email">
+        <label for="email">Email:</label>
+        <input
+          id="email"
+          formControlName="email"
+          pInputText
+          type="email"
+          placeholder="E-mail"
+          appInputpreenchido
+        />
+      </div>
+
+      <div class="envia">
+        <button
+            id="botaoRecuperarSenha"
+          type="submit"
+          pButton
+          label="Recuperar Senha"
+          severity="success"
+          [disabled]="!recuperarSenhaForm.valid"
+          title="Recuperar Senha"
+        ></button>
+      </div>
+    </form>
+  </div>
+</div>

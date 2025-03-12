@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { CadastroLoginComponent } from './pages/cadastro-login/cadastro-login.component';
 import { TermoUsoComponent } from './pages/termo-uso/termo-uso.component';
+import { RecuperaSenhaComponent } from './pages/recupera-senha/recupera-senha.component';
 export const routes: Routes = [
   {
     path: '',
@@ -20,6 +21,10 @@ export const routes: Routes = [
   {
     path: 'termos',
     component: TermoUsoComponent,
+  },
+  {
+path:'recuperarSenha',
+component:RecuperaSenhaComponent,
   },
   
   {
