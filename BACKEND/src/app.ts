@@ -15,6 +15,10 @@ const cep = require("./routes/cep");
 const vaga = require("./routes/vaga");
 const empresa = require("./routes/empresa");
 const residencia = require("./routes/residencia");
+const cadastraLogin = require("./routes/cadastraLogin");
+const bcrypt = require('bcrypt'); // para criptografar a senha
+
+
 import { Request, Response } from "express";
 import { toFormData } from "axios";
 app.use(cors());
@@ -73,6 +77,48 @@ const uploadLogo = multer({
   },
 });
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
+
+//*********************** INICIO CADASTRO LOGIN ***********************************/
+
+async function hashPassword(password:any) {
+  const saltRounds = 12; // Define o custo do processamento
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+}
+
+
+app.post("/cadastro-login", async (req: Request, res: Response) => {
+  console.log("cadastro-login", req.body);
+  const { cpf,nome, email, termoUso }  = req.body;
+
+  const senha = await hashPassword(req.body.senha);
+
+  const token = jwt.sign({ email, senha }, SECRET);
+  tokenGeral = token;
+  console.log("token", token);
+  console.log("Geral", req.body);
+  cadastraLogin.postCadastraLogin([cpf,nome,senha,email, termoUso]).then((result: any) => {
+    res.send( result );
+  });  
+});
+
+//**********************************************************************************/
+
+
+//************************LOGIN USUARIO ***************************************/
+
+app.post("/login", async (req: Request, res: Response) => {
+  const { email, senha } = req.body;
+  const token = jwt.sign({ email, senha }, SECRET);
+  tokenGeral = token;
+  console.log("token", token);
+  console.log("Geral", req.body);
+  cadastraLogin.postCadastraLogin([email, senha]).then((result: any) => {
+    res.send(result);
+  });
+});
+
+
 
 //***********************  INICIO CURRICULO                   *************************/
 

@@ -91,7 +91,7 @@ export class CurriculoComponent {
     private formBuilder: FormBuilder,
     private localStorageService: LocalstorageService,
     private toast: ToastComponent,
-    private curriculoService: CurriculoService
+ 
   
   ) { 
     this.estadoCivil = [
