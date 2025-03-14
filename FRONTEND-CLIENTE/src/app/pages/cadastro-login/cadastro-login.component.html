@@ -1,4 +1,9 @@
 <div class="container">
+  @if ( isLoadingResults){
+    <div class="loading">
+      <app-loading></app-loading>
+    </div>
+    }
   <!-- <div class="cadastro"> -->
     <div class="formulario">
       <form [formGroup]="cadastraLoginForm">
@@ -33,19 +38,7 @@
               appInputpreenchido
             />
           </div>
-
-          <div class="telefone">
-            <label for="telefone">Telefone:</label>
-            <input
-              id="telefone"
-              formControlName="telefone"
-              pInputText
-              type="text"
-              placeholder="Telefone"
-              appFormataTelefone
-              appInputpreenchido
-            />
-          </div>
+        
           <div class="email">
             <label for="email">E-mail:</label>
             <input
@@ -121,17 +114,22 @@
            <a href="/termos">Termos de uso</a>
           </div>
 
-          <div class="botaoSalvar">
-            <p-button 
-            id="botaoSalvar"
-              pButton
-              icon="pi pi-check"
-              severity="success"
-              label="Salvar os dados pessoais"
-              [disabled]="!cadastraLoginForm.valid"
-              (click)="postCadastraLogin(cadastraLoginForm.value)"
-            ></p-button>
-          </div>
+            <div class="botao">
+              <button
+                id="botaoSalvar"
+                type="submit"
+                pButton              
+                severity="success"
+                label="Salvar"
+                [disabled]="!cadastraLoginForm.valid"
+                (click)="postCadastraLogin(cadastraLoginForm.value)"
+                title="Entrar"
+              ></button>
+            </div>
+
+
+
+       
           <div class="voltarLogin">
             <p> <a href="/">Voltar para página de login. </a></p>
           </div>
@@ -142,4 +140,6 @@
   <!-- </div> -->
 
   <app-toast></app-toast>
+  
+
 </div>

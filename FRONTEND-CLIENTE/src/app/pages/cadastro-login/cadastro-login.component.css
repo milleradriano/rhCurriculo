@@ -11,6 +11,7 @@
   height: 100vh;
 }
 .titulo {
+  margin-top: 0.5rem; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,7 +41,6 @@
 
 
 .nome,
-.telefone,
 .email,
 .senha,
 .botao {
@@ -98,11 +98,12 @@ a	{
 .voltarLogin{
   text-align: center;  
 }
+
 .voltarLogin a{
   color: red;
-  text-decoration: none;
-  
+  text-decoration: none;  
 }
+
 
 
 /*Ajusta a cor do texto do checkbox*/

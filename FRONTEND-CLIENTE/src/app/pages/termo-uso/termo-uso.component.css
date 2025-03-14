@@ -16,3 +16,11 @@ h1{
     text-decoration: none;
     margin-bottom: 2rem;
   }
+
+  .voltarLoginTitulo a{ 
+    color: red;
+    text-decoration: none;  
+    margin-left: 3rem;
+  }
+  
+  

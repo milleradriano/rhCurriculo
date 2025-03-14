@@ -2,28 +2,26 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, catchError, shareReplay } from 'rxjs';
 import { interfaceCurriculo } from '../interface/curriculo';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+import { interfaceCadastraLogin } from '../interface/cadastraLogin';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class CurriculoService {
-  private url= environment.api;
+export class CadastroLoginService {
+private url= environment.api;
   constructor(
     private httpclient: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object,
-  
-  ) {}
-  getCurriculo(): Observable<interfaceCurriculo[]> {
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { 
+
+  }  
+postCadastroLogin(valores: any): Observable<interfaceCadastraLogin> {
     return this.httpclient
-      .get<interfaceCurriculo[]>(this.url + '/curriculo')
+      .post<interfaceCadastraLogin>(this.url+'/cadastro-login', valores)
       .pipe(shareReplay(1), catchError(this.handleError));
   }
-  postCurriculo(valores: any): Observable<interfaceCurriculo> {
-    return this.httpclient
-      .post<interfaceCurriculo>(this.url+'/curriculo', valores)
-      .pipe(shareReplay(1), catchError(this.handleError));
-  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -39,4 +37,5 @@ export class CurriculoService {
     // return an observable with a user-facing error message
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
+
 }

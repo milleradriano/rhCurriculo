@@ -1,4 +1,5 @@
 export const environment = {
-    api:'http://172.16.10.238:3000',
-    version:'10.0.0.1'  
+    production: false,
+    api:'http://192.168.0.106:3000',
+    version:'10.0.0.1'
 };
