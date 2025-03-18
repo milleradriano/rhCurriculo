@@ -117,12 +117,13 @@ export class VagasComponent implements OnInit, OnDestroy {
 }
 
 curriculoBotaoModal(){
+  
   this.curriculo(this.storage.getCurriculo());
 }
 curriculo(id: any){ 
-//  alert(id);
+  alert(id);
    this.storage.setCurriculo('id', id);
-   this.router.navigate(['/menu']);
+   this.router.navigate(['/login']);
    
   }
 

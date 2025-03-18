@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class VagasService {
-  private readonly url = 'http://localhost:3000/vagas';
+  private readonly url = 'http://localhost:3001/vagas';
 
   constructor(private httpClient: HttpClient) {}
 

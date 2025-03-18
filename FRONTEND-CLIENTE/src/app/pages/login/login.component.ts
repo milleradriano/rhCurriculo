@@ -28,14 +28,19 @@ import { LocalstorageService } from '../../service/localstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { PasswordModule } from 'primeng/password';
-import { RecuperaSenhaComponent } from "../recupera-senha/recupera-senha.component";
+import { RecuperaSenhaComponent } from '../recupera-senha/recupera-senha.component';
 import {
   DialogService,
   DynamicDialogModule,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
+import { Login } from '../../interface/login';
 
-import {  DialogModule } from 'primeng/dialog';
+import { DialogModule } from 'primeng/dialog';
+import { LoadingComponent } from "../../components/loading/loading.component";
+import { LoginService } from '../../service/login.service';
+
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -59,10 +64,10 @@ import {  DialogModule } from 'primeng/dialog';
     ToastComponent,
     PasswordModule,
     RecuperaSenhaComponent,
-   DynamicDialogModule,
-     DialogModule,
-     
-
+    DynamicDialogModule,
+    DialogModule,
+    LoadingComponent,
+    
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -70,23 +75,63 @@ import {  DialogModule } from 'primeng/dialog';
 export class LoginComponent {
   cpf: string = '';
   password: string = '';
-  visible: boolean = false;
-  constructor(
-    private messageService: MessageService,
-    private localStorageService: LocalstorageService,
-    private formBuilder: FormBuilder
-  ) {}
+  mostrarModalRecuperaSenha: boolean = false;
+  isLoadingResults: boolean = false;
 
-  login($event: any) {
-    console.log($event);
-    this.localStorageService.setLogin('idc', $event.login);
-  }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private toast: ToastComponent,
+    private router: Router  
+  ) {}
   
-  loginForm = this.formBuilder.group({
-    cpf: ['', Validators.required],
-    senha: ['', Validators.required],
-  });
+  
+    loginForm = this.formBuilder.group({
+      cpf: ['81580053068', Validators.required],
+      senha: ['12', Validators.required],
+    });
+    postLogin($event: Partial<{ cpf: string; senha: string }>) {
+  
+    
+    this.isLoadingResults = true;
+    this.loginService.postLogin($event).subscribe(
+      (data: any) => {
+        this.isLoadingResults = false;
+        console.log("login 102", data);
+        if (data.token) {
+          //recebe token caso login seja bem sucedido 
+        console.log("token", data.token);
+        sessionStorage.setItem("token", data.token);    
+        this.router.navigate(["/menu"]);
+        }
+        else{
+          this.toast.toast("error", "", data);
+        }
+      },
+      (error: any) => {
+        this.isLoadingResults = false;
+        console.log("login 109", error);
+        this.toast.toast("error", "", error);
+      }
+    );
+    // this.loginService.postLogin($event).subscribe(
+    //   (data:any) => {
+    //              //recebe token caso login seja bem sucedido
+    //       this.isLoadingResults = false;
+    //       console.log('login 102', typeof(data));          
+          
+    //     },
+    //   (error:any)=>{
+    //     this.isLoadingResults = false;
+    //     console.log('login 109', error);
+    //     this.toast.toast('error', '' , error);
+    //   }
+    // );  
+  }
+
+  
   recuperaSenha() {
-    this.visible = true;
+    this.mostrarModalRecuperaSenha = true;
   }
 }

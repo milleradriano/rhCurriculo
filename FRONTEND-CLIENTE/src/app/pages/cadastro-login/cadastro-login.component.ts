@@ -36,8 +36,7 @@ import { DividerModule } from 'primeng/divider';
 import { get } from 'http';
 import { CadastroLoginService } from '../../service/cadastro-login.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
-import { NOMEM } from 'dns';
-import { noop } from 'rxjs';
+
 
 @Component({
   selector: 'app-cadastro-login',

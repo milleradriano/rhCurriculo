@@ -1,9 +1,14 @@
 <div class="container">
+  @if ( isLoadingResults){
+    <div class="loading">
+      <app-loading></app-loading>
+    </div>
+    }
   <div class="login-container">
     <div class="logo"></div>
 
     <!-- Formulário de Login -->
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="postLogin({ cpf: loginForm.value.cpf!, senha: loginForm.value.senha! })">
       <div class="cpf">
         <label for="cpf">CPF:</label>
         <input
@@ -38,7 +43,7 @@
           severity="success"
           label="Entrar"
           [disabled]="!loginForm.valid"
-          title="Entrar"
+          title="Entrar"         
         ></button>
       </div>
     </form>
@@ -57,7 +62,7 @@
   [modal]="true"
   [draggable]="true"
   [resizable]="true"
-  [(visible)]="visible"
+  [(visible)]="mostrarModalRecuperaSenha"
   [style]="{ width: '25rem', height: '21rem'  }"
   [breakpoints]="{ '1199px': '99vw', '575px': '99vw' }"
   headerStyleClass="p-dialog-header"
@@ -72,3 +77,4 @@
   </ng-template>
   <app-recupera-senha></app-recupera-senha>
 </p-dialog>
+<app-toast></app-toast>
