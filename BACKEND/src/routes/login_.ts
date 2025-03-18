@@ -1,17 +1,11 @@
 import PoolMysql from "../dados/dados";
 
-const postCadastraLogin = (valores: any) => {
-const  [
-    cpf,
-    nome,
-    email, 
-    senha,
-    termo] = valores;
-    console.log("valores", valores);
+
+const postLogin = (valores: any) => {
+    const [ cpf, senha] = valores;
     return new Promise((resolve, reject) => {
         PoolMysql.query(
-            "call postcadastralogin(?,?,?,?,?)",
-            [cpf,nome, email, senha, termo],
+            "call postconsultalogin(?,?)",[cpf,senha],
             (error: any, results: unknown, fields: any) => {
                 if (error) {
                     //   getLog("error", JSON.stringify(error));
@@ -22,9 +16,6 @@ const  [
                 }
             }
         );
-    })
+    });
 }
-
-module.exports = {
-    postCadastraLogin
-}   
+module.exports = {postLogin};

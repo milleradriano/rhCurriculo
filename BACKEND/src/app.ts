@@ -1,5 +1,6 @@
 require("dotenv").config();
 import express from "express";
+import { Request, Response } from "express";
 
 const bodyParser = require("body-parser");
 import multer from "multer";
@@ -15,11 +16,18 @@ const cep = require("./routes/cep");
 const vaga = require("./routes/vaga");
 const empresa = require("./routes/empresa");
 const residencia = require("./routes/residencia");
-const cadastraLogin = require("./routes/cadastraLogin");
-const bcrypt = require('bcrypt'); // para criptografar a senha
+const login = require("./routes/login");
+//const  postLogin  = require("./routes/cadastraLogin");
+//const login = require("./routes/login");
+const bcrypt = require("bcrypt"); // para criptografar a senha
 
+const {
+  hashPassword,
+  verifyPassword,
+  generateToken,
+  verifyToken,
+} = require("./services/services");
 
-import { Request, Response } from "express";
 import { toFormData } from "axios";
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,30 +38,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 
 let tokenGeral: any = "";
-const blackList: any[] = [];
-function verifyJwt(
-  req: { headers: { [x: string]: any } },
-  res: { sendStatus: (arg0: number) => void; sendDesc: (arg1: string) => void },
-  next: () => void
-) {
-  const token = req.headers["x-access-token"];
-  tokenGeral = token;
-  const index = blackList.findIndex((element) => element === token);
-  if (index > -1) {
-    // console.log("token invalido");
-    console.log(res);
-    res.sendStatus(403);
-  } else {
-    jwt.verify(token, SECRET, (err: any, decoded: any) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        tokenGeral = token;
-        next();
-      }
-    });
-  }
-}
 
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 const storageLogo = multer.diskStorage({
@@ -80,16 +64,15 @@ const uploadLogo = multer({
 
 //*********************** INICIO CADASTRO LOGIN ***********************************/
 
-async function hashPassword(password:any) {
-  const saltRounds = 12; // Define o custo do processamento
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-}
-
+// async function hashPassword(password:any) {
+//   const saltRounds = 12; // Define o custo do processamento
+//   const hashedPassword = await bcrypt.hash(password, saltRounds);
+//   return hashedPassword;
+// }
 
 app.post("/cadastro-login", async (req: Request, res: Response) => {
   console.log("cadastro-login", req.body);
-  const { cpf,nome, email, termoUso }  = req.body;
+  const { cpf, nome, email, termoUso } = req.body;
 
   const senha = await hashPassword(req.body.senha);
 
@@ -97,28 +80,54 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
   tokenGeral = token;
   console.log("token", token);
   console.log("Geral", req.body);
-  cadastraLogin.postCadastraLogin([cpf,nome,senha,email, termoUso]).then((result: any) => {
-    res.send( result );
-  });  
+  login
+    .postCadastraLogin([cpf, nome, senha, email, termoUso])
+    .then((result: any) => {
+      res.send(result);
+    });
 });
 
 //**********************************************************************************/
 
-
 //************************LOGIN USUARIO ***************************************/
 
 app.post("/login", async (req: Request, res: Response) => {
-  const { email, senha } = req.body;
-  const token = jwt.sign({ email, senha }, SECRET);
-  tokenGeral = token;
-  console.log("token", token);
-  console.log("Geral", req.body);
-  cadastraLogin.postCadastraLogin([email, senha]).then((result: any) => {
-    res.send(result);
-  });
+  const cpf = req.body.cpf;
+  let retorno, situacao;
+
+  try {
+    await login.postLogin([cpf]).then(async (result: any) => {
+      retorno = result[0][0].SENHA;
+      situacao = result[0][0].SITUACAO;
+
+      if (situacao == "B") {
+        res.status(600).send({ mensagem: "Excesso de tentativas, tente mais tarde." });
+        console.log("situacao", situacao);
+        return;
+      }
+
+      const senha = await verifyPassword(req.body.senha, retorno);
+      console.log("senha", senha);
+      if (result.status === "1") {
+        res.status(401).send({ mensagem: "Usuário ou senha inválida." });
+        return;
+      }
+
+      if (senha) {
+        const token = jwt.sign({ cpf, senha }, SECRET);
+        tokenGeral = token;
+        console.log("token atualizado", token);
+        res.send({ token: token });
+      } else {
+        res.status(401).send({ mensagem: "Usuário ou senha inválida." });
+        return;
+      }
+    });
+  } catch (error) {
+    res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
+    return
+  }
 });
-
-
 
 //***********************  INICIO CURRICULO                   *************************/
 
@@ -249,7 +258,7 @@ app.get("/residencia/", async (req: Request, res: Response) => {
   res.send(result);
 });
 
-app.post("/residencia", async (req: Request, res: Response) => { 
+app.post("/residencia", async (req: Request, res: Response) => {
   console.log("post residencia ", req.body);
   const valores = [
     req.body.cpf,
@@ -273,7 +282,6 @@ app.post("/residencia", async (req: Request, res: Response) => {
 
 //**************************FIM RESIDENCIA*************************/
 
-
 /********************** INICIO LOGO ************************/
 app.post(
   "/uploadlogo",
@@ -289,7 +297,6 @@ app.post(
   }
 );
 /**************************************************************/
-
 
 app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
 
