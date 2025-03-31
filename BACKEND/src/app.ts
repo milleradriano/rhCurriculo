@@ -37,8 +37,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   return response.send("Hello!");
 // });
 
-let tokenGeral: any = "";
-
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 const storageLogo = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
@@ -76,10 +74,8 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
 
   const senha = await hashPassword(req.body.senha);
 
-  const token = jwt.sign({ email, senha }, SECRET);
-  tokenGeral = token;
-  console.log("token", token);
-  console.log("Geral", req.body);
+  //tokenGeral = await generateToken({ email, senha }); //jwt.sign({ email, senha }, SECRET);   // gerar o token jwt sem usar o service.ts
+
   login
     .postCadastraLogin([cpf, nome, senha, email, termoUso])
     .then((result: any) => {
@@ -101,7 +97,9 @@ app.post("/login", async (req: Request, res: Response) => {
       situacao = result[0][0].SITUACAO;
 
       if (situacao == "B") {
-        res.status(600).send({ mensagem: "Excesso de tentativas, tente mais tarde." });
+        res
+          .status(600)
+          .send({ mensagem: "Excesso de tentativas, tente mais tarde." });
         console.log("situacao", situacao);
         return;
       }
@@ -114,9 +112,7 @@ app.post("/login", async (req: Request, res: Response) => {
       }
 
       if (senha) {
-        const token = jwt.sign({ cpf, senha }, SECRET);
-        tokenGeral = token;
-        console.log("token atualizado", token);
+        const token = await generateToken({ cpf, senha }); //gero o token
         res.send({ token: token });
       } else {
         res.status(401).send({ mensagem: "Usuário ou senha inválida." });
@@ -125,15 +121,25 @@ app.post("/login", async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
-    return
+    return;
   }
 });
 
 //***********************  INICIO CURRICULO                   *************************/
 
-app.get("/curriculo", async (req: Request, res: Response) => {
-  curriculo.getCurriculo().then((result: any) => {
-    console.log(result);
+app.get("/curriculo/", verifyToken, async (req: Request, res: Response) => {
+  console.log(" get curriculo app linha 131",verifyToken);
+  console.log("get curriculo app ", req.params.cpf);
+  let cpfFormatado: string = (req.query.cpf as string).replace(/[^0-9]/g, "");
+  console.log("cpfFormatado ", cpfFormatado);
+  let tamanhoCpf: number;
+  tamanhoCpf = cpfFormatado.length as number;
+  if (tamanhoCpf != 11) {
+    res.status(400).send({ mensagem: "CPF inválido." });
+    return;
+  }
+  //const curriculo = new Curriculo(cpfFormatado);
+  curriculo.getCurriculo(cpfFormatado).then((result: any) => {   
     res.send(result);
   });
 });
@@ -148,7 +154,19 @@ const validaIdade = (dataNascimento: any) => {
   }
   return idade;
 };
-app.post("/curriculo", async (req: Request, res: Response) => {
+app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
+  try{
+  console.log("post curriculo ", verifyToken);
+  console.log("post curriculo antes ", JSON.stringify(req.body));
+  var numFilhos = '0';
+  var turno = '';
+  if ( req.body.filhos === 'S' ) {
+    numFilhos = req.body.numFilhos;
+  }
+  if ( req.body.estudaAtualmente === 'S' ) {
+  turno = req.body.turno;
+  }
+  console.log("post curriculo depois ", JSON.stringify(req.body));
   const dados = [
     req.body.cpf,
     req.body.nome,
@@ -165,27 +183,31 @@ app.post("/curriculo", async (req: Request, res: Response) => {
     req.body.pcd,
     req.body.deficiencia,
     req.body.estudaAtualmente,
-    req.body.turno,
+    turno,
     req.body.filhos,
-    req.body.numFilhos,
+    numFilhos,
     req.body.telefone,
     req.body.estadoCivil,
   ];
-
+console.log('dados no post curriculo',dados)
   if (validaIdade(req.body.dataNascimento) < 14) {
     res.send({ error: "Voce precisa ser maior de 14 anos." });
   } else {
     curriculo.postcurriculo(dados).then((result: any) => {
+      console.log('result no post curriculo',result)
       res.send(result);
     });
   }
+}
+  catch (error) {
+    console.log("Erro no post curriculo", error);
+    res.status(500).send({ error: "Erro ao cadastrar o currículo." });  
+  }
 });
-
 /**********************FIM CURRICULO ******************************/
-
 //*************************INICIO CEP  *************************/
-
-app.get("/cep", async (req: Request, res: Response) => {
+app.get("/cep", verifyToken, async (req: Request, res: Response) => {
+  console.log("cep ", verifyToken);
   let cepFormatado: string = (req.query.cep as string).replace(/[^0-9]/g, "");
   let tamanhoCep: number;
   tamanhoCep = cepFormatado.length as number;
@@ -219,14 +241,14 @@ app.post("/vaga", async (req: Request, res: Response) => {
 
 //********************* INICIO EMPRESA *************************/
 
-app.get("/empresa/", async (req: Request, res: Response) => {
+app.get("/empresa/", verifyToken, async (req: Request, res: Response) => {
   const result = await empresa.getEmpresa();
   res.send(result);
 
   // console.log("get empresa 101", res);
 });
 
-app.post("/empresa", async (req: Request, res: Response) => {
+app.post("/empresa", verifyToken, async (req: Request, res: Response) => {
   console.log("post empresa ", req.body);
   const valores = [
     req.body.idempresa,
@@ -241,7 +263,7 @@ app.post("/empresa", async (req: Request, res: Response) => {
   });
   console.log("post empresa ", valores);
 });
-app.delete("/empresa/:id", async (req: Request, res: Response) => {
+app.delete("/empresa/:id", verifyToken, async (req: Request, res: Response) => {
   console.log("delete empresa ", req.params.id);
   const id = req.params.id;
   empresa.delEmpresa(id).then((result: any) => {
@@ -253,12 +275,12 @@ app.delete("/empresa/:id", async (req: Request, res: Response) => {
 
 //**************************INICIA RESIDENCIA*********************/
 
-app.get("/residencia/", async (req: Request, res: Response) => {
+app.get("/residencia/", verifyToken, async (req: Request, res: Response) => {
   const result = await residencia.getResidencia();
   res.send(result);
 });
 
-app.post("/residencia", async (req: Request, res: Response) => {
+app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
   console.log("post residencia ", req.body);
   const valores = [
     req.body.cpf,
@@ -286,6 +308,7 @@ app.post("/residencia", async (req: Request, res: Response) => {
 app.post(
   "/uploadlogo",
   uploadLogo.single("logo"),
+  verifyToken,
   async (req: any, res: any) => {
     if (!req.file) {
       return res.status(400).send({ error: "Nenhum arquivo enviado" });

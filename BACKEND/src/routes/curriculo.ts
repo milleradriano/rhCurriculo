@@ -1,24 +1,35 @@
  import PoolMysql from "../dados/dados";
-const getCurriculo = () => {
+const getCurriculo = (valores: any ) => {
+  console.log("inicio da curriculo ", valores);
+  if (!valores) {
+    console.log("getCurriculo sem cpf");
+    return Promise.reject(new Error("CPF não informado")); // Retorna uma Promise rejeitada
+  }
+
+  const cpf = valores;
+  console.log("CPF recebido:", cpf);
   return new Promise((resolve, reject) => {
     PoolMysql.query(
-      "select * from curriculo",
+      "select * from candidato where cpf = ?",[cpf],
       (error: any, results: unknown, fields: any) => {
         if (error) {
           //   getLog("error-cadastro Empresa", JSON.stringify(error));
+          console.log("resultado erro ", results);
           reject(error);
         } else {
           //   getLog("info - cadastro Empresa", JSON.stringify(results));
-          console.log("resultado ", results);
+         // console.log("resultado ", results);
           resolve(results);
         }
       }
     );
   });
-};
+}
+
+
 
 const postcurriculo = (valores: any) => {
- 
+  console.log("postcurriculo ", valores); 
   const [
     cpf,
     nome,
@@ -54,28 +65,28 @@ const postcurriculo = (valores: any) => {
   ] = valores;
   return new Promise((resolve, reject) => {
     PoolMysql.query(
-      "call postcurriculo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      "call postcandidato(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
       [
-        cpf,
-        nome,
-        datanascimento,
-        sexo,
-        email,
-        rg,
-        orgaoemissorrg,
-        estadorg,
-        dataexpedicaorg,
-        nomepai,
-        nomemae,
-        grauinstrucao,
-        pcd,
-        pcddeficiencia,
-        estudaatualmente,
-        turnoestuda,
-        possuifilho,
-        numFilhos,
-        telefone,
-         estadocivil
+    cpf,
+    nome,
+    datanascimento,
+    sexo,
+    email,
+    rg,
+    orgaoemissorrg,
+    estadorg,
+    dataexpedicaorg,
+    nomepai,
+    nomemae,
+    grauinstrucao,
+    pcd,
+    pcddeficiencia,
+    estudaatualmente,
+    turnoestuda,
+    possuifilho,
+    numFilhos,
+    telefone,
+     estadocivil
         // primeiroemprego,
         // ultimoempregoempresa,
         // ultimoempregocidade,

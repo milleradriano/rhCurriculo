@@ -14,29 +14,42 @@ async function hashPassword(password: any) {
 
 // Função para verificar senha
 async function verifyPassword(password: any, hashedPassword : any) {
- console.log('serv ',hashedPassword);
+ console.log('verifyPassword services.ts 17 ',hashedPassword);
  if (hashedPassword === undefined) {
+    console.log('verifyPassword services.ts 19 undefined',hashedPassword);
     return false
  }
-    else return (await bcrypt.compare(password, hashedPassword));
+    else 
+    console.log('verifyPassword services.ts 19 undefined',hashedPassword);
+    return (await bcrypt.compare(password, hashedPassword));
    
    
 }
 
 // Função para gerar JWT
-function generateToken(user: any) {
-  return jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {
+function generateToken(user: {cpf:string, senha:string}) {
+  console.log("dentro do generateToken", user);
+  return jwt.sign({ cpf: user.cpf, senha: user.senha }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 }
 
 // Função para validar JWT
-function verifyToken(token: any) {
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch (error) {
-    return null;
-  }
+function verifyToken(req : any, res : any, next: any) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1]; // Pega apenas o token sem o "Bearer"
+  console.log("verifyToken no service", authHeader);
+    if (!token) {
+      return res.status(401).json({ error: "Acesso negado! Token não fornecido." });
+    }
+  
+    jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
+      if (err) {
+        return res.status(403).json({ error: "Token inválido ou expirado." });
+      }  
+      req.user = user; // Salva o usuário autenticado na requisição
+      next(); // Continua para a próxima função na rota
+    });
 }
 
 module.exports = { hashPassword, verifyPassword, generateToken, verifyToken };
