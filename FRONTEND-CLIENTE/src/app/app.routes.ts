@@ -11,11 +11,11 @@ import { RecuperaSenhaComponent } from './pages/recupera-senha/recupera-senha.co
 import { authGuard } from './service/auth.guard';
 export const routes: Routes = [
   {
-    path: '',
+    path: 'vagas',
     component: VagasComponent,
   },
   {
-    path: 'login',
+    path: '',
     component: LoginComponent,
     pathMatch: 'full',
   },

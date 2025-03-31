@@ -3,7 +3,7 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
-export class LocalstorageService {
+export class SessionstorageService {
   private isBrowser! : boolean;
   // private storage : window.localStorage;
 private storage!: Storage;
@@ -13,22 +13,22 @@ constructor(@Inject(PLATFORM_ID) private platformId: Object) {
 
   setCurriculo(key: string, value: string): void {
     if (this.isBrowser) {
-      localStorage.setItem(key, value);
+      sessionStorage.setItem(key, value);
     }
   }
   getCurriculo() {
     if (this.isBrowser) {
-      localStorage.getItem('id');
+      sessionStorage.getItem('id');
     }
   }
   setLogin(key: string, value: string): void {
     if (this.isBrowser) {
-      localStorage.setItem(key, value);
+      sessionStorage.setItem(key, value);
     }
   }
   getLogin(key: string): string | null {
     if (this.isBrowser) {
-      return localStorage.getItem(key);
+      return sessionStorage.getItem(key);
     }
     return null;
   }

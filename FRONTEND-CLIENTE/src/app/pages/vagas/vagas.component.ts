@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {  DialogModule } from 'primeng/dialog';
 
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { LocalstorageService } from '../../service/localstorage.service';
+import { SessionstorageService } from '../../service/sessionlstorage.service';
 import { Router } from '@angular/router';
 
 
@@ -69,7 +69,7 @@ export class VagasComponent implements OnInit, OnDestroy {
   constructor(
     private vagasService: VagasService,
     public dialogService: DialogService,
-    private storage: LocalstorageService,
+    private storage: SessionstorageService,
     private router: Router
   ) {}
   ref: DynamicDialogRef | undefined;
@@ -121,7 +121,7 @@ curriculoBotaoModal(){
   this.curriculo(this.storage.getCurriculo());
 }
 curriculo(id: any){ 
-  alert(id);
+
    this.storage.setCurriculo('id', id);
    this.router.navigate(['/login']);
    

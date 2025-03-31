@@ -1,20 +1,17 @@
 <div class="container">
   @if ( loading){
-  <div class="loading">
     <app-loading></app-loading>
+  <div class="loading">
   </div>
   }
-
-
   <form [formGroup]="residenciaForm">
-
-       <div class="titulo">
+    <div class="titulo">
       <h1>Dados Residênciais</h1>
       <p>Preencha seus dados residenciais abaixo.</p>
     </div>
     <div class="card flex justify-content-center">
-      <label for="cep">CEP:</label>
       <div class="cep">
+        <label for="cep">CEP:</label>
         <p-inputGroup>
           <input
             id="cep"
@@ -27,14 +24,16 @@
             appInputpreenchido
           />
           <button
+          id="btnBuscaCep"
             type="button"
             pButton
-            icon="pi pi-search"
+           
             class="p-button-success"
             iconPos="right"
             (click)="localizaCep(residenciaForm.value.cep)"
-
-          >Localizar Cep</button>
+          >
+            Localizar Cep
+          </button>
         </p-inputGroup>
       </div>
       <div class="estadoCidade">
@@ -87,7 +86,6 @@
             placeholder="Bairro"
             appInputpreenchido
           />
-          
         </div>
         <div class="numero">
           <label for="numero">Nº:</label>
@@ -99,11 +97,10 @@
             placeholder="Nº"
             appInputpreenchido
           />
-          
         </div>
       </div>
     </div>
-   
+<hr>
     <div class="botaoSalvar">
       <p-button
         icon="pi pi-check"

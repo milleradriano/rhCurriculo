@@ -30,29 +30,11 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 export class MenuComponent {
   private breakpointObserver = inject(BreakpointObserver);
   items: MenuItem[] = [];
+  nomeCandidato: string = '';
   constructor(private httpClient: HttpClient) {
+    this.nomeCandidato = 'Seja bem vindo, '+'Adriano Sartori Miller'
     this.items = [
-      {
-        label: 'Cadastro',
-        icon: 'pi pi-desktop',
-        items: [
-            {
-                label: 'Empresa',
-                icon: 'pi pi-mobile',
-                routerLink: 'empresa'
-            },
-            {
-                label: 'Vagas',
-                icon: 'pi pi-desktop',
-                routerLink: 'cadvaga'
-            },
-            {
-                label: 'Configurações',
-                icon: 'pi pi-tablet'
-            }
-        ]
-    },
-   
+     
       {
         label: 'Dados Pessoais',
         icon: 'pi pi-fw pi-building',

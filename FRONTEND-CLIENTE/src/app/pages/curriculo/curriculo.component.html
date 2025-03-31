@@ -1,4 +1,14 @@
 <div class="container">
+  @if (isLoadingResults){
+    <div class="loading">
+      <app-loading></app-loading>
+    </div>
+  }
+  @if(showProgress){
+    <div class="loading">
+      <app-progressbar></app-progressbar>
+    </div>
+  }
   <form [formGroup]="curriculoForm">
     <!-- <app-uploaddocumento></app-uploaddocumento> -->
     <div class="titulo">
@@ -6,8 +16,8 @@
       <p>Preencha seus dados pessoais abaixo</p>
     </div>
     <div class="card flex justify-content-center">
-      <label>Nome completo:</label>
       <div class="nome">
+      <label>Nome completo:</label>
         <input
           formControlName="nome"
           pInputText
@@ -46,9 +56,11 @@
         
         ></p-dropdown>
       </div>
-      <label>Documentos:</label>
+      <hr />
+      <h2>Informações sobre os documentos</h2>
       <div class="documento">
         <div class="cpf">
+          <label>CPF:</label>
           <input
             id="cpf"
             formControlName="cpf"
@@ -62,6 +74,7 @@
           />
         </div>
         <div class="rg">
+          <label>RG:</label>
           <input
             id="rg"
             formControlName="rg"
@@ -74,10 +87,9 @@
           />
         </div>
       </div>
-      <h2>Informações sobre os documentos</h2>
-      <label for="dataEmissao">Data de emissão</label>
       <div class="informacaoDocumento">
         <div class="dataEmissao">
+          <label for="dataEmissao">Data de emissão</label>
           <input
             formControlName="dataEmissao"
             pInputText
@@ -89,7 +101,7 @@
         </div>
 
         <div class="orgaoEmissor">
-          <!-- <label for="orgaoEmissor">Orgão Emissor</label> -->
+          <label for="orgaoEmissor">Orgão Emissor</label>
           <input
             id="orgaoEmissor"
             formControlName="orgaoEmissor"
@@ -100,7 +112,7 @@
           />
         </div>
         <div class="estadoEmissor">
-          <!-- <label for="estadoEmissor">Estado Emissor</label> -->
+          <label for="estadoEmissor">Estado Emissor</label>
           <p-dropdown
             formControlName="estadoEmissor"
             placeholder="Estado Emissor"
@@ -108,7 +120,7 @@
           ></p-dropdown>
         </div>
       </div>
-      <hr />
+    
       <label for="dataNascimento">Data de nascimento:</label>
       <div class="dataNascimento">
         <input
@@ -120,9 +132,9 @@
         />
       </div>
 
-      <label>Parentes:</label>
       <div class="parente">
         <div class="nomePai">
+          <label>Nome do Pai:</label>
           <input
             id="nomePai"
             formControlName="nomePai"
@@ -133,6 +145,7 @@
           />
         </div>
         <div class="nomeMae">
+          <label for="nomeMae">Nome da Mãe</label>
           <input
             id="nomeMae"
             formControlName="nomeMae"
@@ -143,10 +156,12 @@
           />
         </div>
       </div>
-      <label for="grauInstrucao" class="grauInstrucao">
-        Grau de instrução</label
-      >
+      <hr />
+      <H2>Informações sobre a escolaridade</H2>
       <div class="grauInstrucao">
+        <label for="grauInstrucao" class="grauInstrucao">
+          Grau de instrução</label
+        >
         <p-dropdown
           formControlName="grauInstrucao"
           placeholder="Grau de instrução"
@@ -174,15 +189,13 @@
         </div>
 
         @if(curriculoForm.get('estudaAtualmente')!.value === 'S'){
-        <div class="turno">
-          <label for="turnoEscola">Turno da escola:</label>
-          <div>
+        <div class="turno">        
+            <label for="turnoEscola">Turno da escola:</label>
             <p-dropdown
               formControlName="turno"
               placeholder="Turno da escola"
               [options]="turnoEscola"
-            />
-          </div>
+            />          
         </div>
         }
       </div>
@@ -207,8 +220,8 @@
         </div>
         @if(curriculoForm.get('filhos')!.value === 'S'){
         <div class="qtdFilhos">
-          <label for="qtdFilhos">Nº de filhos:</label>
-          <div>
+          
+            <label for="qtdFilhos">Nº de filhos:</label>
             <input
               formControlName="numFilhos"
               pInputText
@@ -219,11 +232,13 @@
               appInputpreenchido
             />
           </div>
-        </div>
+        
         }
       </div>
-      <label for="telefone">Telefone:</label>
+      <hr />
+      <h2>Informações de gerais</h2>
       <div class="telefone">
+        <label for="telefone">Telefone:</label>
         <input
           id="telefone"
           pInputText
@@ -235,8 +250,8 @@
           appInputpreenchido
         />
       </div>
-      <label for="email">E-mail:</label>
       <div class="email">
+        <label for="email">E-mail:</label>
         <input
           id="email"
           pInputText
@@ -266,8 +281,8 @@
         </div>
         @if(curriculoForm.get('pcd')!.value==='S'){
         <div class="deficiencia">
-          <label for="deficiencia">Qual deficiência?</label>
           <div>
+            <label for="deficiencia">Qual deficiência?</label>
             <p-dropdown
               formControlName="deficiencia"
               placeholder="Deficiência"
@@ -300,13 +315,14 @@
         }
       </div>
     </div>
+    <hr />
     <div class="botaoSalvar">
       <p-button
-      pButton
+      
         icon="pi pi-check"
         severity="success"
         label="Salvar os dados pessoais"
-        [disabled]="!curriculoForm.valid"
+        [disabled]="curriculoForm.valid"
         (click)="postCurriculo(curriculoForm.value)"
       ></p-button>
     </div>

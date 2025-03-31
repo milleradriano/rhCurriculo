@@ -26,11 +26,13 @@ import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploa
 import { ResidenciaService } from '../../service/residencia.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ToastComponent } from '../../components/toast/toast.component';
-import {InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
+import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
+import { SessionstorageService } from '../../service/sessionlstorage.service';
+import { HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-residencia',
   standalone: true,
-    providers: [MessageService],
+  providers: [MessageService],
   imports: [
     MatGridListModule,
     MatMenuModule,
@@ -53,7 +55,7 @@ import {InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directiv
     LoadingComponent,
     ToastComponent,
     InputpreenchidoDirective,
-],
+  ],
   templateUrl: './residencia.component.html',
   styleUrl: './residencia.component.css',
 })
@@ -61,12 +63,16 @@ export class ResidenciaComponent {
   estado: any[''] | undefined;
   loading: boolean = false;
   showProgress: boolean = false;
+  sessionToken: string | null = this.sessionStorage.getLogin('token');
+
+  headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
 
   constructor(
     private messageService: MessageService,
     private formbuilder: FormBuilder,
     private residenciaService: ResidenciaService,
-    private toast: ToastComponent
+    private toast: ToastComponent,
+    private sessionStorage: SessionstorageService,
   ) {
     this.estado = [
       { label: 'AC', value: 'AC' },
@@ -109,7 +115,7 @@ export class ResidenciaComponent {
 
   localizaCep(cep: any) {
     this.loading = true;
-    this.residenciaService.getCep(cep).subscribe((res) => {
+    this.residenciaService.getCep(cep,this.headers).subscribe((res) => {
       console.log(res);
       this.residenciaForm.patchValue({
         cep: res.cep,
@@ -121,26 +127,21 @@ export class ResidenciaComponent {
     });
     this.loading = false;
   }
-  alerta(){
-    console.log('dentro do alerta')
+  alerta() {
+    console.log('dentro do alerta');
     this.toast.toast('success', 'Sucesso', 'Residência cadastrada');
   }
-  postResidencia(valores: any) {
-   this.loading = true;
+  postResidencia(valores: any, headers?: any) {
+    this.loading = true;
     console.log('POST RESIDENCIA', valores);
-    this.residenciaService.postResidencia(valores).subscribe(
+    this.residenciaService.postResidencia(valores, this.headers).subscribe(
       (data) => {
         this.loading = false;
         this.toast.toast('success', 'Sucesso', 'Residência cadastrada');
       },
-      (error) => { 
-       
+      (error) => {
         this.loading = false;
-        this.toast.toast(
-          'error',
-          'Erro',
-          'Indisponível tente mais tarde.'
-        );
+        this.toast.toast('error', 'Erro', 'Indisponível tente mais tarde.');
         console.log('error aqio', error);
       }
     );

@@ -26,7 +26,7 @@ carrega(){
 this.progress += 1;
 if (this.progress === 100) {
 
-  this.router.navigate(['/login']);
+  this.router.navigate(['/']);
 }
   }, 100);
 }

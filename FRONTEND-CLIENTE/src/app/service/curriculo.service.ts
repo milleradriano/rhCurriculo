@@ -1,5 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError, catchError, shareReplay } from 'rxjs';
 import { interfaceCurriculo } from '../interface/curriculo';
 import { environment } from '../../environments/environment.prod';
@@ -13,30 +13,66 @@ export class CurriculoService {
     private httpclient: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object,
   
-  ) {}
-  getCurriculo(): Observable<interfaceCurriculo[]> {
-    return this.httpclient
-      .get<interfaceCurriculo[]>(this.url + '/curriculo')
-      .pipe(shareReplay(1), catchError(this.handleError));
+  ) {
+
   }
-  postCurriculo(valores: any): Observable<interfaceCurriculo> {
+  getCurriculo(cpf: string, headers?: any): Observable<interfaceCurriculo[]> {
+    console.log('cpf', cpf);
+    const params = new HttpParams().set('cpf', cpf); // Constrói a URL corretamente
     return this.httpclient
-      .post<interfaceCurriculo>(this.url+'/curriculo', valores)
-      .pipe(shareReplay(1), catchError(this.handleError));
+      .get<interfaceCurriculo[]>(this.url + '/curriculo', { params, headers })
+      .pipe(
+        shareReplay(1), 
+        catchError(this.handleError)
+      );
   }
+  
+  postCurriculo(valores: string, headers?: any): Observable<interfaceCurriculo> {
+   
+    return this.httpclient
+      .post<interfaceCurriculo>(this.url + '/curriculo', valores, { headers })
+      .pipe(
+        shareReplay(1),
+        catchError(this.handleError)
+      );   
+  }
+
   private handleError(error: HttpErrorResponse) {
+    let mensagemRetorno = '';
+    console.log('error', error.error.mensagem);
+
+    mensagemRetorno = error.error.mensagem;
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
+      console.error('ocorreu um de rede :', error.error);
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-          `body was: ${error.error}`
-      );
+      //* este e o erro do servidor
+      console.error('codigo do erro ', error.status);
+      if (error.status === 0) {
+        mensagemRetorno = 'Serviço indisponível';
+      }
+      if (error.status === 401) {
+        mensagemRetorno = 'Usuário ou senha inválidos';
+      }
+      if (error.status === 400) {
+        mensagemRetorno = 'Parâmetros inválidos';
+      }
+      if (error.status === 403) {
+        mensagemRetorno = 'Usuário sem permissão';
+      }
+      if (error.status === 404) {
+        mensagemRetorno = 'Página ou recurso não encontrado';
+      }
+      if (error.status === 500) {
+        mensagemRetorno = 'Erro interno do servidor';
+      }
+
+      return throwError(() => new Error(mensagemRetorno));
     }
     // return an observable with a user-facing error message
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    // retorno padrão caso nao seja catalogado
+    return throwError(
+      () => new Error('Algo deu errado; tente novamente mais tarde.')
+    );
   }
 }

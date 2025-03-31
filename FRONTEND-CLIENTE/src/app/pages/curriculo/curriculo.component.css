@@ -3,15 +3,17 @@
   --subtitulo-color: #ff355e;
   --corBorda-input: #1dc755a8;
 }
+.container {
+  padding-left: 1rem;
+}
 
 input:hover {
   border: 1px solid var(--corBorda-input);
   cursor: pointer;
   box-shadow: none;
 }
-
-.container {
-  padding-left: 1rem;
+.nome{
+  width: 40vw;
 }
 .titulo {
   color: var(--titulo-color);
@@ -48,10 +50,8 @@ label {
 .documento,
 .informacaoDocumento,
 .parente,
-.informacaoDocumento,
 .filhos {
   display: flex;
-
   flex-direction: row;
   margin-bottom: 1rem;
   font-style: normal;
@@ -59,6 +59,7 @@ label {
   font-size: 16px;
   line-height: 22px;
   gap: 1rem;
+ 
 }
 
 .enviarArquivo {
@@ -81,24 +82,14 @@ label {
 .radioEstuda {
   margin-right: 2rem;
 }
-/* PERSONALIZANDO OS CAPOS */
-#nome {
-  width: calc(50% - 0.5rem);
+
+.telefone,.email {
+  width: 20rem;
 }
 
-#email {
-  width: calc(50% - 0.5rem);
-}
-#telefone {
-  width: calc(20% - 0.5rem);
-}
 .nomePai,
-.nomeMae {
+.nomeMae,.dataNascimento {
   width: 25rem;
-}
-#nomePai,
-#nomeMae {
-  width: 100%;
 }
 
 .botaoSalvar {
@@ -106,8 +97,8 @@ label {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 #envioOpcionalMensagem {
   color: red;

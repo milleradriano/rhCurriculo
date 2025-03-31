@@ -24,7 +24,7 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
-import { LocalstorageService } from '../../service/localstorage.service';
+import { SessionstorageService } from '../../service/sessionlstorage.service';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
@@ -80,24 +80,24 @@ export class CadastroLoginComponent {
   ) {}
 
   cadastraLoginForm = this.formBuilder.group({
-    cpf: ['81580053068', Validators.required],
-    nome: ['asd', Validators.required],
+    cpf: ['', Validators.required],
+    nome: ['', Validators.required],
     email: [
-      'asd@gmail.com',
+      '',
       [
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ],
     ],
     confirmaEmail: [
-      'asd@gmail.com',
+      '',
       [
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ],
     ],
-    senha: ['123', Validators.required],
-    confirmaSenha: ['123', Validators.required],
+    senha: ['', Validators.required],
+    confirmaSenha: ['', Validators.required],
     termoUso: ['', [Validators.required, Validators.requiredTrue]],
   });
 

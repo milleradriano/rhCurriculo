@@ -1,4 +1,4 @@
-import { Component, inject, Input, input } from '@angular/core';
+import { Component, inject, Input, input,OnInit } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -24,12 +24,20 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
-import { LocalstorageService } from '../../service/localstorage.service';
-import { ToastComponent } from '../../components/toast/toast.component';
+import { SessionstorageService } from '../../service/sessionlstorage.service';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
 import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directive';
+import { interfaceCurriculo } from '../../interface/curriculo';
+// import { LoadingComponent } from '../../components/loading/loading.component';
+import { ToastComponent } from '../../components/toast/toast.component';
+import { ConfirmacaoComponent } from '../../components/confirmacao/confirmacao.component';
+import { HttpHeaders } from '@angular/common/http';
+import { LoadingComponent } from "../../components/loading/loading.component";
+import { ProgressbarComponent } from "../../components/progressbar/progressbar.component";
+import { Console } from 'node:console';
+
 interface UploadEvent {
   originalEvent: Event;
   files: File[];
@@ -56,23 +64,24 @@ interface UploadEvent {
     FileUploadModule,
     ToastModule,
     InputMaskModule,
-    FormatacpfDirective,  
+    FormatacpfDirective,
     ApenasNumeroDirective,
     FormatatelefoneDirective,
     ToastComponent,
     InputreadonlyDirective,
     InputpreenchidoDirective,
-  ],
+    // LoadingComponent,
+    ConfirmacaoComponent,
+    LoadingComponent,
+    ProgressbarComponent
+],
 })
-export class CurriculoComponent {
+export class CurriculoComponent implements OnInit {
 
   private retornoApi$!: any;
 
   showProgress: boolean = false;
-  isLoadingResults: boolean = false;
-  // isRateLimitReached = false;
-  // resultsLength = 0;
-  loading: boolean = false;
+  isLoadingResults: boolean = false; // habilita/desabilita o spinner
   isReadonly: boolean = true;
 
   limparFilhos($event: any) {
@@ -84,14 +93,20 @@ export class CurriculoComponent {
 
   turnoEscola: any[] | undefined;
   deficiencia: any[] | undefined;
-  tokenCpf = this.localStorageService.getLogin('idc');
+  sessionCpf :string  | null= this.sessionStorage.getLogin('cpf');
+  sessionToken :string  | null= this.sessionStorage.getLogin('token');
+
+  headers = new HttpHeaders({ 'Authorization': `Bearer ${this.sessionToken}` });
   constructor(
     private messageService: MessageService,
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
-    private localStorageService: LocalstorageService,
+    private sessionStorage: SessionstorageService,
     private toast: ToastComponent,
-    private curriculoService: CurriculoService
+    private curriculoService: CurriculoService,
+
+    // private loadingComponent: LoadingComponent,
+    private confirmacaoComponent: ConfirmacaoComponent
   
   ) { 
     this.estadoCivil = [
@@ -151,13 +166,14 @@ export class CurriculoComponent {
       { label: 'Visual', value: 'Visual' },
       { label: 'Intelectual', value: 'Intelectual' },
     ];
+    console.log('inicio');
   }
 
   curriculoForm = this.formBuilder.group({
     nome: ['', Validators.required],
-    sexo: ['F', Validators.required], // nao mudar
+    sexo: ['', Validators.required], // nao mudar
     estadoCivil: ['', Validators.required],
-    cpf: [this.tokenCpf, Validators.required],
+    cpf: [this.sessionCpf, Validators.required],
     rg: ['', Validators.required],
     orgaoEmissor: ['', Validators.required],
     dataEmissao: ['', Validators.required],
@@ -190,30 +206,100 @@ export class CurriculoComponent {
       detail: 'File Uploaded with Auto Mode',
     });
   }
+  ngOnInit() {
+   
+    if (this.sessionCpf) {
+      this.getCurriculo(this.sessionCpf);
+      
+    } else {
+      console.error('CPF is null or undefined');
+    }
+  }
+  // }
+  // async validaToken() {
+  //   console.log('dentro do valida');
+  //   if (!this.sessionToken) {
+  //     this.isLoadingResults = false;      
+  //     this.toast.toast('error', 'Erro', 'Erro ao carregar curriculo.');
+  //     return true;
+  //   }  
 
-  postCurriculo(valores: any) {
-    console.log('post curriculo ', valores);
-    let mensagem: string = '';
-    this.loading = true;
-    this.curriculoService.postCurriculo(valores).subscribe(
+  // }
+   getCurriculo(cpf: string) {
+    this.isLoadingResults = true;
+    console.log('passou do valida')    
+
+// if ( await this.validaToken()) {
+    this.curriculoService.getCurriculo(cpf, this.headers).subscribe(
       (data: any) => {
-        if (Array.isArray(data)) {
-          mensagem = JSON.parse(data[0][0].result).status;
-          console.log('result linha 82', JSON.parse(data[0][0].result).status);
-          this.loading = false;
-          this.toast.toast('success', 'Sucesso', mensagem);
+      
+        if (data.length > 0 && data[0].nome) {
+          try {
+            console.log(data[0].nome)
+            // const nome = JSON.parse(data[0].nome); // Verifica se é um JSON válido
+            this.curriculoForm.patchValue({
+              nome: data[0].nome,
+              sexo: data[0].sexo,
+              estadoCivil: data[0].estadoCivil,
+              cpf: data[0].cpf,
+              rg: data[0].rg,
+              orgaoEmissor: data[0].orgaoEmissor,
+              dataEmissao: data[0].dataEmissao,
+              estadoEmissor: data[0].estadoEmissor,
+              dataNascimento: data[0].dataNascimento,
+              nomePai: data[0].nomePai,
+              nomeMae: data[0].nomeMae,
+              grauInstrucao: data[0].grauInstrucao,
+              estudaAtualmente: data[0].estudaAtualmente,
+              telefone: data[0].telefone,
+              email: data[0].email,
+              turno: data[0].turno,
+              filhos: data[0].filhos,
+              numFilhos: data[0].numFilhos,
+              pcd: data[0].pcd,
+              deficiencia: data[0].deficiencia,
+          })
+          this.isLoadingResults = false;
+          } catch (error:any) {
+            this.isLoadingResults = false;
+            console.error('Erro ao fazer parse do nome:', error);
+            this.toast.toast('error', 'Erro', error);
+          }
         } else {
-          console.log('result2', JSON.parse(JSON.stringify(data)).error);
-          mensagem = JSON.parse(JSON.stringify(data)).error;
-          this.toast.toast('error', 'Erro', mensagem);
-          this.loading = false;
+          this.isLoadingResults = false;        
+          console.warn('Nenhum dado encontrado para o CPF:', cpf);
         }
-        this.isLoadingResults = false;
-        this.loading = false;
       },
       (error: any) => {
-        console.log('error aqio', error);
-        this.loading = false;
+        this.isLoadingResults = false;
+        this.toast.toast('error', 'Erro', error);  
+        this.showProgress = true;   
+      
+      }
+    );
+  }
+
+
+
+  postCurriculo(valores: any) {
+ 
+    let mensagem: string = '';
+    this.isLoadingResults = true;
+    
+    this.curriculoService.postCurriculo(valores, this.headers).subscribe(
+      (data: any) => {
+        if (Array.isArray(data)) {
+          mensagem = JSON.parse(data[0][0].result).status;        
+          this.isLoadingResults = false;
+          this.toast.toast('success', 'Sucesso', mensagem);
+        } else {       
+          mensagem = JSON.parse(JSON.stringify(data)).error;
+          this.toast.toast('error', 'Erro', mensagem);
+          this.isLoadingResults = false;
+        }
+      },
+      (error: any) => {      
+        this.isLoadingResults = false;
         this.toast.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
       }
     );

@@ -17,6 +17,8 @@ hr:not([size]) {
 .titulo {
   /* padding-top: 0.3rem; */
   color: #606062;
+  align-items: center;
+  justify-content: center;
   font-size: 1.72rem;
   font-weight: 400;
   font-family: Montserrat, Arial, Tahoma, sans-serif;

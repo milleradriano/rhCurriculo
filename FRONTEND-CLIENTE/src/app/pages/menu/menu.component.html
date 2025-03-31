@@ -20,6 +20,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar class="toolbar">
+      <h1 class="titulo"> {{ nomeCandidato }}</h1>
       @if (isHandset$ | async) {
       <button
         type="button"
@@ -31,7 +32,6 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
-      <h1 class="titulo">Cadastro de curriculo</h1>
       
     </mat-toolbar><hr>
     <router-outlet></router-outlet>

@@ -63,12 +63,10 @@ label {
   text-transform: uppercase;
  } */
 /* #cep e . cep devem ser ajustados para dimensões diferentes */
-#cep {
-  width: 5rem;
 
-}
 .cep {
-  width: calc(15rem - 0.5rem);
+  width: 20rem;
+ 
 }
 
 #estado,
@@ -98,13 +96,16 @@ label {
   display: flex;
   flex-direction: row;
 }
+ #btnBuscaCep{
+  width: 15rem;
+}
 .botaoSalvar {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .pi{
   color:#fff

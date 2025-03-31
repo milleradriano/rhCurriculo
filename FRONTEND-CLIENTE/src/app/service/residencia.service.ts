@@ -12,22 +12,22 @@ export class ResidenciaService {
   private url = environment.api
   constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object,private httpClient: HttpClient) { }
 
-getCep(cep: string): Observable<interfaceCep> {
+getCep(cep: string, headers?: any): Observable<interfaceCep> {
   return this.httpclient
-    .get<interfaceCep>(this.url+'/cep/?cep='+cep)
+    .get<interfaceCep>(this.url+'/cep/?cep='+cep, { headers })
     .pipe(shareReplay(1), catchError(this.handleError));    
 }
 
-getResidencia(valores: any): Observable<interfaceResidencia> {
+getResidencia(valores: any,headers?: any): Observable<interfaceResidencia> {
   return this.httpclient
-    .get<interfaceResidencia>(this.url+'/residencia')
+    .get<interfaceResidencia>(this.url+'/residencia', { params: valores, headers })
     .pipe(shareReplay(1), catchError(this.handleError));
 }
 
 
-postResidencia(valores: any): Observable<interfaceResidencia> {
+postResidencia(valores: any,headers?: any): Observable<interfaceResidencia> {
   return this.httpclient
-    .post<interfaceResidencia>(this.url+'/cep', valores)
+    .post<interfaceResidencia>(this.url+'/cep', valores, { headers })
     .pipe(shareReplay(1), catchError(this.handleError));
 
 }  

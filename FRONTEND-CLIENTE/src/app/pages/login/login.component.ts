@@ -24,7 +24,7 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
-import { LocalstorageService } from '../../service/localstorage.service';
+import { SessionstorageService } from '../../service/sessionlstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { PasswordModule } from 'primeng/password';
@@ -93,41 +93,28 @@ export class LoginComponent {
     });
     postLogin($event: Partial<{ cpf: string; senha: string }>) {
   
-    
+    const cpf  = $event.cpf;
     this.isLoadingResults = true;
     this.loginService.postLogin($event).subscribe(
       (data: any) => {
         this.isLoadingResults = false;
-        console.log("login 102", data);
+      
         if (data.token) {
-          //recebe token caso login seja bem sucedido 
-        console.log("token", data.token);
-        sessionStorage.setItem("token", data.token);    
-        this.router.navigate(["/menu"]);
+          //recebe token caso login seja bem sucedido       
+        this.isLoadingResults = false;
+        sessionStorage.setItem("token", data.token); 
+        sessionStorage.setItem("cpf", JSON.stringify(cpf));
+        this.router.navigate(["/menu/curriculo"]);
         }
         else{
           this.toast.toast("error", "", data);
         }
       },
       (error: any) => {
-        this.isLoadingResults = false;
-        console.log("login 109", error);
+        this.isLoadingResults = false;        
         this.toast.toast("error", "", error);
       }
     );
-    // this.loginService.postLogin($event).subscribe(
-    //   (data:any) => {
-    //              //recebe token caso login seja bem sucedido
-    //       this.isLoadingResults = false;
-    //       console.log('login 102', typeof(data));          
-          
-    //     },
-    //   (error:any)=>{
-    //     this.isLoadingResults = false;
-    //     console.log('login 109', error);
-    //     this.toast.toast('error', '' , error);
-    //   }
-    // );  
   }
 
   
