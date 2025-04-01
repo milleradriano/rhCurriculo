@@ -98,12 +98,12 @@ export class LoginComponent {
     this.loginService.postLogin($event).subscribe(
       (data: any) => {
         this.isLoadingResults = false;
-      
+      console.log('login ',data);
         if (data.token) {
           //recebe token caso login seja bem sucedido       
         this.isLoadingResults = false;
         sessionStorage.setItem("token", data.token); 
-        sessionStorage.setItem("cpf", JSON.stringify(cpf));
+        sessionStorage.setItem("cpf", JSON.stringify(cpf));       
         this.router.navigate(["/menu/curriculo"]);
         }
         else{

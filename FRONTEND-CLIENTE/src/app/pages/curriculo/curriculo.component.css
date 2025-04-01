@@ -103,7 +103,7 @@ label {
 #envioOpcionalMensagem {
   color: red;
 }
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 700px) {
   #nome,
   #nomePai,
   #nomeMae,
@@ -119,9 +119,9 @@ label {
   #complemento,
   #telefone,
   #email,
-  #dataNascimento,
+ 
   #estado {
-    width: 96%;
+    width: 100%;
   }
   .enviarArquivo {
     display: flex;
@@ -136,6 +136,7 @@ label {
     justify-content: center;
     margin-top: 3rem;
   }
+  .nome,
   .nomeMae,
   .nomePai {
     width: 100%;
@@ -144,7 +145,7 @@ label {
   .documento,
   .informacaoDocumento,
   .parente,
-  .filhos,
+  /* .filhos, */
   .pcd {
     flex-direction: column;
   }

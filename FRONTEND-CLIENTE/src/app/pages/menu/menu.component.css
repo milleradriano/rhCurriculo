@@ -76,8 +76,7 @@ hr {
 @media screen and (max-width: 1024px) {
   .titulo {
    margin-left: 0.75rem;
-    font-size: 1.5rem;
-    
+    font-size: 1rem;    
   
   }
   .toolbar {

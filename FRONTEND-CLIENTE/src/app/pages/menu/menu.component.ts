@@ -30,9 +30,11 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 export class MenuComponent {
   private breakpointObserver = inject(BreakpointObserver);
   items: MenuItem[] = [];
-  nomeCandidato: string = '';
+
+  nomeCandidato: string = "Seja bem vindo, " + sessionStorage.getItem('nome')?.replace(/["']/g, '') || '';
+
   constructor(private httpClient: HttpClient) {
-    this.nomeCandidato = 'Seja bem vindo, '+'Adriano Sartori Miller'
+    
     this.items = [
      
       {

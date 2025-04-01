@@ -188,7 +188,7 @@ export class CurriculoComponent implements OnInit {
       '',
       [
         Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        Validators.pattern('^[a-z0-9._%+-]+[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ],
     ],
     turno: [''],
@@ -235,29 +235,30 @@ export class CurriculoComponent implements OnInit {
       
         if (data.length > 0 && data[0].nome) {
           try {
-            console.log(data[0].nome)
+            console.log("valore ",data[0])
+            sessionStorage.setItem("nome", JSON.stringify(data[0].nome)); // Armazena o nome no sessionStorage
             // const nome = JSON.parse(data[0].nome); // Verifica se é um JSON válido
             this.curriculoForm.patchValue({
               nome: data[0].nome,
               sexo: data[0].sexo,
-              estadoCivil: data[0].estadoCivil,
+              estadoCivil: data[0].estadocivil,
               cpf: data[0].cpf,
               rg: data[0].rg,
-              orgaoEmissor: data[0].orgaoEmissor,
-              dataEmissao: data[0].dataEmissao,
-              estadoEmissor: data[0].estadoEmissor,
-              dataNascimento: data[0].dataNascimento,
-              nomePai: data[0].nomePai,
-              nomeMae: data[0].nomeMae,
-              grauInstrucao: data[0].grauInstrucao,
-              estudaAtualmente: data[0].estudaAtualmente,
+              orgaoEmissor: data[0].orgaoemissorrg,
+              dataEmissao: data[0].dataexpedicaorg,
+              estadoEmissor: data[0].estadorg,
+              dataNascimento: data[0].datanascimento,
+              nomePai: data[0].nomepai,
+              nomeMae: data[0].nomemae,
+              grauInstrucao: data[0].grauinstrucao,
+              estudaAtualmente: data[0].estudaatualmente,
               telefone: data[0].telefone,
               email: data[0].email,
-              turno: data[0].turno,
-              filhos: data[0].filhos,
-              numFilhos: data[0].numFilhos,
+              turno: data[0].turnoestuda,
+              filhos: data[0].possuifilho,
+              numFilhos: data[0].numfilho,
               pcd: data[0].pcd,
-              deficiencia: data[0].deficiencia,
+              deficiencia: data[0].pcddeficiencia,
           })
           this.isLoadingResults = false;
           } catch (error:any) {
