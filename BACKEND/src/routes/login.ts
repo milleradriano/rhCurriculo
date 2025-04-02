@@ -6,12 +6,13 @@ const  [
     nome,
     email, 
     senha,
-    termo] = valores;
-    console.log("valores", valores);
+    termo] = valores[0];
+
+    console.log("valores no cadastralogin ", valores[0]);
     return new Promise((resolve, reject) => {
         PoolMysql.query(
             "call postcadastralogin(?,?,?,?,?)",
-            [cpf,nome, email, senha, termo],
+            [cpf, nome, email, senha, termo],
             (error: any, results: unknown, fields: any) => {
                 if (error) {
                     //   getLog("error", JSON.stringify(error));
@@ -28,11 +29,12 @@ const  [
 
 const  postLogin = (valores: any) => {
     const  cpf = valores;
-    // console.log("CPF valores no postLogin ", cpf);
+     console.log("CPF valores no postLogin ", cpf);
     return new Promise((resolve, reject) => {
         PoolMysql.query(
             "call postlogin(?)",
-            [cpf],
+            ['81580053068'],
+           // [valores.cpf.replace(/\D/g, "")],
             (error: any, results: unknown, fields: any) => {
                 if (error) {
                     //   getLog("error", JSON.stringify(error));

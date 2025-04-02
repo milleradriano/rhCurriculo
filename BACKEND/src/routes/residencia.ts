@@ -18,38 +18,12 @@ const getResidencia = () => {
 };
 
 const postResidencia = (valores: any) => {
- 
-  const [
-    cpf, 
-    primeiroemprego,
-    ultimoempregoempresa,
-    ultimoempregocidade,
-    ultimoempregocargo,
-    ultimoempregoinicio,
-    ultimoempregoatribuicao,
-    penultimoempregoempresa,
-    penultimoempregocidade,
-    penultimoempregocargo,
-    penultimoempregoinicio,
-    penultimoempregoatribuicao
-  ] = valores;
+  // const [idcandidato, cpf, cep, cidade, bairro, endereco, estado, numero] = valores;
+  console.log("postResidencia ", valores);
   return new Promise((resolve, reject) => {
     PoolMysql.query(
-      "call postResidencia(?,?,?,?,?,?,?,?,?,?,?,?)",
-      [
-        cpf,     
-        primeiroemprego,
-        ultimoempregoempresa,
-        ultimoempregocidade,
-        ultimoempregocargo,
-        ultimoempregoinicio,
-        ultimoempregoatribuicao,
-        penultimoempregoempresa,
-        penultimoempregocidade,
-        penultimoempregocargo,
-        penultimoempregoinicio,
-        penultimoempregoatribuicao
-      ],
+      "call postResidencia(?,?,?,?,?,?,?)",
+      valores,
       (error: any, results: unknown) => {
         if (error) {
           console.error("Erro aqui Atualiza Residencia");
@@ -63,7 +37,8 @@ const postResidencia = (valores: any) => {
         }
       }
     );
-  });
+  }
+);
 };
 
 const delResidencia = (id: number) => {

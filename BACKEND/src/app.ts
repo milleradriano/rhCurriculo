@@ -70,14 +70,14 @@ const uploadLogo = multer({
 
 app.post("/cadastro-login", async (req: Request, res: Response) => {
   console.log("cadastro-login", req.body);
-  const { cpf, nome, email, termoUso } = req.body;
-
+  
   const senha = await hashPassword(req.body.senha);
-
+  
+  const valor =  [ req.body.cpf.replace(/[^0-9]/g, ""), req.body.nome, req.body.email, senha, req.body.termoUso]
   //tokenGeral = await generateToken({ email, senha }); //jwt.sign({ email, senha }, SECRET);   // gerar o token jwt sem usar o service.ts
-
+console.log("valor", valor);
   login
-    .postCadastraLogin([cpf, nome, senha, email, termoUso])
+    .postCadastraLogin([valor])
     .then((result: any) => {
       res.send(result);
     });
@@ -88,9 +88,9 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
 //************************LOGIN USUARIO ***************************************/
 
 app.post("/login", async (req: Request, res: Response) => {
-  const cpf = req.body.cpf;
+  const cpf = req.body.cpf.replace(/[^0-9]/g, "");
   let retorno, situacao;
-
+console.log("login", req.body);
   try {
     await login.postLogin([cpf]).then(async (result: any) => {
       retorno = result[0][0].SENHA;
@@ -168,7 +168,8 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
   }
   console.log("post curriculo depois ", JSON.stringify(req.body));
   const dados = [
-    req.body.cpf,
+    req.body.idcandidato,
+    req.body.cpf.replace(/[^0-9]/g, ""),
     req.body.nome,
     req.body.dataNascimento,
     req.body.sexo,
@@ -205,21 +206,6 @@ console.log('dados no post curriculo',dados)
   }
 });
 /**********************FIM CURRICULO ******************************/
-//*************************INICIO CEP  *************************/
-app.get("/cep", verifyToken, async (req: Request, res: Response) => {
-  console.log("cep ", verifyToken);
-  let cepFormatado: string = (req.query.cep as string).replace(/[^0-9]/g, "");
-  let tamanhoCep: number;
-  tamanhoCep = cepFormatado.length as number;
-  if (tamanhoCep === 8) {
-    cep.getCep(cepFormatado).then((result: any) => {
-      res.send(result);
-    });
-  } else {
-    res.send({ error: "Formato inválido" });
-  }
-});
-//************************** FIM CEP **************************/
 
 //*************************INICIO VAGAS ***********************/
 app.get("/vaga/", async (req: Request, res: Response) => {
@@ -273,6 +259,22 @@ app.delete("/empresa/:id", verifyToken, async (req: Request, res: Response) => {
 
 //************************** FIM EMPRESA *************************/
 
+//*************************INICIO CEP  *************************/
+app.get("/cep",verifyToken,  async (req: Request, res: Response) => {
+  console.log("cep ", verifyToken);
+  let cepFormatado: string = (req.query.cep as string).replace(/[^0-9]/g, "");
+  let tamanhoCep: number;
+  tamanhoCep = cepFormatado.length as number;
+  if (tamanhoCep === 8) {
+    console.log("cepFormatado ", cepFormatado);
+    cep.getCep(cepFormatado).then((result: any) => {
+      res.send(result);
+    });
+  } else {
+    res.send({ error: "Formato inválido" });
+  }
+});
+//************************** FIM CEP **************************/
 //**************************INICIA RESIDENCIA*********************/
 
 app.get("/residencia/", verifyToken, async (req: Request, res: Response) => {
@@ -280,26 +282,14 @@ app.get("/residencia/", verifyToken, async (req: Request, res: Response) => {
   res.send(result);
 });
 
-app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
-  console.log("post residencia ", req.body);
-  const valores = [
-    req.body.cpf,
-    req.body.primeiroemprego,
-    req.body.ultimoempregoempresa,
-    req.body.ultimoempregocidade,
-    req.body.ultimoempregocargo,
-    req.body.ultimoempregoinicio,
-    req.body.ultimoempregoatribuicao,
-    req.body.penultimoempregoempresa,
-    req.body.penultimoempregocidade,
-    req.body.penultimoempregocargo,
-    req.body.penultimoempregoinicio,
-    req.body.penultimoempregoatribuicao,
-  ];
-  residencia.postResidencia(valores).then((result: any) => {
+app.post("/residencia",  async (req: Request, res: Response) => {
+  console.log("valores req ", req.body);
+    
+  console.log("valores residencia ", req.body);
+  residencia.postResidencia(req.body).then((result: any) => {
     res.send(result);
   });
-  console.log("post residencia ", valores);
+  console.log("post residencia ");
 });
 
 //**************************FIM RESIDENCIA*************************/
