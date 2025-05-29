@@ -1,4 +1,5 @@
 export interface interfaceCurriculo {
+    idcandidato: string;
     nome: string;
     sexo: string;
     estadoCivil: string;
@@ -19,13 +20,5 @@ export interface interfaceCurriculo {
     email: string;
     pcd: string;
     deficiencia: string;
-    // cep: string;
-    // uf: string;
-    // cidade: string;
-    // bairro: string;
-    // rua: string;
-    // numero: string;
-    // complemento: string;    
-    // cargo: string;
-    // empresa: string;
+
 }

@@ -48,6 +48,7 @@ component:RecuperaSenhaComponent,
         component: ResidenciaComponent,
         // pathMatch: 'full',
       },
+  
       {
         path: 'experiencia',
         component: ExperienciaComponent,

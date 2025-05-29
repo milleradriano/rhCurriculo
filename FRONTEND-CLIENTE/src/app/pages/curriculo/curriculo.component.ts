@@ -1,4 +1,4 @@
-import { Component, inject, Input, input,OnInit } from '@angular/core';
+import { Component, inject, Input, input, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -17,7 +17,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { FileUploadModule } from 'primeng/fileupload';
-import { ToastModule } from 'primeng/toast';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
 import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
@@ -34,9 +33,10 @@ import { interfaceCurriculo } from '../../interface/curriculo';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { ConfirmacaoComponent } from '../../components/confirmacao/confirmacao.component';
 import { HttpHeaders } from '@angular/common/http';
-import { LoadingComponent } from "../../components/loading/loading.component";
-import { ProgressbarComponent } from "../../components/progressbar/progressbar.component";
+import { LoadingComponent } from '../../components/loading/loading.component';
+import { ProgressbarComponent } from '../../components/progressbar/progressbar.component';
 import { Console } from 'node:console';
+
 
 interface UploadEvent {
   originalEvent: Event;
@@ -62,7 +62,6 @@ interface UploadEvent {
     ReactiveFormsModule,
     ButtonModule,
     FileUploadModule,
-    ToastModule,
     InputMaskModule,
     FormatacpfDirective,
     ApenasNumeroDirective,
@@ -73,11 +72,10 @@ interface UploadEvent {
     // LoadingComponent,
     ConfirmacaoComponent,
     LoadingComponent,
-    ProgressbarComponent
-],
+    ProgressbarComponent,
+  ],
 })
 export class CurriculoComponent implements OnInit {
-
   private retornoApi$!: any;
 
   showProgress: boolean = false;
@@ -93,22 +91,21 @@ export class CurriculoComponent implements OnInit {
 
   turnoEscola: any[] | undefined;
   deficiencia: any[] | undefined;
-  sessionCpf :string  | null= this.sessionStorage.getLogin('cpf');
-  sessionToken :string  | null= this.sessionStorage.getLogin('token');
+  sessionCpf: string | null = this.sessionStorage.getLogin('cpf');
+  sessionToken: string | null = this.sessionStorage.getLogin('token');
 
-  headers = new HttpHeaders({ 'Authorization': `Bearer ${this.sessionToken}` });
+  headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
   constructor(
     private messageService: MessageService,
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
     private sessionStorage: SessionstorageService,
-    private toast: ToastComponent,
+    private mensagem: ToastComponent,
     private curriculoService: CurriculoService,
 
     // private loadingComponent: LoadingComponent,
     private confirmacaoComponent: ConfirmacaoComponent
-  
-  ) { 
+  ) {
     this.estadoCivil = [
       { label: 'Solteiro', value: 'Solteiro' },
       { label: 'Casado', value: 'Casado' },
@@ -198,7 +195,6 @@ export class CurriculoComponent implements OnInit {
     deficiencia: [''],
   });
 
-  
   onBasicUploadAuto(event: any) {
     this.messageService.add({
       severity: 'info',
@@ -207,42 +203,42 @@ export class CurriculoComponent implements OnInit {
     });
   }
   ngOnInit() {
-   
     if (this.sessionCpf) {
       this.getCurriculo(this.sessionCpf);
-      
     } else {
       console.error('CPF is null or undefined');
     }
   }
-  // }
-  // async validaToken() {
-  //   console.log('dentro do valida');
-  //   if (!this.sessionToken) {
-  //     this.isLoadingResults = false;      
-  //     this.toast.toast('error', 'Erro', 'Erro ao carregar curriculo.');
-  //     return true;
-  //   }  
 
-  // }
-   getCurriculo(cpf: string) {
+ 
+  getCurriculo(cpf: string) {
     this.isLoadingResults = true;
-    console.log('passou do valida')    
+    console.log('passou do valida');
 
-// if ( await this.validaToken()) {
+    // if ( await this.validaToken()) {
     this.curriculoService.getCurriculo(cpf, this.headers).subscribe(
       (data: any) => {
-      
         if (data.length > 0 && data[0].nome) {
           try {
-            console.log("valore ",data[0])
-            sessionStorage.setItem("nome", JSON.stringify(data[0].nome)); // Armazena o nome no sessionStorage
+            console.log('valore ', data[0]);
+            // Armazena o id e nome no sessionStorage ao carregar o componente
+            sessionStorage.setItem('nome', JSON.stringify(data[0].nome));
+            sessionStorage.setItem('idcand',JSON.stringify(data[0].idcandidato)
+            );
+            // Armazena o nome no sessionStorage
             // const nome = JSON.parse(data[0].nome); // Verifica se é um JSON válido
             this.curriculoForm.patchValue({
               nome: data[0].nome,
               sexo: data[0].sexo,
               estadoCivil: data[0].estadocivil,
-              cpf: data[0].cpf,
+              cpf:
+                data[0].cpf.substring(0, 3) +
+                '.' +
+                data[0].cpf.substring(3, 6) +
+                '.' +
+                data[0].cpf.substring(6, 9) +
+                '-' +
+                data[0].cpf.substring(9),
               rg: data[0].rg,
               orgaoEmissor: data[0].orgaoemissorrg,
               dataEmissao: data[0].dataexpedicaorg,
@@ -259,49 +255,48 @@ export class CurriculoComponent implements OnInit {
               numFilhos: data[0].numfilho,
               pcd: data[0].pcd,
               deficiencia: data[0].pcddeficiencia,
-          })
-          this.isLoadingResults = false;
-          } catch (error:any) {
+            });
+            this.isLoadingResults = false;
+          } catch (error: any) {
             this.isLoadingResults = false;
             console.error('Erro ao fazer parse do nome:', error);
-            this.toast.toast('error', 'Erro', error);
+            this.mensagem.toast('error', 'Erro', error);
           }
         } else {
-          this.isLoadingResults = false;        
+          this.isLoadingResults = false;
           console.warn('Nenhum dado encontrado para o CPF:', cpf);
         }
       },
       (error: any) => {
         this.isLoadingResults = false;
-        this.toast.toast('error', 'Erro', error);  
-        this.showProgress = true;   
-      
+        this.mensagem.toast('error', 'Erro', error);
+        this.showProgress = true;
       }
     );
   }
 
-
-
   postCurriculo(valores: any) {
- 
-    let mensagem: string = '';
     this.isLoadingResults = true;
-    
+    const idcandidato = sessionStorage.getItem('idcand');
+    const cpf = sessionStorage.getItem('cpf');  
+    valores.cpf = valores.cpf.replace(/\D/g, '');
+    /*Adiciona o idcandidato ao objeto valores*/
+    valores = { ...valores, idcandidato };   
     this.curriculoService.postCurriculo(valores, this.headers).subscribe(
-      (data: any) => {
-        if (Array.isArray(data)) {
-          mensagem = JSON.parse(data[0][0].result).status;        
-          this.isLoadingResults = false;
-          this.toast.toast('success', 'Sucesso', mensagem);
-        } else {       
-          mensagem = JSON.parse(JSON.stringify(data)).error;
-          this.toast.toast('error', 'Erro', mensagem);
-          this.isLoadingResults = false;
+      (data) => {
+        this.isLoadingResults = false;
+       
+        if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
+          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
+          console.log('SALVO');
+        } else {
+          this.mensagem.toast('error', 'Erro', 'Não atualizado');
+          console.log('NAO SALVO');
         }
       },
-      (error: any) => {      
+      (error: any) => {
         this.isLoadingResults = false;
-        this.toast.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
+        this.mensagem.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
       }
     );
   }

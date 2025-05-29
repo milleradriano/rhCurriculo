@@ -1,9 +1,11 @@
 export interface interfaceResidencia {
+    idcandidato: string;    
+    cpf: string;
     cep: string;
     estado: string;
     cidade: string;
+    endereco: string;
     bairro: string;
-    rua: string;
     numero: string;
 }
 

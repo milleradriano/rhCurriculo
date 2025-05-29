@@ -1,15 +1,16 @@
 <div class="container">
+  <app-toast></app-toast>
   @if (isLoadingResults){
+    <app-loading></app-loading>
     <div class="loading">
-      <app-loading></app-loading>
-    </div>
-  }
-  @if(showProgress){
-    <div class="loading">
-      <app-progressbar></app-progressbar>
     </div>
   }
   <form [formGroup]="curriculoForm">
+    @if(showProgress){
+      <div class="loading">
+        <app-progressbar></app-progressbar>
+      </div>
+    }
     <!-- <app-uploaddocumento></app-uploaddocumento> -->
     <div class="titulo">
       <h1>Dados pessoais</h1>
@@ -71,6 +72,8 @@
             appFormatacpf
             appInputreadonly
             appInputpreenchido
+            
+            
           />
         </div>
         <div class="rg">
@@ -324,12 +327,11 @@
         icon="pi pi-check"
         severity="success"
         label="Salvar os dados pessoais"
-        [disabled]="curriculoForm.valid"
+        [disabled]="!curriculoForm.valid"
         (click)="postCurriculo(curriculoForm.value)"
       ></p-button>
     </div>
   </form>
+ 
   <hr />
-  <app-toast></app-toast>
-
 </div>

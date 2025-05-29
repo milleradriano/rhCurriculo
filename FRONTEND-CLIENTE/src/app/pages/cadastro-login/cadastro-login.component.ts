@@ -36,6 +36,8 @@ import { DividerModule } from 'primeng/divider';
 import { get } from 'http';
 import { CadastroLoginService } from '../../service/cadastro-login.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
+import { routes } from '../../app.routes';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -65,6 +67,7 @@ import { LoadingComponent } from '../../components/loading/loading.component';
     PasswordModule,
     DividerModule,
     LoadingComponent,
+    
   ],
   templateUrl: './cadastro-login.component.html',
   styleUrl: './cadastro-login.component.css',
@@ -76,7 +79,8 @@ export class CadastroLoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private toast: ToastComponent,
-    private cadastraLoginservice: CadastroLoginService
+    private cadastraLoginservice: CadastroLoginService,
+    private routes: Router
   ) {}
 
   cadastraLoginForm = this.formBuilder.group({
@@ -171,10 +175,15 @@ let valores = {
           let codigo = JSON.parse(data[0][0].result).codigo;
           let mensagem = JSON.parse(data[0][0].result).status;
           if (codigo == '0') {
+
             this.toast.toast('success', 'Sucesso', mensagem);
+            setTimeout(() => {
+              this.routes.navigate(['/']);
+            }, 3000);
           }
           if (codigo == '1') {
             this.toast.toast('error', 'Erro', mensagem);
+
           }
         } else {
           let mensagem = JSON.parse(JSON.stringify(data)).error;

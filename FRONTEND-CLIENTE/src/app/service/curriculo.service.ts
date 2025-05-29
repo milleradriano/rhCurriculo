@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError, catchError, shareReplay } from 'rxjs';
+import { Observable, throwError, catchError, shareReplay, take } from 'rxjs';
 import { interfaceCurriculo } from '../interface/curriculo';
 import { environment } from '../../environments/environment.prod';
 
@@ -22,7 +22,7 @@ export class CurriculoService {
     return this.httpclient
       .get<interfaceCurriculo[]>(this.url + '/curriculo', { params, headers })
       .pipe(
-        shareReplay(1), 
+       take(1), 
         catchError(this.handleError)
       );
   }
@@ -32,7 +32,7 @@ export class CurriculoService {
     return this.httpclient
       .post<interfaceCurriculo>(this.url + '/curriculo', valores, { headers })
       .pipe(
-        shareReplay(1),
+       take(1),
         catchError(this.handleError)
       );   
   }

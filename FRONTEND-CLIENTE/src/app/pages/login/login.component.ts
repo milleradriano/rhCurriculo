@@ -88,11 +88,11 @@ export class LoginComponent {
   
   
     loginForm = this.formBuilder.group({
-      cpf: ['81580053068', Validators.required],
-      senha: ['12', Validators.required],
+      cpf: ['', Validators.required],
+      senha: ['', Validators.required],
     });
     postLogin($event: Partial<{ cpf: string; senha: string }>) {
-  
+
     const cpf  = $event.cpf;
     this.isLoadingResults = true;
     this.loginService.postLogin($event).subscribe(
@@ -100,10 +100,12 @@ export class LoginComponent {
         this.isLoadingResults = false;
       console.log('login ',data);
         if (data.token) {
+        
+
           //recebe token caso login seja bem sucedido       
         this.isLoadingResults = false;
         sessionStorage.setItem("token", data.token); 
-        sessionStorage.setItem("cpf", JSON.stringify(cpf));       
+        sessionStorage.setItem("cpf", JSON.stringify(cpf).replace(/\D/g, ''));       
         this.router.navigate(["/menu/curriculo"]);
         }
         else{

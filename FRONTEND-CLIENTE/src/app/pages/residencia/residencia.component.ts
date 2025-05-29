@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +15,6 @@ import { RadioButtonClickEvent, RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -32,7 +31,7 @@ import { HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-residencia',
   standalone: true,
-  providers: [MessageService],
+  providers: [],
   imports: [
     MatGridListModule,
     MatMenuModule,
@@ -59,20 +58,21 @@ import { HttpHeaders } from '@angular/common/http';
   templateUrl: './residencia.component.html',
   styleUrl: './residencia.component.css',
 })
-export class ResidenciaComponent {
+export class ResidenciaComponent implements OnInit {
   estado: any[''] | undefined;
   loading: boolean = false;
   showProgress: boolean = false;
+  cpf: any = this.sessionStorage.getLogin('cpf')?.replace(/\D/g, '');
+  idcandidato: any = this.sessionStorage.getLogin('idcand');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
-
   headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
 
   constructor(
-    private messageService: MessageService,
+    
     private formbuilder: FormBuilder,
     private residenciaService: ResidenciaService,
-    private toast: ToastComponent,
-    private sessionStorage: SessionstorageService,
+    private mensagem: ToastComponent,
+    private sessionStorage: SessionstorageService
   ) {
     this.estado = [
       { label: 'AC', value: 'AC' },
@@ -104,45 +104,89 @@ export class ResidenciaComponent {
       { label: 'TO', value: 'TO' },
     ];
   }
+  ngOnInit(): void {
+    if (this.cpf || this.idcandidato) {
+      console.log('cpf no inicio', this.cpf);
+      this.getResidencia(this.idcandidato, this.cpf);
+    } else {
+      console.error('CPF is null or undefined');
+    }
+  }
   residenciaForm = this.formbuilder.group({
-    cidade: ['', Validators.required],
     cep: ['', Validators.required],
     estado: ['', Validators.required],
+    cidade: ['', Validators.required],
     endereco: ['', Validators.required],
-    numero: ['', Validators.required],
     bairro: ['', Validators.required],
+    numero: ['', Validators.required],
   });
 
   localizaCep(cep: any) {
-    this.loading = true;
-    this.residenciaService.getCep(cep,this.headers).subscribe((res) => {
-      console.log(res);
-      this.residenciaForm.patchValue({
-        cep: res.cep,
-        estado: res.uf,
-        cidade: res.localidade,
-        endereco: res.logradouro,
-        bairro: res.bairro,
+    console.log('dentro do cep', cep);
+  this.residenciaForm.patchValue({
+    numero: ''});
+    try {
+      this.loading = true;
+      this.residenciaService.getCep(cep, this.headers).subscribe((res: any) => {
+        console.log('cep', res);
+        this.residenciaForm.patchValue({
+          cep: res.cep,
+          estado: res.uf,
+          cidade: res.localidade,
+          endereco: res.logradouro,
+          bairro: res.bairro,
+          
+        });
       });
-    });
+    } catch {
+      this.mensagem.toast('error', 'Erro', 'Cep inválido');
+    }
     this.loading = false;
   }
   alerta() {
     console.log('dentro do alerta');
-    this.toast.toast('success', 'Sucesso', 'Residência cadastrada');
+    this.mensagem.toast('success', 'Sucesso', 'Residência cadastrada');
   }
+
+  getResidencia(idcandidato: string, cpf: string) {
+    this.loading = true;
+    let valores: any = { idcandidato: idcandidato, cpf: cpf };
+    console.log('valores', valores);
+    this.residenciaService
+      .getResidencia(valores, this.headers)
+      .subscribe((res: any) => {
+        console.log('residencia fora', res);
+        this.residenciaForm.patchValue({
+          cep: res[0].cep.substring(0, 5) + '-' + res[0].cep.substring(5, 8),
+          estado: res[0].estado,
+          cidade: res[0].cidade,
+          endereco: res[0].endereco,
+          bairro: res[0].bairro,
+          numero: res[0].num,
+        });
+        console.log('residencia dentro', res);
+        this.loading = false;
+      });
+  }
+
   postResidencia(valores: any, headers?: any) {
     this.loading = true;
-    console.log('POST RESIDENCIA', valores);
+    valores = { ...valores, cpf: this.cpf, idcandidato: this.idcandidato };
+    valores.cep = valores.cep.replace(/\D/g, '');
     this.residenciaService.postResidencia(valores, this.headers).subscribe(
       (data) => {
         this.loading = false;
-        this.toast.toast('success', 'Sucesso', 'Residência cadastrada');
+        console.log('RESIDENCIA', JSON.parse(JSON.stringify(data)).status);
+        if (JSON.parse(JSON.stringify(data)).status == '0') {
+          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
+        } else {
+          this.mensagem.toast('error', 'Erro', 'Não atualizado');
+        }
       },
       (error) => {
         this.loading = false;
-        this.toast.toast('error', 'Erro', 'Indisponível tente mais tarde.');
-        console.log('error aqio', error);
+        this.mensagem.toast('error', 'Erro', 'Indisponível tente mais tarde.');
+        // console.log('error aqio', error);
       }
     );
   }
