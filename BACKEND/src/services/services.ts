@@ -38,7 +38,7 @@ function generateToken(user: {cpf:string, senha:string}) {
 function verifyToken(req : any, res : any, next: any) {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1]; // Pega apenas o token sem o "Bearer"
-  console.log("verifyToken no service", authHeader);
+  
   if (req.path === "/cep") {
     console.log("libera cep");
     return next(); // Se for a rota de login, não precisa verificar o token

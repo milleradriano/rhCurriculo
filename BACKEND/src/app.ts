@@ -70,17 +70,21 @@ const uploadLogo = multer({
 
 app.post("/cadastro-login", async (req: Request, res: Response) => {
   console.log("cadastro-login", req.body);
-  
+
   const senha = await hashPassword(req.body.senha);
-  
-  const valor =  [ req.body.cpf.replace(/[^0-9]/g, ""), req.body.nome, req.body.email, senha, req.body.termoUso]
+
+  const valor = [
+    req.body.cpf.replace(/[^0-9]/g, ""),
+    req.body.nome,
+    req.body.email,
+    senha,
+    req.body.termoUso,
+  ];
   //tokenGeral = await generateToken({ email, senha }); //jwt.sign({ email, senha }, SECRET);   // gerar o token jwt sem usar o service.ts
-console.log("valor", valor);
-  login
-    .postCadastraLogin([valor])
-    .then((result: any) => {
-      res.send(result);
-    });
+  console.log("valor", valor);
+  login.postCadastraLogin([valor]).then((result: any) => {
+    res.send(result);
+  });
 });
 
 //**********************************************************************************/
@@ -90,7 +94,7 @@ console.log("valor", valor);
 app.post("/login", async (req: Request, res: Response) => {
   const cpf = req.body.cpf.replace(/[^0-9]/g, "");
   let retorno, situacao;
-console.log("login", req.body);
+  console.log("login", req.body);
   try {
     await login.postLogin([cpf]).then(async (result: any) => {
       retorno = result[0][0].SENHA;
@@ -128,10 +132,7 @@ console.log("login", req.body);
 //***********************  INICIO CURRICULO                   *************************/
 
 app.get("/curriculo/", verifyToken, async (req: Request, res: Response) => {
-  console.log(" get curriculo app linha 131",verifyToken);
-  console.log("get curriculo app ", req.params.cpf);
-  let cpfFormatado: string = (req.query.cpf as string).replace(/[^0-9]/g, "");
-  console.log("cpfFormatado ", cpfFormatado);
+  let cpfFormatado: string = (req.query.cpf as string).replace(/[^0-9]/g, "");  
   let tamanhoCpf: number;
   tamanhoCpf = cpfFormatado.length as number;
   if (tamanhoCpf != 11) {
@@ -139,7 +140,7 @@ app.get("/curriculo/", verifyToken, async (req: Request, res: Response) => {
     return;
   }
   //const curriculo = new Curriculo(cpfFormatado);
-  curriculo.getCurriculo(cpfFormatado).then((result: any) => {   
+  curriculo.getCurriculo(cpfFormatado).then((result: any) => {
     res.send(result);
   });
 });
@@ -155,54 +156,55 @@ const validaIdade = (dataNascimento: any) => {
   return idade;
 };
 app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
-  try{
-  console.log("post curriculo ", verifyToken);
-  console.log("post curriculo antes ", JSON.stringify(req.body));
-  var numFilhos = '0';
-  var turno = '';
-  if ( req.body.filhos === 'S' ) {
-    numFilhos = req.body.numFilhos;
-  }
-  if ( req.body.estudaAtualmente === 'S' ) {
-  turno = req.body.turno;
-  }
-  console.log("post curriculo depois ", JSON.stringify(req.body));
-  const dados = [
-    req.body.idcandidato,
-    req.body.cpf.replace(/[^0-9]/g, ""),
-    req.body.nome,
-    req.body.dataNascimento,
-    req.body.sexo,
-    req.body.email,
-    req.body.rg,
-    req.body.orgaoEmissor,
-    req.body.estadoEmissor,
-    req.body.dataEmissao,
-    req.body.nomePai,
-    req.body.nomeMae,
-    req.body.grauInstrucao,
-    req.body.pcd,
-    req.body.deficiencia,
-    req.body.estudaAtualmente,
-    turno,
-    req.body.filhos,
-    numFilhos,
-    req.body.telefone,
-    req.body.estadoCivil,
-  ];
-console.log('dados no post curriculo',dados)
-  if (validaIdade(req.body.dataNascimento) < 14) {
-    res.send({ error: "Voce precisa ser maior de 14 anos." });
-  } else {
-    curriculo.postcurriculo(dados).then((result: any) => {
-      console.log('result no post curriculo',result)
-      res.send(result);
-    });
-  }
-}
-  catch (error) {
+  try {
+    
+    console.log("post curriculo antes linha 164", (req.body));
+    var numFilhos = "0";
+    var cpf = req.body.cpf;
+   console.log("cpf ", cpf);
+    var turno = "";
+    if (req.body.filhos === "S") {
+      numFilhos = req.body.numFilhos;
+    }
+    if (req.body.estudaAtualmente === "S") {
+      turno = req.body.turno;
+    }
+   
+    const dados = [
+      req.body.idcandidato,
+      cpf,
+      req.body.nome,
+      req.body.dataNascimento,
+      req.body.sexo,
+      req.body.email,
+      req.body.rg,
+      req.body.orgaoEmissor,
+      req.body.estadoEmissor,
+      req.body.dataEmissao,
+      req.body.nomePai,
+      req.body.nomeMae,
+      req.body.grauInstrucao,
+      req.body.pcd,
+      req.body.deficiencia,
+      req.body.estudaAtualmente,
+      turno,
+      req.body.filhos,
+      numFilhos,
+      req.body.telefone,
+      req.body.estadoCivil,
+    ];
+  
+    if (validaIdade(req.body.dataNascimento) < 14) {
+      res.send({ error: "Voce precisa ser maior de 14 anos." });
+    } else {
+      curriculo.postcurriculo(dados).then((result: any) => {
+        console.log("result no post curriculo", result);
+        res.send(result);
+      });
+    }
+  } catch (error) {
     console.log("Erro no post curriculo", error);
-    res.status(500).send({ error: "Erro ao cadastrar o currículo." });  
+    res.status(500).send({ error: "Erro ao cadastrar o currículo." });
   }
 });
 /**********************FIM CURRICULO ******************************/
@@ -260,14 +262,13 @@ app.delete("/empresa/:id", verifyToken, async (req: Request, res: Response) => {
 //************************** FIM EMPRESA *************************/
 
 //*************************INICIO CEP  *************************/
-app.get("/cep",verifyToken,  async (req: Request, res: Response) => {
-  console.log("cep ", verifyToken);
+app.get("/cep", verifyToken, async (req: Request, res: Response) => {
   let cepFormatado: string = (req.query.cep as string).replace(/[^0-9]/g, "");
   let tamanhoCep: number;
   tamanhoCep = cepFormatado.length as number;
   if (tamanhoCep === 8) {
-    console.log("cepFormatado ", cepFormatado);
     cep.getCep(cepFormatado).then((result: any) => {
+      console.log("result cep", result);
       res.send(result);
     });
   } else {
@@ -277,19 +278,31 @@ app.get("/cep",verifyToken,  async (req: Request, res: Response) => {
 //************************** FIM CEP **************************/
 //**************************INICIA RESIDENCIA*********************/
 
-app.get("/residencia/", verifyToken, async (req: Request, res: Response) => {
-  const result = await residencia.getResidencia();
+app.post("/retornaresidencia/", verifyToken, async (req: Request, res: Response) => {
+  const valores = req.body;
+  console.log("get residencia app ", valores);
+  const result = await residencia.getResidencia(valores);
   res.send(result);
 });
 
-app.post("/residencia",  async (req: Request, res: Response) => {
-  console.log("valores req ", req.body);
+app.post("/residencia", async (req: Request, res: Response) => {
     
-  console.log("valores residencia ", req.body);
-  residencia.postResidencia(req.body).then((result: any) => {
+  const valores = [
+    req.body.idcandidato,
+    req.body.cpf,
+    req.body.cep,
+    req.body.estado,
+    req.body.cidade,
+    req.body.endereco,
+    req.body.bairro,
+    req.body.numero,
+  ];
+  console.log("valores req 298", cep);
+
+  residencia.postResidencia(valores).then((result: any) => {
     res.send(result);
   });
-  console.log("post residencia ");
+  console.log("post residencia 304");
 });
 
 //**************************FIM RESIDENCIA*************************/

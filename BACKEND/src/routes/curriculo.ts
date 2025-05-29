@@ -20,7 +20,7 @@ const getCurriculo = (valores: any) => {
           reject(error);
         } else {
           //   getLog("info - cadastro Empresa", JSON.stringify(results));
-          console.log("resultado ", results);
+      //    console.log("resultado ", results);
           resolve(results);
         }
       }
@@ -29,7 +29,7 @@ const getCurriculo = (valores: any) => {
 };
 
 const postcurriculo = (valores: any) => {
-  console.log("postcurriculo ", valores);
+ 
   const [
     idcandidato,
     cpf,
@@ -52,18 +52,11 @@ const postcurriculo = (valores: any) => {
     numFilhos,
     telefone,
     estadocivil,
-    // primeiroemprego,
-    // ultimoempregoempresa,
-    // ultimoempregocidade,
-    // ultimoempregocargo,
-    // ultimoempregoinicio,
-    // ultimoempregoatribuicao,
-    // penultimoempregoempresa,
-    // penultimoempregocidade,
-    // penultimoempregocargo,
-    // penultimoempregoinicio,
-    // penultimoempregoatribuicao
+    
   ] = valores;
+  
+  console.log(
+    "Valores postcurriculo FIMMM ",valores)
   return new Promise((resolve, reject) => {
     PoolMysql.query(
       "call postcandidato(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -89,17 +82,7 @@ const postcurriculo = (valores: any) => {
         numFilhos,
         telefone,
         estadocivil,
-        // primeiroemprego,
-        // ultimoempregoempresa,
-        // ultimoempregocidade,
-        // ultimoempregocargo,
-        // ultimoempregoinicio,
-        // ultimoempregoatribuicao,
-        // penultimoempregoempresa,
-        // penultimoempregocidade,
-        // penultimoempregocargo,
-        // penultimoempregoinicio,
-        // penultimoempregoatribuicao
+     
       ],
       (error: any, results: unknown) => {
         if (error) {
