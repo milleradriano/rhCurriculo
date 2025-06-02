@@ -1,7 +1,5 @@
-import e from "express";
 import PoolMysql from "../dados/dados";
-const getResidencia = (valores:any) => {
- 
+const getResidencia = (valores: any) => {
   const idcandidato = valores.idcandidato;
   const cpf = valores.cpf;
   console.log("Valores getResidencia res.ts ", idcandidato, cpf);
@@ -29,10 +27,7 @@ const postResidencia = (valores: any) => {
 
   const [idcandidato, cpf, cep, estado, cidade, endereco, bairro, numero] =
     valores;
-console.log(
-    "Valores postResidencia ",
-    (valores)
-  );
+  console.log("Valores postResidencia ", valores);
   return new Promise((resolve, reject) => {
     PoolMysql.query(
       "call postResidencia(?,?,?,?,?,?,?,?)",

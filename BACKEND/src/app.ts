@@ -17,6 +17,7 @@ const vaga = require("./routes/vaga");
 const empresa = require("./routes/empresa");
 const residencia = require("./routes/residencia");
 const login = require("./routes/login");
+const experiencia = require("./routes/experiencia");
 //const  postLogin  = require("./routes/cadastraLogin");
 //const login = require("./routes/login");
 const bcrypt = require("bcrypt"); // para criptografar a senha
@@ -285,7 +286,7 @@ app.post("/retornaresidencia/", verifyToken, async (req: Request, res: Response)
   res.send(result);
 });
 
-app.post("/residencia", async (req: Request, res: Response) => {
+app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
     
   const valores = [
     req.body.idcandidato,
@@ -322,8 +323,26 @@ app.post(
     }
   }
 );
-/**************************************************************/
-
 app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
+/**********************************************
+
+
+/********************** INICIO EXPERIECIA *************************/
+app.get("/experiencia", verifyToken, async (req: Request, res: Response) => {
+  console.log("get experiencia 101",req.query.idcandidato);
+  const valores = {"idcandidato" :req.query.idcandidato,"cpf": req.query.cpf};
+  const result = await experiencia.getExperiencia(valores);
+  res.send(result);
+});
+
+app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
+  const valores = req.body;//[req.body.idcandidato,req.body.cpf,req.body.primeiroEmprego, req.body.empresa, req.body.cidade, req.body.cargo];
+  console.log("post experiencia ", valores);
+ experiencia.postExperiencia(valores).then((result: any) => {
+    res.send(result);
+  });
+});
+//************************FIM EXPERIENCIA***************************/
+
 
 export default app;
