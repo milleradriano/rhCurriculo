@@ -3,7 +3,7 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
-export class SessionstorageService {
+export class SessionStorageService {
   private isBrowser! : boolean;
   // private storage : window.localStorage;
 private storage!: Storage;

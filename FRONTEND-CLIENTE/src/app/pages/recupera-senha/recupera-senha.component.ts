@@ -24,7 +24,7 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
-import { SessionstorageService } from '../../service/sessionlstorage.service';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { PasswordModule } from 'primeng/password';
@@ -55,6 +55,7 @@ import { PasswordModule } from 'primeng/password';
   templateUrl: './recupera-senha.component.html',
   styleUrl: './recupera-senha.component.css'
 })
+
 export class RecuperaSenhaComponent {
   constructor(
     private formBuilder: FormBuilder

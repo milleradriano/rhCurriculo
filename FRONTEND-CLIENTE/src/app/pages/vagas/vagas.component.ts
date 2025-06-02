@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {  DialogModule } from 'primeng/dialog';
 
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { SessionstorageService } from '../../service/sessionlstorage.service';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { Router } from '@angular/router';
 
 
@@ -69,7 +69,7 @@ export class VagasComponent implements OnInit, OnDestroy {
   constructor(
     private vagasService: VagasService,
     public dialogService: DialogService,
-    private storage: SessionstorageService,
+    private storage: SessionStorageService,
     private router: Router
   ) {}
   ref: DynamicDialogRef | undefined;

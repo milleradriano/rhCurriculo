@@ -1,79 +1,92 @@
 <div class="container">
+  @if ( isLoadingResults){
+  <app-loading></app-loading>
+  <div class="loading"></div>
+  }
   <form [formGroup]="experienciaForm">
+    @if(showProgress){
+    <div class="loading">
+      <app-progressbar></app-progressbar>
+    </div>
+    }
     <div class="titulo">
       <h1>Dados Pessoais</h1>
       <p>Preencha seus dados pessoais abaixo.</p>
     </div>
     <div class="card flex justify-content-center">
-      
-        <div class="radioPrimeiroEmprego">
-          <label for="primeiroEmprego"
-            >Está se candidatando para a primeiro emprego?</label
-          >
-          <p-radioButton
-            class="radioButton"
-            formControlName="primeiroEmprego"
-            name="primeiroEmprego"
-            value="S"
-            label="Sim"
-          ></p-radioButton>
-          <p-radioButton
-            class="radioButton"
-            formControlName="primeiroEmprego"
-            name="primeiroEmprego"
-            value="N"
-            label="Não"
-          ></p-radioButton>
-        </div>
-        @if(experienciaForm.get('primeiroEmprego')!.value === 'N'){
-        <div class="primeiroEmprego">
-          <label for="primeiroEmprego">Último Emprego ou atual?</label>
-          <div class="empresa">
-            <label for="empresa">Empresa:</label>
-            <input
-              id="empresa"
-              formControlName="empresa"
-              pInputText
-              type="text"
-              placeholder="Empresa"
-            />
-          </div>
-          <div class="cidade">
-            <label for="cidade">Cidade:</label>
-            <input
-              id="cidade"
-              formControlName="cidade"
-              pInputText
-              type="text"
-              placeholder="Cidade"
-            />
-          </div>
-          <div class="cargo">
-            <div>
-              <label for="cargo">Cargo:</label>
-              <input
-                id="cargo"
-                formControlName="cargo"
-                pInputText
-                type="text"
-                placeholder="Cargo"
-              />
-            </div>
-          </div>
-        </div>
-        }
+      <div class="radioPrimeiroEmprego">
+        <label for="primeiroEmprego"
+          >Está se candidatando para o primeiro emprego?</label
+        >
+        <p-radioButton
+          class="radioButton"
+          formControlName="primeiroEmprego"
+          name="primeiroEmprego"
+          value="S"
+          label="Sim"
+        ></p-radioButton>
+        <p-radioButton
+          class="radioButton"
+          formControlName="primeiroEmprego"
+          name="primeiroEmprego"
+          value="N"
+          label="Não"
+        ></p-radioButton>
       </div>
-  <hr />
+      @if(experienciaForm.get('primeiroEmprego')!.value === 'N'){
+      <div class="primeiroEmprego">
+        <label for="primeiroEmprego">Último Emprego ou atual?</label>
+        <div class="empresa">
+          <label for="empresa">Empresa:</label>
+          <input
+            id="empresa"
+            formControlName="empresa"
+            pInputText
+            type="text"
+            placeholder="Empresa"
+            appInputpreenchido
+          />
+        </div>
+        <div class="cidade">
+          <label for="cidade">Cidade:</label>
+          <input
+            id="cidade"
+            formControlName="cidade"
+            pInputText
+            type="text"
+            placeholder="Cidade"
+            appInputpreenchido
+          />
+        </div>
+        <div class="cargo">
+          <div>
+            <label for="cargo">Cargo:</label>
+            <input
+              id="cargo"
+              formControlName="cargo"
+              pInputText
+              type="text"
+              placeholder="Cargo"
+              appInputpreenchido
+            />
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    <hr />
     <div class="botaoSalvar">
       <p-button
         icon="pi pi-check"
         severity="success"
         label="Salvar os dados pessoais"
         [disabled]="!experienciaForm.valid"
+        (click)="postExperiencia(experienciaForm.value)"
       ></p-button>
     </div>
   </form>
 
   <app-observacaobotton></app-observacaobotton>
-  <hr/>
+  <hr />
 </div>
+<app-toast></app-toast>

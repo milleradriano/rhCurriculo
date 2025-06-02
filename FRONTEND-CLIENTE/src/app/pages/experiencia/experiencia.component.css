@@ -1,7 +1,20 @@
-* {
+:root {
   color: #606062;
   --subtitulo-color: #ff355e;
+  --corBorda-input: #1dc755a8;
 }
+
+input:hover {
+  border: 1px solid var(--corBorda-input);
+    cursor: pointer;
+    box-shadow: none;
+  }
+  ::ng-deep .p-inputtext.ng-not-empty {
+    border-color: blue; /* Alterar cor da borda */
+    background-color: #e3f2fd; /* Fundo claro */
+  }
+
+
 .container {
   padding-left: 1rem;
 }
@@ -16,15 +29,15 @@
 label {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 2rem;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
 }
-input {
+/* input {
   text-transform: uppercase;
- }
+ } */
 .radioPrimeiroEmprego{
 margin-top: 2rem;
 }

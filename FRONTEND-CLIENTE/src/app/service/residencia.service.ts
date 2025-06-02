@@ -46,6 +46,7 @@ postResidencia(valores: any,headers?: any): Observable<interfaceResidencia> {
     .pipe(take(1), catchError(this.handleError));
 
 }  
+
 private handleError(error: HttpErrorResponse) {
   let errorMessage = 'Ocorreu um erro desconhecido';
   

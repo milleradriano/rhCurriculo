@@ -1,11 +1,16 @@
 <div class="container">
-  <!-- @if ( loading){
+  @if ( loading){
     <div class="loading">
       <app-loading></app-loading>
   </div>
-  } -->
+  }
  
   <form [formGroup]="residenciaForm">
+      @if(showProgress){
+    <div class="loading">
+      <app-progressbar></app-progressbar>
+    </div>
+    }
     <div class="titulo">
       <h1>Dados Residênciais</h1>
       <p>Preencha seus dados residenciais abaixo.</p>
@@ -40,10 +45,12 @@
       <div class="estadoCidade">
         <div class="estado">
           <label for="estado">Estado:</label>
+         
           <p-dropdown
             formControlName="estado"
             placeholder="Estado"
             [options]="estado"
+             
           ></p-dropdown>
           <!-- <input
             id="estado"

@@ -4,7 +4,6 @@
   --corBorda-input: #1dc755a8;
 }
 
-
 input:hover {
   border: 1px solid var(--corBorda-input);
     cursor: pointer;

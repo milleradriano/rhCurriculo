@@ -26,8 +26,9 @@ import { ResidenciaService } from '../../service/residencia.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
-import { SessionstorageService } from '../../service/sessionlstorage.service';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { HttpHeaders } from '@angular/common/http';
+import { ProgressbarComponent } from "../../components/progressbar/progressbar.component";
 @Component({
   selector: 'app-residencia',
   standalone: true,
@@ -51,10 +52,11 @@ import { HttpHeaders } from '@angular/common/http';
     InputGroupAddonModule,
     ObservacaobottonComponent,
     FormatacepDirective,
-    LoadingComponent,
     ToastComponent,
     InputpreenchidoDirective,
-  ],
+    LoadingComponent,
+    ProgressbarComponent
+],
   templateUrl: './residencia.component.html',
   styleUrl: './residencia.component.css',
 })
@@ -72,7 +74,7 @@ export class ResidenciaComponent implements OnInit {
     private formbuilder: FormBuilder,
     private residenciaService: ResidenciaService,
     private mensagem: ToastComponent,
-    private sessionStorage: SessionstorageService
+    private sessionStorage: SessionStorageService
   ) {
     this.estado = [
       { label: 'AC', value: 'AC' },

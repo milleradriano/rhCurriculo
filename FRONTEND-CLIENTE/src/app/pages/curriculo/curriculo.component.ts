@@ -23,7 +23,7 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
-import { SessionstorageService } from '../../service/sessionlstorage.service';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
@@ -70,7 +70,7 @@ interface UploadEvent {
     InputreadonlyDirective,
     InputpreenchidoDirective,
     // LoadingComponent,
-    ConfirmacaoComponent,
+    
     LoadingComponent,
     ProgressbarComponent,
   ],
@@ -99,7 +99,7 @@ export class CurriculoComponent implements OnInit {
     private messageService: MessageService,
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
-    private sessionStorage: SessionstorageService,
+    private sessionStorage: SessionStorageService,
     private mensagem: ToastComponent,
     private curriculoService: CurriculoService,
 

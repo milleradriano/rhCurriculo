@@ -24,7 +24,7 @@ import { ObservacaobottonComponent } from '../../components/observacaobotton/obs
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
-import { SessionstorageService } from '../../service/sessionlstorage.service';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
