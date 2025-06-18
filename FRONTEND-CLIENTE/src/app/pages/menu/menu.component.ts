@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, input, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,11 +12,14 @@ import { TopoComponent } from '../../components/topo/topo.component';
 import { MenuItem } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
+import { NometopoComponent } from '../../components/nometopo/nometopo.component';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
   standalone: true,
+  providers: [NometopoComponent],
   imports: [
     MatToolbarModule,
     MatButtonModule,
@@ -25,17 +28,28 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     MatIconModule,
     AsyncPipe,
     PanelMenuModule,
-  ],
+    NometopoComponent
+]
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   items: MenuItem[] = [];
-
-  nomeCandidato: string = "Seja bem vindo, " + sessionStorage.getItem('nome')?.replace(/["']/g, '') || '';
-
-  constructor(private httpClient: HttpClient) {
+ 
+ 
+  constructor(private httpClient: HttpClient, 
+              private sessionStorageService: SessionStorageService,
+              private cdr : ChangeDetectorRef,
+              private nomeTopo: NometopoComponent) {  }
+              
+  ngOnInit(): void {
+    this.sessionStorageService.getUserName().subscribe((userName) => {
     
-    this.items = [
+    //this.nomeCandidato = "Seja bem vindo, " + this.sessionStorageService.getUserName() || '';
+    console.log('User Name:', userName);
+    console.log('Nome Candidato:', (this.nomeTopo.nomeCandidato || ''));
+     this.cdr.detectChanges();
+     });
+   this.items = [
      
       {
         label: 'Dados Pessoais',
@@ -55,12 +69,12 @@ export class MenuComponent {
         routerLink: 'experiencia',
       },
     ];
-  }
+}
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+isHandset$: Observable<boolean> = this.breakpointObserver
+  .observe(Breakpoints.Handset)
+  .pipe(
+    map((result) => result.matches),
+    shareReplay()
+  );
 }

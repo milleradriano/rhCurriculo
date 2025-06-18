@@ -72,9 +72,10 @@ label {
 #cidade {
   width: calc(100% - 0.5rem);
 }
-.estado,
-.cidade {
+.estado
+ {
   width: calc(25% - 0.5rem);
+  margin-right: 1rem;
 }
 .estadoCidade {
   display: flex;

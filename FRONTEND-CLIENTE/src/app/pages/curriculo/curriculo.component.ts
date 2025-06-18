@@ -102,6 +102,7 @@ export class CurriculoComponent implements OnInit {
     private sessionStorage: SessionStorageService,
     private mensagem: ToastComponent,
     private curriculoService: CurriculoService,
+    private sessionService: SessionStorageService,
 
     // private loadingComponent: LoadingComponent,
     private confirmacaoComponent: ConfirmacaoComponent
@@ -210,7 +211,7 @@ export class CurriculoComponent implements OnInit {
     }
   }
 
- 
+ private nome :string = '';
   getCurriculo(cpf: string) {
     this.isLoadingResults = true;
     console.log('passou do valida');
@@ -220,13 +221,11 @@ export class CurriculoComponent implements OnInit {
       (data: any) => {
         if (data.length > 0 && data[0].nome) {
           try {
-            console.log('valore ', data[0]);
-            // Armazena o id e nome no sessionStorage ao carregar o componente
-            sessionStorage.setItem('nome', JSON.stringify(data[0].nome));
-            sessionStorage.setItem('idcand',JSON.stringify(data[0].idcandidato)
-            );
-            // Armazena o nome no sessionStorage
-            // const nome = JSON.parse(data[0].nome); // Verifica se é um JSON válido
+            this.nome = data[0].nome;
+            this.sessionStorage.setUserName('nome', data[0].nome || '');
+            this.sessionStorage.setUserName('idcand', data[0].idcandidato || '');
+            this.sessionStorage.updateUserName(this.nome || '');
+          
             this.curriculoForm.patchValue({
               nome: data[0].nome,
               sexo: data[0].sexo,
