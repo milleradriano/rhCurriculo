@@ -1,8 +1,8 @@
 <div class="container">
   <app-toast></app-toast>
-  @if (isLoadingResults){
-    <app-loading></app-loading>
+  @if (loading){
     <div class="loading">
+    <app-loading></app-loading>
     </div>
   }
   <form [formGroup]="curriculoForm">

@@ -168,6 +168,11 @@ export class ResidenciaComponent implements OnInit {
         });
         console.log('residencia dentro', res);
         this.loading = false;
+      }, (error) => {
+        this.loading = false;
+        this.showProgress = true;
+        console.error('Erro ao buscar residência:', error);
+        this.mensagem.toast('error', 'Erro', 'Indisponível tente mais tarde.');
       });
   }
 

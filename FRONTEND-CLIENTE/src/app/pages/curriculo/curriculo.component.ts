@@ -78,8 +78,8 @@ interface UploadEvent {
 export class CurriculoComponent implements OnInit {
   private retornoApi$!: any;
 
-  showProgress: boolean = false;
-  isLoadingResults: boolean = false; // habilita/desabilita o spinner
+  showProgress: boolean = false; // habilita/desabilita o progress bar do fim de sessao
+  loading: boolean = false; // habilita/desabilita o spinner
   isReadonly: boolean = true;
 
   limparFilhos($event: any) {
@@ -213,7 +213,7 @@ export class CurriculoComponent implements OnInit {
 
  private nome :string = '';
   getCurriculo(cpf: string) {
-    this.isLoadingResults = true;
+    this.loading = true;
     console.log('passou do valida');
 
     // if ( await this.validaToken()) {
@@ -255,19 +255,19 @@ export class CurriculoComponent implements OnInit {
               pcd: data[0].pcd,
               deficiencia: data[0].pcddeficiencia,
             });
-            this.isLoadingResults = false;
+            this.loading = false;
           } catch (error: any) {
-            this.isLoadingResults = false;
+            this.loading = false;
             console.error('Erro ao fazer parse do nome:', error);
             this.mensagem.toast('error', 'Erro', error);
           }
         } else {
-          this.isLoadingResults = false;
+          this.loading = false;
           console.warn('Nenhum dado encontrado para o CPF:', cpf);
         }
       },
       (error: any) => {
-        this.isLoadingResults = false;
+        this.loading = false;
         this.mensagem.toast('error', 'Erro', error);
         this.showProgress = true;
       }
@@ -275,7 +275,7 @@ export class CurriculoComponent implements OnInit {
   }
 
   postCurriculo(valores: any) {
-    this.isLoadingResults = true;
+    this.loading = true;
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');  
     valores.cpf = valores.cpf.replace(/\D/g, '');
@@ -283,7 +283,7 @@ export class CurriculoComponent implements OnInit {
     valores = { ...valores, idcandidato };   
     this.curriculoService.postCurriculo(valores, this.headers).subscribe(
       (data) => {
-        this.isLoadingResults = false;
+        this.loading = false;
        
         if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
           this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
@@ -294,7 +294,7 @@ export class CurriculoComponent implements OnInit {
         }
       },
       (error: any) => {
-        this.isLoadingResults = false;
+        this.loading = false;
         this.mensagem.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
       }
     );

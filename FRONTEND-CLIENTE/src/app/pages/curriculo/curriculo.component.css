@@ -47,6 +47,17 @@ label {
   font-size: 16px;
   line-height: 22px;
 }
+
+/* .p-dropdown {
+  background: #e01a5c;
+  border: 1px solid green;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  border-radius: 6px;
+  width: 100%;
+} */
+
+
 .documento,
 .informacaoDocumento,
 .parente,
@@ -102,6 +113,9 @@ label {
 }
 #envioOpcionalMensagem {
   color: red;
+}
+@media screen and (max-width: 1024px) {
+  
 }
 @media screen and (max-width: 700px) {
   #nome,
