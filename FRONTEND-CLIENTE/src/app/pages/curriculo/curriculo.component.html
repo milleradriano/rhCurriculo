@@ -1,10 +1,6 @@
 <div class="container">
-  <app-toast></app-toast>
-  @if (loading){
-    <div class="loading">
-    <app-loading></app-loading>
-    </div>
-  }
+  
+  
   <form [formGroup]="curriculoForm">
     @if(showProgress){
       <div class="loading">
@@ -303,8 +299,8 @@
             [customUpload]="true"
             [multiple]="false"
             [auto]="false"
-            chooseLabel="Selecione o logo"
-            name="logo"
+            chooseLabel="Selecione o documento"
+            name="documento"
             url="http://localhost:3000/uploadlogo"
             accept="image/*"
             maxFileSize="512000"       
@@ -332,6 +328,12 @@
       ></p-button>
     </div>
   </form>
- 
+  @if (loading){
+    <div class="loading">
+    <app-loading></app-loading>
+    </div>
+  }
+  <app-toast></app-toast>
   <hr />
+  
 </div>

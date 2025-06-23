@@ -19,7 +19,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
 import { FormatacepDirective } from '../../diretiva/formatacep.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
 import { ResidenciaService } from '../../service/residencia.service';
@@ -49,8 +48,7 @@ import { ProgressbarComponent } from "../../components/progressbar/progressbar.c
     FileUploadModule,
     ToastModule,
     InputGroupModule,
-    InputGroupAddonModule,
-    ObservacaobottonComponent,
+    InputGroupAddonModule, 
     FormatacepDirective,
     ToastComponent,
     InputpreenchidoDirective,

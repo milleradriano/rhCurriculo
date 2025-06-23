@@ -20,7 +20,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
-import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
+
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
@@ -110,11 +110,13 @@ export class LoginComponent {
         this.router.navigate(["/menu/curriculo"]);
         }
         else{
+          console.log('login ',data);
           this.toast.toast("error", "", data);
         }
       },
       (error: any) => {
-        this.isLoadingResults = false;        
+        this.isLoadingResults = false;
+        console.error('Erro ao realizar login:', error);
         this.toast.toast("error", "", error);
       }
     );

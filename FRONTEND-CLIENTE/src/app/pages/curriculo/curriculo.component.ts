@@ -19,7 +19,6 @@ import { MessageService } from 'primeng/api';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
-import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
@@ -107,6 +106,7 @@ export class CurriculoComponent implements OnInit {
     // private loadingComponent: LoadingComponent,
     private confirmacaoComponent: ConfirmacaoComponent
   ) {
+  
     this.estadoCivil = [
       { label: 'Solteiro', value: 'Solteiro' },
       { label: 'Casado', value: 'Casado' },
@@ -204,6 +204,7 @@ export class CurriculoComponent implements OnInit {
     });
   }
   ngOnInit() {
+     
     if (this.sessionCpf) {
       this.getCurriculo(this.sessionCpf);
     } else {
@@ -283,11 +284,12 @@ export class CurriculoComponent implements OnInit {
     valores = { ...valores, idcandidato };   
     this.curriculoService.postCurriculo(valores, this.headers).subscribe(
       (data) => {
-        this.loading = false;
+       
        
         if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
-          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
           console.log('SALVO');
+          this.loading = false;
+          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
         } else {
           this.mensagem.toast('error', 'Erro', 'Não atualizado');
           console.log('NAO SALVO');
@@ -295,6 +297,8 @@ export class CurriculoComponent implements OnInit {
       },
       (error: any) => {
         this.loading = false;
+        this.showProgress = true;
+        console.error('Erro ao salvar o currículo:', error);
         this.mensagem.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
       }
     );

@@ -22,9 +22,9 @@ ngOnInit(): void {
   console.log('teste ',this.teste);
      this.sessionStorageService.getUserName().subscribe( {
       next: (userName) => {
-        console.log('User Name no top:', userName);
-      this.nomeCandidato = "Seja bem vindo, " + (userName || '');
-          this.nomeCandidatoChange.emit(this.nomeCandidato);
+        console.log('User Name no top:',);
+        this.nomeCandidato = "Seja bem vindo, " +  userName?.substring(0,userName.indexOf(' ')) || 'Usuário';
+        this.nomeCandidatoChange.emit(this.nomeCandidato);
       },
       error: (error) => {
         console.error('Erro ao obter o nome do usuário:', error);

@@ -20,7 +20,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
 import { ExperienciaService } from '../../service/experiencia.service';
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { HttpHeaders } from '@angular/common/http';
@@ -48,8 +47,7 @@ import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directi
     FileUploadModule,
     ToastComponent,
     InputGroupModule,
-    InputGroupAddonModule,
-    ObservacaobottonComponent,
+    InputGroupAddonModule, 
     LoadingComponent,
     ProgressbarComponent,
     InputpreenchidoDirective,

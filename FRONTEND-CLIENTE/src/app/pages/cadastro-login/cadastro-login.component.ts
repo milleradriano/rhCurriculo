@@ -20,7 +20,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
-import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
+
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';

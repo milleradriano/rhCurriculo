@@ -114,9 +114,7 @@ label {
 #envioOpcionalMensagem {
   color: red;
 }
-@media screen and (max-width: 1024px) {
-  
-}
+
 @media screen and (max-width: 700px) {
   #nome,
   #nomePai,

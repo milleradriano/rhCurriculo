@@ -15,9 +15,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 }
 html,
 body {
-  height: 100%;
-}
-body {
+  height: 100%; 
+  
+  padding-right: 0.5rem;
+  
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -28,6 +29,19 @@ body {
 }
 label{
   color: var(--titulo-color);
+}
+.p-button {
+  background: var(--corBorda-input);
+  border: none;
+}
+.p-button:hover {
+  background: #2be067c7;
+  border: none;
+  box-shadow: none;
+}
+.p-button:not(.p-disabled).p-focus {
+  border: none;
+  box-shadow: none;
 }
 /*fundo do botao dos menus*/
 .p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
@@ -172,13 +186,15 @@ label{
   font-size: 1rem;
   color: var(--mat-full-pseudo-checkbox-selected-checkmark-color);
 }
-@media screen and (max-width: 1024px) {
-  .p-dropdown {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
+
+/* funcionando*/
+
+   .p-dropdown {
+    background: #e8f5e9;
+    border: 1px solid green;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s,
       box-shadow 0.2s;
     border-radius: 6px;
-    width: 96%;
-  }
-}
+  
+  } 
+
