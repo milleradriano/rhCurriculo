@@ -15,12 +15,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 }
 html,
 body {
-  height: 100%; 
+  /* height: 100%;
   
-  padding-right: 0.5rem;
   
-  margin: 0;
+  margin: 0; */
+  padding-right: 0.5rem; 
+    padding-left: 0; 
+    margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+input,
+select,
+button {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 :root {
   --subtitulo-color: #ff355e;

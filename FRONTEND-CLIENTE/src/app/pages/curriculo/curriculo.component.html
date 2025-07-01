@@ -1,11 +1,9 @@
 <div class="container">
-  
-  
   <form [formGroup]="curriculoForm">
     @if(showProgress){
-      <div class="loading">
-        <app-progressbar></app-progressbar>
-      </div>
+    <div class="loading">
+      <app-progressbar></app-progressbar>
+    </div>
     }
     <!-- <app-uploaddocumento></app-uploaddocumento> -->
     <div class="titulo">
@@ -14,7 +12,7 @@
     </div>
     <div class="card flex justify-content-center">
       <div class="nome">
-      <label>Nome completo:</label>
+        <label>Nome completo:</label>
         <input
           formControlName="nome"
           pInputText
@@ -26,7 +24,7 @@
       </div>
       <label>Sexo:</label>
       <div class="sexo">
-        <p-radioButton        
+        <p-radioButton
           class="radioButton"
           formControlName="sexo"
           name="sexo"
@@ -50,7 +48,6 @@
           placeholder="Selecione"
           [options]="estadoCivil"
           appCombopreenchido
-        
         ></p-dropdown>
       </div>
       <hr />
@@ -68,8 +65,6 @@
             appFormatacpf
             appInputreadonly
             appInputpreenchido
-            
-            
           />
         </div>
         <div class="rg">
@@ -119,7 +114,7 @@
           ></p-dropdown>
         </div>
       </div>
-    
+
       <label for="dataNascimento">Data de nascimento:</label>
       <div class="dataNascimento">
         <input
@@ -143,7 +138,7 @@
             appInputpreenchido
           />
         </div>
-       
+
         <div class="nomeMae">
           <label for="nomeMae">Nome da Mãe</label>
           <input
@@ -166,7 +161,6 @@
           formControlName="grauInstrucao"
           placeholder="Grau de instrução"
           [options]="grauInstrucao"
-         
         ></p-dropdown>
       </div>
 
@@ -190,13 +184,13 @@
         </div>
 
         @if(curriculoForm.get('estudaAtualmente')!.value === 'S'){
-        <div class="turno">        
-            <label for="turnoEscola">Turno da escola:</label>
-            <p-dropdown
-              formControlName="turno"
-              placeholder="Turno da escola"
-              [options]="turnoEscola"
-            />          
+        <div class="turno">
+          <label for="turnoEscola">Turno da escola:</label>
+          <p-dropdown
+            formControlName="turno"
+            placeholder="Turno da escola"
+            [options]="turnoEscola"
+          />
         </div>
         }
       </div>
@@ -221,19 +215,18 @@
         </div>
         @if(curriculoForm.get('filhos')!.value === 'S'){
         <div class="qtdFilhos">
-          
-            <label for="qtdFilhos">Nº de filhos:</label>
-            <input
-              formControlName="numFilhos"
-              pInputText
-              type="text"
-              placeholder="Nº de filhos"
-              appApenasNumero
-              maxlength="1"
-              appInputpreenchido
-            />
-          </div>
-        
+          <label for="qtdFilhos">Nº de filhos:</label>
+          <input
+            formControlName="numFilhos"
+            pInputText
+            type="text"
+            placeholder="Nº de filhos"
+            appApenasNumero
+            maxlength="1"
+            appInputpreenchido
+          />
+        </div>
+
         }
       </div>
       <hr />
@@ -292,24 +285,7 @@
           </div>
         </div>
         <div class="enviarArquivo">
-          <p-fileUpload
-          #fileUploader
-            id="upload"
-            mode="advanced"
-            [customUpload]="true"
-            [multiple]="false"
-            [auto]="false"
-            chooseLabel="Selecione o documento"
-            name="documento"
-            url="http://localhost:3000/uploadlogo"
-            accept="image/*"
-            maxFileSize="512000"       
-            
-            [showUploadButton]="false"
-            [showCancelButton]="false"
-            
-            >
-          ></p-fileUpload>
+          <app-file-uploader></app-file-uploader>
           <p>Tamanho maxímo de 1MB</p>
           <p id="envioOpcionalMensagem">Envio opcional</p>
         </div>
@@ -317,9 +293,29 @@
       </div>
     </div>
     <hr />
+    
+    @if(nomeDocumento && nomeDocumento.length > 0){
+      <p class="tituloGrupoArquivo">Arquivos enviados:</p>
+     @for(nomeDocumentos of nomeDocumento; track nomeDocumentos) {
+        <div class="nomeArquivo">
+          <div class="nomeDoc">
+            {{ nomeDocumentos }}
+          </div>
+          <div class="botaoExcluir">
+            <p-button
+              pButton
+              icon="pi pi-trash"
+              severity="danger"
+              (click)="deleteDocumento()"
+            ></p-button>
+          </div>
+        </div>
+      }
+    }
+
+<hr />
     <div class="botaoSalvar">
       <p-button
-      
         icon="pi pi-check"
         severity="success"
         label="Salvar os dados pessoais"
@@ -329,11 +325,10 @@
     </div>
   </form>
   @if (loading){
-    <div class="loading">
+  <div class="loading">
     <app-loading></app-loading>
-    </div>
+  </div>
   }
   <app-toast></app-toast>
   <hr />
-  
 </div>

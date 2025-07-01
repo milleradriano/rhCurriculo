@@ -45,8 +45,7 @@ export class MenuComponent implements OnInit {
     this.sessionStorageService.getUserName().subscribe((userName) => {
     
     //this.nomeCandidato = "Seja bem vindo, " + this.sessionStorageService.getUserName() || '';
-    console.log('User Name:', userName);
-    console.log('Nome Candidato:', (this.nomeTopo.nomeCandidato || ''));
+   
      this.cdr.detectChanges();
      });
    this.items = [

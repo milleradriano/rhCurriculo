@@ -20,7 +20,7 @@ import { ToastModule } from 'primeng/toast';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FormatacepDirective } from '../../diretiva/formatacep.directive';
-import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
+
 import { ResidenciaService } from '../../service/residencia.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ToastComponent } from '../../components/toast/toast.component';

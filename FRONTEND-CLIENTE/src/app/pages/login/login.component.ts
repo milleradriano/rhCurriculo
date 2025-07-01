@@ -23,7 +23,7 @@ import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
 
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
-import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
+
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
 import { ToastComponent } from '../../components/toast/toast.component';
@@ -111,13 +111,13 @@ export class LoginComponent {
         }
         else{
           console.log('login ',data);
-          this.toast.toast("error", "", data);
+          this.toast.toast("error", "Atenção", data);
         }
       },
       (error: any) => {
         this.isLoadingResults = false;
         console.error('Erro ao realizar login:', error);
-        this.toast.toast("error", "", error);
+        this.toast.toast("error", "Atenção", error);
       }
     );
   }

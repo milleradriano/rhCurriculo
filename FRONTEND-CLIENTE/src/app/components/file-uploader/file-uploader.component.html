@@ -1,0 +1,29 @@
+<div class="enviarArquivo">
+  <p-fileUpload
+    #fileUploader
+    id="upload"
+    mode="advanced"
+    [customUpload]="true"
+    [multiple]="false"
+    [auto]="false"
+    chooseLabel="Selecione o documento"
+    name="documento"
+    url="http://localhost:3000/uploadlogo"
+    accept="image/*, application/pdf "
+    maxFileSize="1024000"
+    [showUploadButton]="false"
+    [showCancelButton]="false"
+    (onSelect)="onFileSelected($event)"
+    (onError)="onUploadError($event)"
+  ></p-fileUpload>
+  <p>Tamanho máximo de 1MB</p>  
+  @if (uploading()) {
+    <div>Carregando...</div>
+  }
+  @if (uploadSuccess()) {
+    <div style="color: green;">Arquivo enviado com sucesso!</div>
+  }
+  @if (uploadError()) {
+    <div style="color: red;">Erro ao enviar o arquivo: {{ uploadErrorMessage() }}</div>
+  }
+</div>

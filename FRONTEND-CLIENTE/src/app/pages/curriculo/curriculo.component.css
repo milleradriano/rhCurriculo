@@ -4,7 +4,9 @@
   --corBorda-input: #1dc755a8;
 }
 .container {
-  padding-left: 1rem;
+   padding-left: 1rem; 
+   padding-right: 1rem; 
+ 
 }
 
 input:hover {
@@ -12,7 +14,7 @@ input:hover {
   cursor: pointer;
   box-shadow: none;
 }
-.nome{
+.nome {
   width: 40vw;
 }
 .titulo {
@@ -57,7 +59,6 @@ label {
   width: 100%;
 } */
 
-
 .documento,
 .informacaoDocumento,
 .parente,
@@ -70,7 +71,6 @@ label {
   font-size: 16px;
   line-height: 22px;
   gap: 1rem;
- 
 }
 
 .enviarArquivo {
@@ -94,13 +94,15 @@ label {
   margin-right: 2rem;
 }
 
-.telefone,.email {
+.telefone,
+.email {
   width: 20rem;
 }
 
 .nomePai,
-.nomeMae,.dataNascimento {
-  width: 25rem;
+.nomeMae,
+.dataNascimento {
+  width: 100%;
 }
 
 .botaoSalvar {
@@ -114,6 +116,56 @@ label {
 #envioOpcionalMensagem {
   color: red;
 }
+.tituloGrupoArquivo {
+  font-size: 1.2rem;
+  color: #606062;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  align-items: center;
+  /* border-bottom: 1px solid #606062; */
+}
+.nomeArquivo {
+  font-size: 1.2rem;
+  color: #606062;
+  /* margin-top: 1rem; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+   
+  background-color: #eeeef3;
+  width: 100%;
+  align-items: center;
+ /* border: 1px solid #606062; */
+  .nomeDoc {    
+    color: var(--subtitulo-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-right: 2rem;
+    font-size: 1rem;  
+  }
+  .botaoExcluir {
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    .p-button.p-button-icon-only {
+    width: 3rem;
+    padding: 0 0;
+    background-color: red;
+    }
+    .p-button {
+    background: red;
+    border: none;
+}
+}
+  }
 
 @media screen and (max-width: 700px) {
   #nome,
@@ -131,7 +183,6 @@ label {
   #complemento,
   #telefone,
   #email,
- 
   #estado {
     width: 100%;
   }
@@ -160,5 +211,15 @@ label {
   /* .filhos, */
   .pcd {
     flex-direction: column;
+  }
+  .nomeArquivo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+    background-color: #eeeef3;
+    padding: 1rem;
+   border: 1px solid #606062;
   }
 }

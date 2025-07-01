@@ -14,15 +14,16 @@ nomeCandidato: string = '';
 @Output() nomeCandidatoChange = new EventEmitter<string>();
 private subscription: Subscription = new Subscription();
   teste :string = sessionStorage.getItem('nome') || ''; 
+
 constructor(  
   private sessionStorageService: SessionStorageService,
   private cdr: ChangeDetectorRef){}
 
 ngOnInit(): void {
-  console.log('teste ',this.teste);
+ 
      this.sessionStorageService.getUserName().subscribe( {
       next: (userName) => {
-        console.log('User Name no top:',);
+       
         this.nomeCandidato = "Seja bem vindo, " +  userName?.substring(0,userName.indexOf(' ')) || 'Usuário';
         this.nomeCandidatoChange.emit(this.nomeCandidato);
       },

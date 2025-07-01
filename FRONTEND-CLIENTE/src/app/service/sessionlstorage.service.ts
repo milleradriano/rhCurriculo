@@ -13,11 +13,11 @@ constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 getUserName():Observable<string | null> {
-  console.log('getUserName chamado, valor atual:', this.nomeCurriculoTop.getValue());
+
   return this.nomeCurriculoTop.asObservable();
 }
 updateUserName(nome: string): void {
-  console.log('updateUserName chamado com:', nome);
+
   sessionStorage.setItem('nome', nome);
   this.nomeCurriculoTop.next(nome);
 }

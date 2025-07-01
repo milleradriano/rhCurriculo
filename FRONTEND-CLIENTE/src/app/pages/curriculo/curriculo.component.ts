@@ -1,4 +1,11 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -16,12 +23,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
 import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
-import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
@@ -35,7 +41,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ProgressbarComponent } from '../../components/progressbar/progressbar.component';
 import { Console } from 'node:console';
-
+import { FileUploaderComponent } from '../../components/file-uploader/file-uploader.component';
+import { DocumentoService } from '../../service/documento.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -69,14 +76,14 @@ interface UploadEvent {
     InputreadonlyDirective,
     InputpreenchidoDirective,
     // LoadingComponent,
-    
     LoadingComponent,
     ProgressbarComponent,
+    FileUploaderComponent,
   ],
 })
 export class CurriculoComponent implements OnInit {
   private retornoApi$!: any;
-
+  @ViewChild(FileUploaderComponent) fileUpdater!: FileUploaderComponent;
   showProgress: boolean = false; // habilita/desabilita o progress bar do fim de sessao
   loading: boolean = false; // habilita/desabilita o spinner
   isReadonly: boolean = true;
@@ -93,6 +100,9 @@ export class CurriculoComponent implements OnInit {
   sessionCpf: string | null = this.sessionStorage.getLogin('cpf');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
 
+  submitSuccess = false;
+  submitError = false;
+  nomeDocumento : string[] = [];
   headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
   constructor(
     private messageService: MessageService,
@@ -102,11 +112,11 @@ export class CurriculoComponent implements OnInit {
     private mensagem: ToastComponent,
     private curriculoService: CurriculoService,
     private sessionService: SessionStorageService,
+    private documentoService: DocumentoService,
 
     // private loadingComponent: LoadingComponent,
     private confirmacaoComponent: ConfirmacaoComponent
   ) {
-  
     this.estadoCivil = [
       { label: 'Solteiro', value: 'Solteiro' },
       { label: 'Casado', value: 'Casado' },
@@ -164,7 +174,6 @@ export class CurriculoComponent implements OnInit {
       { label: 'Visual', value: 'Visual' },
       { label: 'Intelectual', value: 'Intelectual' },
     ];
-    console.log('inicio');
   }
 
   curriculoForm = this.formBuilder.group({
@@ -186,7 +195,7 @@ export class CurriculoComponent implements OnInit {
       '',
       [
         Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ],
     ],
     turno: [''],
@@ -204,7 +213,6 @@ export class CurriculoComponent implements OnInit {
     });
   }
   ngOnInit() {
-     
     if (this.sessionCpf) {
       this.getCurriculo(this.sessionCpf);
     } else {
@@ -212,10 +220,9 @@ export class CurriculoComponent implements OnInit {
     }
   }
 
- private nome :string = '';
+  private nome: string = '';
   getCurriculo(cpf: string) {
     this.loading = true;
-    console.log('passou do valida');
 
     // if ( await this.validaToken()) {
     this.curriculoService.getCurriculo(cpf, this.headers).subscribe(
@@ -226,7 +233,6 @@ export class CurriculoComponent implements OnInit {
             this.sessionStorage.setUserName('nome', data[0].nome || '');
             this.sessionStorage.setUserName('idcand', data[0].idcandidato || '');
             this.sessionStorage.updateUserName(this.nome || '');
-          
             this.curriculoForm.patchValue({
               nome: data[0].nome,
               sexo: data[0].sexo,
@@ -257,6 +263,7 @@ export class CurriculoComponent implements OnInit {
               deficiencia: data[0].pcddeficiencia,
             });
             this.loading = false;
+            this.getDocumento(); // Chama o método para obter o documento após preencher o formulário
           } catch (error: any) {
             this.loading = false;
             console.error('Erro ao fazer parse do nome:', error);
@@ -277,19 +284,23 @@ export class CurriculoComponent implements OnInit {
 
   postCurriculo(valores: any) {
     this.loading = true;
+
+    const pcdControl = this.curriculoForm.get('pcd');
+    if (pcdControl && pcdControl.value === 'S') {
+      this.postDocumento();
+    }
+
     const idcandidato = sessionStorage.getItem('idcand');
-    const cpf = sessionStorage.getItem('cpf');  
+    const cpf = sessionStorage.getItem('cpf');
     valores.cpf = valores.cpf.replace(/\D/g, '');
     /*Adiciona o idcandidato ao objeto valores*/
-    valores = { ...valores, idcandidato };   
+    valores = { ...valores, idcandidato };
     this.curriculoService.postCurriculo(valores, this.headers).subscribe(
       (data) => {
-       
-       
         if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
           console.log('SALVO');
           this.loading = false;
-          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
+          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo.');
         } else {
           this.mensagem.toast('error', 'Erro', 'Não atualizado');
           console.log('NAO SALVO');
@@ -299,8 +310,90 @@ export class CurriculoComponent implements OnInit {
         this.loading = false;
         this.showProgress = true;
         console.error('Erro ao salvar o currículo:', error);
-        this.mensagem.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
+        this.mensagem.toast(
+          'error',
+          'Erro',
+          'Erro ao salvar., tente mais tarde.'
+        );
       }
     );
   }
+
+  getDocumento() {
+    console.log('getDocumento');
+    this.loading = true;
+    const idcandidato = sessionStorage.getItem('idcand');
+    const cpf = sessionStorage.getItem('cpf');
+    const valores = [idcandidato, cpf ? cpf.replace(/\D/g, '') : ''];
+    if (!idcandidato || !cpf) {
+      console.error('ID do candidato não encontrado no sessionStorage.');
+      this.loading = false;
+      return;
+    }
+    if (idcandidato) {
+      this.documentoService.getDocumento(idcandidato, cpf,this.headers).subscribe(
+        (data: any) => {
+          if (data.length > 0) {
+           this.nomeDocumento = data[0].map((doc: any) => doc.nome);
+              console.log('Documento encontrado:', this.nomeDocumento);
+           
+            this.loading = false;
+          } else {
+            console.warn('Nenhum documento encontrado para o ID:', idcandidato);
+            this.loading = false;
+          }
+        },
+        (error: any) => {
+          this.loading = false;
+          console.error('Erro ao obter o documento:', error);
+          this.mensagem.toast('error', 'Erro', 'Erro ao obter documento.');
+        }
+      );
+    } else {
+      console.error('ID do candidato não encontrado no sessionStorage.');
+      this.loading = false;
+    }
+  }
+  postDocumento() {
+    try {
+      this.fileUpdater.uploadFiles();
+
+      // Ouve o evento de conclusão do upload
+      this.fileUpdater.uploadComplete.subscribe((success) => {
+        this.submitSuccess = success;
+        this.submitError = !success;
+      });
+    } catch (error) {
+      console.error('Erro ao obter o nome do arquivo:', error);
+      this.mensagem.toast(
+        'error',
+        'Erro',
+        'Erro ao salvar imagem., tente mais tarde.'
+      );
+    }
+  }
+  deleteDocumento() {
+  // this.loading = true;
+  // const idcandidato = sessionStorage.getItem('idcand');
+  // const cpf = sessionStorage.getItem('cpf');
+  // if (!idcandidato || !cpf) {
+  //   console.error('ID do candidato não encontrado no sessionStorage.');
+  //   this.loading = false;
+  //   return;
+  // }
+  // this.documentoService.deleteDocumento({ idcandidato, cpf }, this.headers)
+  //   .subscribe(
+  //     (data: any) => {
+  //       this.loading = false;
+  //       this.mensagem.toast('success', 'Sucesso', 'Documento excluído com sucesso.');
+       
+  //     },
+  //     (error: any) => {
+  //       this.loading = false;
+  //       console.error('Erro ao excluir o documento:', error);
+  //       this.mensagem.toast('error', 'Erro', 'Erro ao excluir documento.');
+  //     }
+  //   );
+
+}
 }
