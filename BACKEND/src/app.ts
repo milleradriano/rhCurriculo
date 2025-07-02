@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 
 const bodyParser = require("body-parser");
 import multer from "multer";
+const fs = require("fs").promises;
 const path = require("path");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -18,6 +19,7 @@ const empresa = require("./routes/empresa");
 const residencia = require("./routes/residencia");
 const login = require("./routes/login");
 const experiencia = require("./routes/experiencia");
+const documento = require("./routes/documento");
 //const  postLogin  = require("./routes/cadastraLogin");
 //const login = require("./routes/login");
 const bcrypt = require("bcrypt"); // para criptografar a senha
@@ -33,6 +35,7 @@ import { toFormData } from "axios";
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ type: "application/json; charset=utf-8" }));
 
 // app.get("/", (request: any, response: any) => {
 //   return response.send("Hello!");
@@ -41,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 const storageLogo = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
+    
     cb(null, "./src/images/logo");
   },
   filename: function (req: any, file: any, cb: any) {
@@ -59,7 +63,78 @@ const uploadLogo = multer({
     }
   },
 });
-/************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
+/************************* FIMM UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
+/*############################# UPLOAD DO ARMAZENAMENTO DO DOCUMENTO #################################*/
+const storageDocumento = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    let uploadDirDocumento = "./src/images/docs/";
+    uploadDirDocumento = req.body.idcandidato; // Define o diretório de upload com base no idcandidato
+    try {
+      await fs.access(uploadDirDocumento); // Verifica se o diretório existe
+    } catch {
+      await fs.mkdir(uploadDirDocumento, { recursive: true }); // Cria o diretório se não existir
+    }
+    cb(null, uploadDirDocumento);
+  },
+  filename: async (req, file, cb) => {
+    let baseName = file.originalname; // Nome original
+    const ext = path.extname(baseName);
+    const nameWithoutExt = path.basename(baseName, ext);
+    let newFileName = nameWithoutExt + ext; // Preserva o nome original
+    let filePath = path.join(
+      "./src/images/docs",
+      req.body.idcandidato,
+      newFileName
+    );
+    let counter = 1;
+
+    // Adiciona contador se o arquivo já existir
+    while (
+      await fs
+        .access(filePath)
+        .then(() => true)
+        .catch(() => false)
+    ) {
+      newFileName = `${nameWithoutExt}-${counter}${ext}`;
+      filePath = path.join(
+        "./src/images/docs",
+        req.body.idcandidato,
+        newFileName
+      );
+      counter++;
+    }
+
+    console.log("Nome final do arquivo:", newFileName); // Depuração
+    cb(null, newFileName);
+  },
+});
+
+const uploadDocumento = multer({
+  storage: storageDocumento,
+  // Verifique se o campo no frontend é 'logo'
+  fileFilter: (req, file, cb) => {
+    console.log("no uploadDocumento 115 ", file);
+    if (file.fieldname === "documento") {
+      cb(null, true);
+    } else {
+      cb(new Error("Unexpected field"));
+    }
+  },
+});
+
+
+const apagaDocumentoStorage = async (caminho: string,  nome: string) => {
+  const dir = `./src/images/docs/${caminho}`;
+  const filePath = path.join(dir, nome);
+  try {
+    await fs.access(filePath);
+    await fs.unlink(filePath);
+    console.log(`Arquivo ${filePath} deletado com sucesso.`);
+  } catch (error) {
+    console.error(`Erro ao deletar arquivo ${filePath}:`, error);
+  }
+};
+/*#############################  FIMMM UPLOAD DO ARMAZENAMENTO DO DOCUMENTO #################################*/
 
 //*********************** INICIO CADASTRO LOGIN ***********************************/
 
@@ -133,7 +208,7 @@ app.post("/login", async (req: Request, res: Response) => {
 //***********************  INICIO CURRICULO                   *************************/
 
 app.get("/curriculo/", verifyToken, async (req: Request, res: Response) => {
-  let cpfFormatado: string = (req.query.cpf as string).replace(/[^0-9]/g, "");  
+  let cpfFormatado: string = (req.query.cpf as string).replace(/[^0-9]/g, "");
   let tamanhoCpf: number;
   tamanhoCpf = cpfFormatado.length as number;
   if (tamanhoCpf != 11) {
@@ -158,11 +233,10 @@ const validaIdade = (dataNascimento: any) => {
 };
 app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
   try {
-    
-    console.log("post curriculo antes linha 164", (req.body));
+    // console.log("post curriculo antes linha 164", (req.body));
     var numFilhos = "0";
     var cpf = req.body.cpf;
-   console.log("cpf ", cpf);
+    console.log("cpf ", cpf);
     var turno = "";
     if (req.body.filhos === "S") {
       numFilhos = req.body.numFilhos;
@@ -170,7 +244,7 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
     if (req.body.estudaAtualmente === "S") {
       turno = req.body.turno;
     }
-   
+
     const dados = [
       req.body.idcandidato,
       cpf,
@@ -194,12 +268,12 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
       req.body.telefone,
       req.body.estadoCivil,
     ];
-  
+
     if (validaIdade(req.body.dataNascimento) < 14) {
       res.send({ error: "Voce precisa ser maior de 14 anos." });
     } else {
       curriculo.postcurriculo(dados).then((result: any) => {
-        console.log("result no post curriculo", result);
+        //   console.log("result no post curriculo", result);
         res.send(result);
       });
     }
@@ -279,15 +353,18 @@ app.get("/cep", verifyToken, async (req: Request, res: Response) => {
 //************************** FIM CEP **************************/
 //**************************INICIA RESIDENCIA*********************/
 
-app.post("/retornaresidencia/", verifyToken, async (req: Request, res: Response) => {
-  const valores = req.body;
-  console.log("get residencia app ", valores);
-  const result = await residencia.getResidencia(valores);
-  res.send(result);
-});
+app.post(
+  "/retornaresidencia/",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const valores = req.body;
+    console.log("get residencia app ", valores);
+    const result = await residencia.getResidencia(valores);
+    res.send(result);
+  }
+);
 
 app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
-    
   const valores = [
     req.body.idcandidato,
     req.body.cpf,
@@ -315,6 +392,7 @@ app.post(
   verifyToken,
   async (req: any, res: any) => {
     if (!req.file) {
+      console.log("req file ", req.file);
       return res.status(400).send({ error: "Nenhum arquivo enviado" });
     } else {
       console.log("req file ", req.file);
@@ -324,25 +402,89 @@ app.post(
   }
 );
 app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
-/**********************************************
 
+/*********************INICIO  DOCUMENTOS***********************/
+
+app.get(
+  "/documento/",
+  verifyToken,
+  async (req: Request, res: Response): Promise<void> => {
+    console.log(
+      "get documento 101",
+      req.query.idcandidato,
+      " - ",
+      req.query.cpf
+    );
+    if (!req.query.idcandidato || !req.query.cpf) {
+      res.status(400).send({ error: "ID Candidato e CPF são obrigatórios." });
+      return;
+    }
+    const result = await documento.getDocumento(
+      req.query.idcandidato,
+      req.query.cpf
+    );
+    res.send(result);
+  }
+);
+
+app.post("/uploaddocumento", uploadDocumento.single("documento"), verifyToken,
+  async (req: any, res: any) => {
+    console.log("no uploadDocumento 418 ", uploadDocumento.single("documento"));
+    if (!req.file) {
+      console.log("req file no ! ", req.file);
+      return res.status(400).send({ error: "Nenhum arquivo enviado" });
+    } else {
+      let nomeArquivo = Buffer.from(req.file.originalname,'binary').toString("utf-8") ;
+      console.log("nome do arquivo  424", nomeArquivo);
+      res.send(req.file);
+      const valores = {
+        idcandidato: req.body.idcandidato,
+        cpf: req.body.cpf,
+        documento: nomeArquivo
+       
+      };
+      documento.postDocumento(valores).then((result: any) => {
+        res.send(result);
+      });
+      return;
+    }
+  }
+);
+
+app.delete(
+  "/documento/:idcandidato/:cpf/:nome",  verifyToken,
+  async (req: Request, res: Response) => {
+  
+    const { idcandidato, cpf, nome } = req.params;
+    console.log("delete documento ", idcandidato, cpf, nome);
+    const result = await documento.deleteDocumento(
+      Number(idcandidato),
+      Number(cpf),
+      nome
+    );
+    res.send(result);
+    apagaDocumentoStorage(idcandidato, nome);
+  }
+);
+
+app.use("/documento", express.static(path.join(__dirname, "/images/docs")));
+//*********************************** FIM DOCUMENTOS *****/
 
 /********************** INICIO EXPERIECIA *************************/
 app.get("/experiencia", verifyToken, async (req: Request, res: Response) => {
-  console.log("get experiencia 101",req.query.idcandidato);
-  const valores = {"idcandidato" :req.query.idcandidato,"cpf": req.query.cpf};
+  console.log("get experiencia 101", req.query.idcandidato);
+  const valores = { idcandidato: req.query.idcandidato, cpf: req.query.cpf };
   const result = await experiencia.getExperiencia(valores);
   res.send(result);
 });
 
 app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
-  const valores = req.body;//[req.body.idcandidato,req.body.cpf,req.body.primeiroEmprego, req.body.empresa, req.body.cidade, req.body.cargo];
+  const valores = req.body; //[req.body.idcandidato,req.body.cpf,req.body.primeiroEmprego, req.body.empresa, req.body.cidade, req.body.cargo];
   console.log("post experiencia ", valores);
- experiencia.postExperiencia(valores).then((result: any) => {
+  experiencia.postExperiencia(valores).then((result: any) => {
     res.send(result);
   });
 });
 //************************FIM EXPERIENCIA***************************/
-
 
 export default app;

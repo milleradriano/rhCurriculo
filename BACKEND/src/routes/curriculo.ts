@@ -1,6 +1,6 @@
 import PoolMysql from "../dados/dados";
 const getCurriculo = (valores: any) => {
-  console.log("inicio da curriculo ", valores);
+  // console.log("inicio da curriculo ", valores);
   if (!valores) {
     console.log("getCurriculo sem cpf");
     return Promise.reject(new Error("CPF não informado")); // Retorna uma Promise rejeitada
@@ -55,8 +55,8 @@ const postcurriculo = (valores: any) => {
     
   ] = valores;
   
-  console.log(
-    "Valores postcurriculo FIMMM ",valores)
+  // console.log(
+  //   "Valores postcurriculo FIMMM ",valores)
   return new Promise((resolve, reject) => {
     PoolMysql.query(
       "call postcandidato(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -90,7 +90,7 @@ const postcurriculo = (valores: any) => {
           //   getLog("error", JSON.stringify(error));
           reject(error);
         } else {
-          console.log("resultado curriculo 91 ", results);
+         // console.log("resultado curriculo 91 ", results);
           resolve(results);
           //   getLog("info", JSON.stringify(results));
           // logger.info(JSON.stringify(results)+' - '+ new Date().toLocaleString('pt-BR'))
