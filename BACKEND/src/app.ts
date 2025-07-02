@@ -68,7 +68,8 @@ const uploadLogo = multer({
 const storageDocumento = multer.diskStorage({
   destination: async (req, file, cb) => {
     let uploadDirDocumento = "./src/images/docs/";
-    uploadDirDocumento = req.body.idcandidato; // Define o diretório de upload com base no idcandidato
+    uploadDirDocumento += req.body.idcandidato;
+    console.log("Diretório de upload do documento:", uploadDirDocumento);
     try {
       await fs.access(uploadDirDocumento); // Verifica se o diretório existe
     } catch {
@@ -123,15 +124,17 @@ const uploadDocumento = multer({
 });
 
 
-const apagaDocumentoStorage = async (caminho: string,  nome: string) => {
+const apagaDocumentoStorage = async (caminho: string,  nome: string)  => {
   const dir = `./src/images/docs/${caminho}`;
   const filePath = path.join(dir, nome);
   try {
     await fs.access(filePath);
     await fs.unlink(filePath);
     console.log(`Arquivo ${filePath} deletado com sucesso.`);
+    return { message: `Arquivo ${filePath} deletado com sucesso.` };
   } catch (error) {
     console.error(`Erro ao deletar arquivo ${filePath}:`, error);
+    return { error: `Erro ao deletar arquivo ${filePath}: ${error}` };
   }
 };
 /*#############################  FIMMM UPLOAD DO ARMAZENAMENTO DO DOCUMENTO #################################*/
@@ -271,7 +274,10 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
 
     if (validaIdade(req.body.dataNascimento) < 14) {
       res.send({ error: "Voce precisa ser maior de 14 anos." });
-    } else {
+    } else if (req.body.dataEmissao < req.body.dataNascimento) {
+      res.send({ error: "Data de emissão do RG inválida." });
+    }    
+    else {
       curriculo.postcurriculo(dados).then((result: any) => {
         //   console.log("result no post curriculo", result);
         res.send(result);
@@ -462,8 +468,15 @@ app.delete(
       Number(cpf),
       nome
     );
+
+    const val = await apagaDocumentoStorage(idcandidato, nome) 
+    if (val.error) {
+      console.error("Erro ao deletar arquivo:", val.error);
+      res.status(500).send({ error: "Erro ao deletar arquivo." });
+    } else {
+      console.log("Arquivo deletado com sucesso:", val.message);
     res.send(result);
-    apagaDocumentoStorage(idcandidato, nome);
+    }
   }
 );
 
