@@ -3,7 +3,11 @@
   --subtitulo-color: #ff355e;
   --corBorda-input: #1dc755a8;
 }
-
+.container {
+   padding-left: 1rem; 
+   padding-right: 1rem; 
+ 
+}
 input:hover {
   border: 1px solid var(--corBorda-input);
     cursor: pointer;

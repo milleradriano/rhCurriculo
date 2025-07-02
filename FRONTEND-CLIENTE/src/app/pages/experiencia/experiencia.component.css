@@ -3,7 +3,11 @@
   --subtitulo-color: #ff355e;
   --corBorda-input: #1dc755a8;
 }
-
+.container {
+   padding-left: 1rem; 
+   padding-right: 1rem; 
+ 
+}
 input:hover {
   border: 1px solid var(--corBorda-input);
     cursor: pointer;
@@ -15,9 +19,6 @@ input:hover {
   }
 
 
-.container {
-  padding-left: 1rem;
-}
 .titulo {
   color: var(--titulo-color);
 }
@@ -29,7 +30,7 @@ input:hover {
 label {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -40,8 +41,10 @@ label {
  } */
 .radioPrimeiroEmprego{
 margin-top: 2rem;
+margin-bottom: 2rem;
 }
 .radioButton {
+  margin-top: 1rem;
   margin-left: 1rem;
 }
 .botaoSalvar{

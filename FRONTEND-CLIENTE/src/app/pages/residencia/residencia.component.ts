@@ -152,17 +152,20 @@ export class ResidenciaComponent implements OnInit {
     this.loading = true;
     let valores: any = { idcandidato: idcandidato, cpf: cpf };
     console.log('valores', valores);
-    this.residenciaService
-      .getResidencia(valores, this.headers)
+    this.residenciaService.getResidencia(valores, this.headers)
       .subscribe((res: any) => {
-        console.log('residencia fora', res);
+        console.log('residencia fora', res[0].cep);
+        if (res[0].cep === null || res[0].cep === '') {
+          this.loading = false;          
+          return;
+        }
         this.residenciaForm.patchValue({
-          cep: res[0].cep.substring(0, 5) + '-' + res[0].cep.substring(5, 8),
-          estado: res[0].estado,
-          cidade: res[0].cidade,
-          endereco: res[0].endereco,
-          bairro: res[0].bairro,
-          numero: res[0].num,
+          cep: res[0]?.cep.substring(0, 5) + '-' + res[0]?.cep.substring(5, 8),
+          estado: res[0]?.estado,
+          cidade: res[0]?.cidade,
+          endereco: res[0]?.endereco,
+          bairro: res[0]?.bairro,
+          numero: res[0]?.num,
         });
         console.log('residencia dentro', res);
         this.loading = false;

@@ -301,6 +301,7 @@ export class CurriculoComponent implements OnInit {
           console.log('SALVO');
           this.loading = false;
           this.mensagem.toast('success', 'Sucesso', 'Registro Salvo.');
+          this.getDocumento(); // Atualiza os documentos após salvar o currículo
         } else {
           this.mensagem.toast('error', 'Erro', 'Não atualizado');
           console.log('NAO SALVO');
@@ -363,6 +364,10 @@ export class CurriculoComponent implements OnInit {
         this.submitSuccess = success;
         this.submitError = !success;
       });
+      this.getDocumento();
+     
+      console.log('tentou');
+      
     } catch (error) {
       console.error('Erro ao obter o nome do arquivo:', error);
       this.mensagem.toast(
@@ -372,28 +377,30 @@ export class CurriculoComponent implements OnInit {
       );
     }
   }
-  deleteDocumento() {
-  // this.loading = true;
-  // const idcandidato = sessionStorage.getItem('idcand');
-  // const cpf = sessionStorage.getItem('cpf');
-  // if (!idcandidato || !cpf) {
-  //   console.error('ID do candidato não encontrado no sessionStorage.');
-  //   this.loading = false;
-  //   return;
-  // }
-  // this.documentoService.deleteDocumento({ idcandidato, cpf }, this.headers)
-  //   .subscribe(
-  //     (data: any) => {
-  //       this.loading = false;
-  //       this.mensagem.toast('success', 'Sucesso', 'Documento excluído com sucesso.');
-       
-  //     },
-  //     (error: any) => {
-  //       this.loading = false;
-  //       console.error('Erro ao excluir o documento:', error);
-  //       this.mensagem.toast('error', 'Erro', 'Erro ao excluir documento.');
-  //     }
-  //   );
+  deleteDocumento(nomeDocumento:string) {
+    this.loading = true;
+    const idcandidato = sessionStorage.getItem('idcand');
+    const cpf = sessionStorage.getItem('cpf');
+    console.log('INFO PARA EX excluir ',idcandidato, cpf ,nomeDocumento)
+  if (!idcandidato || !cpf) {
+    console.error('ID do candidato não encontrado no sessionStorage.');
+    this.loading = false;
+    return;
+  }
+  this.documentoService.deleteDocumento({ idcandidato, cpf,nomeDocumento }, this.headers)
+    .subscribe(
+      (data: any) => {
+        console.log('Documento excluído com sucesso dentro do deleteDocumento 388:', data);
+        this.loading = false;
+        this.mensagem.toast('success', 'Sucesso', 'Documento excluído com sucesso.');
+       this.getDocumento(); // Atualiza a lista de documentos após a exclusão  
+      },
+      (error: any) => {
+        this.loading = false;
+        console.error('Erro ao excluir o documento:', error);
+        this.mensagem.toast('error', 'Erro', 'Erro ao excluir documento.');
+      }
+    );
 
 }
 }

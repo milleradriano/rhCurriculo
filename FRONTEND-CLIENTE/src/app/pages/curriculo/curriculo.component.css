@@ -138,7 +138,7 @@ label {
   background-color: #eeeef3;
   width: 100%;
   align-items: center;
- /* border: 1px solid #606062; */
+  /* border: 1px solid #606062; */
   .nomeDoc {    
     color: var(--subtitulo-color);
     display: flex;
@@ -147,6 +147,7 @@ label {
     align-items: center;
     padding-right: 2rem;
     font-size: 1rem;  
+    padding-bottom: 0.75rem;
   }
   .botaoExcluir {
     /* border: 1px solid black; */
@@ -154,16 +155,23 @@ label {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+   
+   
     
     .p-button.p-button-icon-only {
     width: 3rem;
     padding: 0 0;
-    background-color: red;
+   
     }
     .p-button {
-    background: red;
-    border: none;
-}
+       background: var(--corBorda-input);
+      /* border: 1px solid var(--corBorda-input); */
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      border-radius: 6px;
+      outline-color: transparent; 
+    }
 }
   }
 

@@ -43,7 +43,7 @@ label{
   color: var(--titulo-color);
 }
 .p-button {
-  background: var(--corBorda-input);
+  /* background: var(--corBorda-input); */
   border: none;
 }
 .p-button:hover {
@@ -174,7 +174,7 @@ label{
  
 ::ng-deep .p-button:not(:disabled):hover {
   background: var(--corBorda-input);
-  color: red;
+  /* color: red; */
   border-color: var(--corBorda-input);
 }
 ::ng-deep .p-button {

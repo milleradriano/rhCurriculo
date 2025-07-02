@@ -17,8 +17,12 @@ idcandidato: any = sessionStorage.getItem('idcand');
 deleteDocumento(valores: any,headers:any): Observable<interfaceDocumento> {
 const idcandidato = valores.idcandidato || this.idcandidato;
 const cpf = valores.cpf || this.cpf;
-const params = new HttpParams().set('idcandidato', idcandidato).set('cpf', cpf);
-    return this.httpClient.delete<any>(this.url + '/documento', { params, headers }).
+const nomeDocumento = valores.nomeDocumento; 
+//const params = new HttpParams().set('idcandidato', idcandidato).set('cpf', cpf).set('nome', nomeDocumento);
+
+const urlDelete = this.url + `/documento/${idcandidato}/${cpf}/${nomeDocumento}`;
+console.log('URL Delete:', urlDelete);
+    return this.httpClient.delete<any>(urlDelete, { headers }).
     pipe(take(1), catchError(this.handleError));
   }
   handleError(error: HttpErrorResponse) {
