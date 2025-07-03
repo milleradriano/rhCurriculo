@@ -1,3 +1,33 @@
 p{
     color: black;
 }
+
+::ng-deep .p-fileupload .p-fileupload-row .p-button {
+  background:  var(--mdc-filled-text-field-error-focus-label-text-color) !important;  /* vermelho */
+  border: 1px solid  var(--mdc-filled-text-field-error-focus-label-text-color)!important;
+  color: #fff !important;
+  width: 3rem !important;
+}
+
+/* Cor ao passar o mouse */
+::ng-deep .p-fileupload .p-fileupload-row .p-button:hover {
+  background: rgba(255, 8, 0, 0.986) !important;
+  border-color: rgba(255, 8, 0, 0.986) !important;
+}
+
+::ng-deep .p-fileupload-choose{
+  background: var(--corBorda-input);
+  border: none; 
+}
+::ng-deep .p-fileupload-choose:hover{
+  background: #2be067c7;
+  border: none;
+  box-shadow: none; 
+}
+::ng-deep .p-fileupload-choose:not(.p-disabled).p-focus{ 
+  border:none;    
+  box-shadow: none;
+}
+::ng-deep .p-fileupload .p-fileupload-buttonbar {
+    text-align: center;
+}

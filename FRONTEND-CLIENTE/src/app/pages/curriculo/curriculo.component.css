@@ -4,9 +4,8 @@
   --corBorda-input: #1dc755a8;
 }
 .container {
-   padding-left: 1rem; 
-   padding-right: 1rem; 
- 
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 input:hover {
@@ -134,46 +133,74 @@ label {
   display: flex;
   flex-direction: row;
   justify-content: center;
-   
+
   background-color: #eeeef3;
   width: 100%;
   align-items: center;
   /* border: 1px solid #606062; */
-  .nomeDoc {    
+  .nomeDoc {
     color: var(--subtitulo-color);
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     padding-right: 2rem;
-    font-size: 1rem;  
+    font-size: 1rem;
     padding-bottom: 0.75rem;
   }
-  .botaoExcluir {
-    /* border: 1px solid black; */
+  
+.p-button {
+    color: #ffffff;
+    background: transparent;  
+   
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+    outline-color: transparent;
+} 
+::ng-deep  .p-ripple.p-element.p-button.p-component.p-button-icon-only {
+  /* Estilos específicos para o botão de exclusão */
+    color: #ffffff;
+    background: var(--mdc-filled-text-field-error-focus-label-text-color);
+    border: 1px solid  var(--mdc-filled-text-field-error-focus-label-text-color);
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+    outline-color: transparent;
+}
+::ng-deep .pi {
+    font-size: 1rem;
+    color: #ffffff;
+}
+}
+
+/*
+.botaoExcluir {
+   
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-   
-   
-    
+
     .p-button.p-button-icon-only {
-    width: 3rem;
-    padding: 0 0;
-   
+      width: 3rem;
+      padding: 0 0;
     }
     .p-button {
-       background: var(--corBorda-input);
-      /* border: 1px solid var(--corBorda-input); */
+     
+      background: var(--corBorda-input);
+    
       padding: 0.75rem 1.25rem;
       font-size: 1rem;
-      transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+        box-shadow 0.2s;
       border-radius: 6px;
-      outline-color: transparent; 
+      outline-color: transparent;
     }
-}
   }
+*/
+
 
 @media screen and (max-width: 700px) {
   #nome,
@@ -225,9 +252,9 @@ label {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-   
+
     background-color: #eeeef3;
     padding: 1rem;
-   border: 1px solid #606062;
+    border: 1px solid #606062;
   }
 }
