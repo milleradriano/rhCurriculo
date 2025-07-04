@@ -1,7 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, catchError, shareReplay } from 'rxjs';
-import { FileUploader } from '../interface/fileUploader';
+import { Observable, throwError, catchError } from 'rxjs';
+
 import { environment } from '../../environments/environment';
 import { SessionStorageService } from './sessionlstorage.service';
 
@@ -31,7 +31,7 @@ export class UploadLogoService {
     // Envia o FormData para a API
     return this.httpClient
       .post(`${environment.api}/uploaddocumento`, formData, { headers})
-      .pipe(shareReplay(), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';

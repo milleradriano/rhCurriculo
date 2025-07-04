@@ -13,12 +13,12 @@ export class LoginService {
   postLogin(valores: any): Observable<Login> {
     return this.httpClient
       .post<Login>(this.url + '/login', valores)
-      .pipe(shareReplay(1), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
     let mensagemRetorno = '';
-    console.log('error', error.error.mensagem);
+    console.log('error', error?.error?.mensagem || 'Erro desconhecido');
 
     mensagemRetorno = error.error.mensagem;
     if (error.error instanceof ErrorEvent) {

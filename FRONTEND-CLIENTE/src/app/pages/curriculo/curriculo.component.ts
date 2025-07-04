@@ -35,7 +35,7 @@ import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directi
 import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directive';
 import { interfaceCurriculo } from '../../interface/curriculo';
 // import { LoadingComponent } from '../../components/loading/loading.component';
-import { ToastComponent } from '../../components/toast/toast.component';
+import { ToastService } from '../../service/toast.service';
 import { ConfirmacaoComponent } from '../../components/confirmacao/confirmacao.component';
 import { HttpHeaders } from '@angular/common/http';
 import { LoadingComponent } from '../../components/loading/loading.component';
@@ -72,7 +72,7 @@ interface UploadEvent {
     FormatacpfDirective,
     ApenasNumeroDirective,
     FormatatelefoneDirective,
-    ToastComponent,
+   
     InputreadonlyDirective,
     InputpreenchidoDirective,
     // LoadingComponent,
@@ -109,7 +109,7 @@ export class CurriculoComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
     private sessionStorage: SessionStorageService,
-    private mensagem: ToastComponent,
+    private mensagem: ToastService,
     private curriculoService: CurriculoService,
     private sessionService: SessionStorageService,
     private documentoService: DocumentoService,
@@ -267,16 +267,16 @@ export class CurriculoComponent implements OnInit {
           } catch (error: any) {
             this.loading = false;
             console.error('Erro ao fazer parse do nome:', error);
-            this.mensagem.toast('error', 'Erro', error);
+            this.mensagem.erro(`Erro ${error}`);
           }
         } else {
           this.loading = false;
-          console.warn('Nenhum dado encontrado para o CPF:', cpf);
+         this.mensagem.atencao(`Atencao ${cpf} não cadastrado`);
         }
       },
       (error: any) => {
         this.loading = false;
-        this.mensagem.toast('error', 'Erro', error);
+        this.mensagem.erro(`Erro ${error}`);
         this.showProgress = true;
       }
     );
@@ -300,10 +300,10 @@ export class CurriculoComponent implements OnInit {
         if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
           console.log('SALVO');
           this.loading = false;
-          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo.');
+          this.mensagem.sucesso('Registro salvo.');
           this.getDocumento(); // Atualiza os documentos após salvar o currículo
         } else {
-          this.mensagem.toast('error', 'Erro', 'Não atualizado');
+           this.mensagem.erro('Erro não atualizado');
           console.log('NAO SALVO');
         }
       },
@@ -311,11 +311,7 @@ export class CurriculoComponent implements OnInit {
         this.loading = false;
         this.showProgress = true;
         console.error('Erro ao salvar o currículo:', error);
-        this.mensagem.toast(
-          'error',
-          'Erro',
-          'Erro ao salvar., tente mais tarde.'
-        );
+        this.mensagem.erro('Erro ao salvar, tente mais tarde.' );
       }
     );
   }
@@ -347,7 +343,7 @@ export class CurriculoComponent implements OnInit {
         (error: any) => {
           this.loading = false;
           console.error('Erro ao obter o documento:', error);
-          this.mensagem.toast('error', 'Erro', 'Erro ao obter documento.');
+          this.mensagem.erro('Erro ao obter documento.');
         }
       );
     } else {
@@ -370,11 +366,7 @@ export class CurriculoComponent implements OnInit {
       
     } catch (error) {
       console.error('Erro ao obter o nome do arquivo:', error);
-      this.mensagem.toast(
-        'error',
-        'Erro',
-        'Erro ao salvar imagem., tente mais tarde.'
-      );
+      this.mensagem.erro('Erro ao salvar imagem, tente mais tarde.');
     }
   }
   deleteDocumento(nomeDocumento:string) {
@@ -392,13 +384,13 @@ export class CurriculoComponent implements OnInit {
       (data: any) => {
         console.log('Documento excluído com sucesso dentro do deleteDocumento 388:', data);
         this.loading = false;
-        this.mensagem.toast('success', 'Sucesso', 'Documento excluído com sucesso.');
-       this.getDocumento(); // Atualiza a lista de documentos após a exclusão  
+        this.mensagem.sucesso('Documento excluído com sucesso.');
+       this.getDocumento(); // Atualiza a lista de documentos após a exclusão
       },
       (error: any) => {
         this.loading = false;
         console.error('Erro ao excluir o documento:', error);
-        this.mensagem.toast('error', 'Erro', 'Erro ao excluir documento.');
+        this.mensagem.erro('Erro ao excluir documento.');
       }
     );
 

@@ -52,13 +52,13 @@ export class MenuComponent implements OnInit {
      
       {
         label: 'Dados Pessoais',
-        icon: 'pi pi-fw pi-building',
+        icon: 'pi pi-fw pi-user',
         routerLink: 'curriculo',
       },
  
       {
         label: 'Dados Residenciais',
-        icon: 'pi pi-fw pi-building',
+        icon: 'pi pi-fw pi-home',
         routerLink: 'residencia',
       },
 
@@ -67,6 +67,12 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-fw pi-building',
         routerLink: 'experiencia',
       },
+      //  {     
+      //   label: 'Sair',
+      //   icon: 'pi pi-fw pi-sign-out',
+      //   routerLink: '/'
+    
+      // },
     ];
 }
 

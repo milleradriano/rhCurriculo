@@ -26,7 +26,7 @@ import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directi
 
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
-import { ToastComponent } from '../../components/toast/toast.component';
+
 import { PasswordModule } from 'primeng/password';
 
 @Component({
@@ -49,7 +49,7 @@ import { PasswordModule } from 'primeng/password';
      ToastModule,
      InputMaskModule,
      FormatacpfDirective,  
-     ToastComponent,
+
      PasswordModule     
    ],
   templateUrl: './recupera-senha.component.html',

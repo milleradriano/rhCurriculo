@@ -7,16 +7,14 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class VagasService {
-  private readonly url = 'http://localhost:3001/vagas';
+  private readonly url = 'http://localhost:3001/vagas'; // REMOVER 
 
   constructor(private httpClient: HttpClient) {}
 
   getVagas(): Observable<interfaceVaga[]> {
     return this.httpClient
       .get<interfaceVaga[]>(this.url)
-      .pipe(
-        shareReplay(1),
-        catchError(this.handleError)
+      .pipe(catchError(this.handleError)
       );
   }
 

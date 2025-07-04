@@ -49,19 +49,9 @@ label {
   line-height: 22px;
 }
 
-/* .p-dropdown {
-  background: #e01a5c;
-  border: 1px solid green;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-    box-shadow 0.2s;
-  border-radius: 6px;
-  width: 100%;
-} */
 
 .documento,
-.informacaoDocumento,
-.parente,
-.filhos {
+.informacaoDocumento {
   display: flex;
   flex-direction: row;
   margin-bottom: 1rem;
@@ -71,7 +61,15 @@ label {
   line-height: 22px;
   gap: 1rem;
 }
-
+.filhos {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+}
 .enviarArquivo {
   margin-top: 2rem;
   width: 100%;
@@ -89,19 +87,20 @@ label {
 .estudaAtualmente {
   display: flex;
 }
-.radioEstuda {
-  margin-right: 2rem;
+.radioEstuda,.radiofilho {
+  margin-right: 1rem;
 }
 
 .telefone,
 .email {
   width: 20rem;
 }
-
+.dataNascimento{
+  width: 10rem;
+}
 .nomePai,
-.nomeMae,
-.dataNascimento {
-  width: 100%;
+.nomeMae{
+  width: 40rem;
 }
 
 .botaoSalvar {
@@ -133,11 +132,11 @@ label {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 
   background-color: #eeeef3;
   width: 100%;
-  align-items: center;
-  /* border: 1px solid #606062; */
+   border: 1px solid #606062; 
   .nomeDoc {
     color: var(--subtitulo-color);
     display: flex;
@@ -174,32 +173,6 @@ label {
     color: #ffffff;
 }
 }
-
-/*
-.botaoExcluir {
-   
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .p-button.p-button-icon-only {
-      width: 3rem;
-      padding: 0 0;
-    }
-    .p-button {
-     
-      background: var(--corBorda-input);
-    
-      padding: 0.75rem 1.25rem;
-      font-size: 1rem;
-      transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-        box-shadow 0.2s;
-      border-radius: 6px;
-      outline-color: transparent;
-    }
-  }
-*/
 
 
 @media screen and (max-width: 700px) {

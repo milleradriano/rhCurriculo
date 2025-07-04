@@ -39,6 +39,6 @@ console.log('URL Delete:', urlDelete);
   getDocumento(idcandidato: string, cpf: string, headers?: HttpHeaders): Observable<interfaceDocumento[]> {
     const params = new HttpParams().set('idcandidato', idcandidato || this.idcandidato).set('cpf', cpf || this.cpf);
     return this.httpClient.get<interfaceDocumento[]>(this.url + '/documento', { params, headers })
-      .pipe(take(1), catchError(this.handleError), shareReplay());
+      .pipe(take(1), catchError(this.handleError));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -26,7 +26,7 @@ import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directi
 
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
-import { ToastComponent } from '../../components/toast/toast.component';
+
 import { PasswordModule } from 'primeng/password';
 import { RecuperaSenhaComponent } from '../recupera-senha/recupera-senha.component';
 import {
@@ -41,6 +41,7 @@ import { LoadingComponent } from "../../components/loading/loading.component";
 import { LoginService } from '../../service/login.service';
 
 import { Router } from '@angular/router';
+import { ToastService } from '../../service/toast.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -61,7 +62,6 @@ import { Router } from '@angular/router';
     ToastModule,
     InputMaskModule,
     FormatacpfDirective,
-    ToastComponent,
     PasswordModule,
     RecuperaSenhaComponent,
     DynamicDialogModule,
@@ -72,7 +72,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   cpf: string = '';
   password: string = '';
   mostrarModalRecuperaSenha: boolean = false;
@@ -82,11 +82,20 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
-    private toast: ToastComponent,
-    private router: Router 
+    private toast: ToastService,
+    private router: Router,
+    private sessionStorage: SessionStorageService, 
    
-  ) {}
-  
+  ) {
+   
+  }
+  ngOnInit(): void {
+   this.sessionStorage.remove("cpf");
+   this.sessionStorage.remove("idcand");
+   this.sessionStorage.remove("nome");    // Limpa o token e CPF do sessionStorage ao iniciar o componente
+   this.sessionStorage.remove("token");
+  }
+    
   
     loginForm = this.formBuilder.group({
       cpf: ['', Validators.required],
@@ -111,13 +120,13 @@ export class LoginComponent {
         }
         else{
           console.log('login ',data);
-          this.toast.toast("error", "Atenção", data);
+          this.toast.erro(data);
         }
       },
       (error: any) => {
         this.isLoadingResults = false;
         console.error('Erro ao realizar login:', error);
-        this.toast.toast("error", "Atenção", error);
+        this.toast.erro(`Atenção, ${error}`);
       }
     );
   }

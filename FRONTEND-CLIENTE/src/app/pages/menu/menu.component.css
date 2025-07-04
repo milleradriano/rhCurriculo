@@ -1,5 +1,5 @@
 .container {
-   background-color: red; 
+  background-color: red;
 }
 .mat-drawer {
   background-color: #c7e2c4;
@@ -43,7 +43,7 @@ hr {
   top: 0;
   z-index: 1;
 }
-mat-icon{
+mat-icon {
   color: #606062;
   font-size: 1.5rem;
 }
@@ -53,9 +53,8 @@ mat-icon{
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
-.imagemLogo{
+.imagemLogo {
   width: 6rem;
 }
 .menu {
@@ -71,19 +70,43 @@ mat-icon{
   box-shadow: 0 0 0.1rem 1px rgb(0, 150, 136, 0.7);
   transition: box-shadow 0.4s, background-color 0.4s;
 }
+.p-panelmenu .p-panelmenu-header:last-child .p-panelmenu-header-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.botaoSair {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #c7e2c4;
+  color: #6b7288;
+
+}
+.mat-mdc-outlined-button:not(:disabled) {
+    color: #6b7288;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Montserrat, Arial, Tahoma, sans-serif ;
+}
+
+
+.botaoSair:hover {
+  background-color: #e2e2e2;
+  transition: box-shadow 0.4s, background-color 0.4s;
+}
 @media screen and (max-width: 1024px) {
   .titulo {
-   margin-left: 0.75rem;
-    font-size: 1rem;    
-  
+    margin-left: 0.75rem;
+    font-size: 1rem;
   }
   .toolbar {
     display: flex;
     flex-direction: row;
     align-items: center;
-    
   }
-  
 }
 
 /*************  ✨ Codeium Command 🌟  *************/

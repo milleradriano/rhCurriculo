@@ -23,11 +23,12 @@ import { FormatacepDirective } from '../../diretiva/formatacep.directive';
 
 import { ResidenciaService } from '../../service/residencia.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
-import { ToastComponent } from '../../components/toast/toast.component';
+
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { HttpHeaders } from '@angular/common/http';
 import { ProgressbarComponent } from "../../components/progressbar/progressbar.component";
+import { ToastService } from '../../service/toast.service';
 @Component({
   selector: 'app-residencia',
   standalone: true,
@@ -50,7 +51,7 @@ import { ProgressbarComponent } from "../../components/progressbar/progressbar.c
     InputGroupModule,
     InputGroupAddonModule, 
     FormatacepDirective,
-    ToastComponent,
+  
     InputpreenchidoDirective,
     LoadingComponent,
     ProgressbarComponent
@@ -71,7 +72,7 @@ export class ResidenciaComponent implements OnInit {
     
     private formbuilder: FormBuilder,
     private residenciaService: ResidenciaService,
-    private mensagem: ToastComponent,
+    private mensagem: ToastService,
     private sessionStorage: SessionStorageService
   ) {
     this.estado = [
@@ -139,13 +140,13 @@ export class ResidenciaComponent implements OnInit {
         });
       });
     } catch {
-      this.mensagem.toast('error', 'Erro', 'Cep inválido');
+      this.mensagem.erro('Cep inválido');
     }
     this.loading = false;
   }
   alerta() {
     console.log('dentro do alerta');
-    this.mensagem.toast('success', 'Sucesso', 'Residência cadastrada');
+    this.mensagem.sucesso('Residência cadastrada');
   }
 
   getResidencia(idcandidato: string, cpf: string) {
@@ -173,7 +174,7 @@ export class ResidenciaComponent implements OnInit {
         this.loading = false;
         this.showProgress = true;
         console.error('Erro ao buscar residência:', error);
-        this.mensagem.toast('error', 'Erro', 'Indisponível tente mais tarde.');
+        this.mensagem.erro('Sistema indisponível tente mais tarde.');
       });
   }
 
@@ -186,14 +187,15 @@ export class ResidenciaComponent implements OnInit {
         this.loading = false;
         console.log('RESIDENCIA', JSON.parse(JSON.stringify(data)).status);
         if (JSON.parse(JSON.stringify(data)).status == '0') {
-          this.mensagem.toast('success', 'Sucesso', 'Registro Salvo');
+          this.mensagem.sucesso('Registro Salvo');
+
         } else {
-          this.mensagem.toast('error', 'Erro', 'Não atualizado');
+          this.mensagem.erro('Não atualizado');
         }
       },
       (error) => {
         this.loading = false;
-        this.mensagem.toast('error', 'Erro', 'Indisponível tente mais tarde.');
+        this.mensagem.erro('Indisponível tente mais tarde.');
         // console.log('error aqio', error);
       }
     );

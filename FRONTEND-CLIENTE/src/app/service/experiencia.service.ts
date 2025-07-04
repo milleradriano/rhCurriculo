@@ -1,6 +1,6 @@
 import { Injectable,Inject,PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable, throwError,catchError,shareReplay, take } from 'rxjs';
+import { Observable, throwError,catchError, take } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 import { interfaceExperiencia } from '../interface/experiencia';
 
@@ -12,7 +12,7 @@ export class ExperienciaService {
   sessionToken: string | null = sessionStorage.getItem('token'); 
   cpf: any  = sessionStorage.getItem('cpf');
   idcandidato: any = sessionStorage.getItem('idcand');
-  constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object,private httpClient: HttpClient) { }
+  constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
   
   getExperiencia(valor:any, headers?: any): Observable<[interfaceExperiencia]> {
     console.log('experiencia no servi', valor.idcandidato, valor.cpf);

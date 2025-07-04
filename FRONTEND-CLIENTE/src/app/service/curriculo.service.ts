@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError, catchError, shareReplay, take } from 'rxjs';
+import { HttpClient, HttpErrorResponse,  HttpParams } from '@angular/common/http';
+import { Observable, throwError, catchError,  take } from 'rxjs';
 import { interfaceCurriculo } from '../interface/curriculo';
 import { environment } from '../../environments/environment.prod';
 
@@ -39,7 +39,7 @@ export class CurriculoService {
 
   private handleError(error: HttpErrorResponse) {
     let mensagemRetorno = '';
-    console.log('error', error.error.mensagem);
+    console.log('error', error?.error?.mensagem || error.error.message);
 
     mensagemRetorno = error.error.mensagem;
     if (error.error instanceof ErrorEvent) {

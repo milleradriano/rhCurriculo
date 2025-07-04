@@ -1,23 +1,23 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import {  BreakpointObserver } from '@angular/cdk/layout';
+
+
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MenuComponent } from '../menu/menu.component';
+
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RadioButtonClickEvent, RadioButtonModule } from 'primeng/radiobutton';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { FileUploadModule } from 'primeng/fileupload';
-import { ToastComponent } from '../../components/toast/toast.component';
+
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ExperienciaService } from '../../service/experiencia.service';
@@ -26,17 +26,19 @@ import { HttpHeaders } from '@angular/common/http';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { ProgressbarComponent } from '../../components/progressbar/progressbar.component';
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
+
+
+import { Ripple, RippleModule } from 'primeng/ripple';
+import { ToastService } from '../../service/toast.service';
 @Component({
   selector: 'app-experiencia',
   standalone: true,
-  imports: [
-    AsyncPipe,
+  imports: [   
     MatGridListModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule,
-    MenuComponent,
+    MatCardModule,    
     InputTextModule,
     FormsModule,
     CommonModule,
@@ -45,13 +47,17 @@ import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directi
     ReactiveFormsModule,
     ButtonModule,
     FileUploadModule,
-    ToastComponent,
+  
     InputGroupModule,
     InputGroupAddonModule, 
     LoadingComponent,
     ProgressbarComponent,
     InputpreenchidoDirective,
+
+
+     ButtonModule, RippleModule
   ],
+  providers: [MessageService],
   templateUrl: './experiencia.component.html',
   styleUrl: './experiencia.component.css',
 })
@@ -61,16 +67,19 @@ export class ExperienciaComponent implements OnInit {
   idcandidato: any = this.sessionStorage.getLogin('idcand');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
   headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
-  isLoadingResults: boolean = false;
+
   showProgress: boolean = false;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private mensagem: ToastComponent,
+    private mensagem: ToastService,
     private experienciaService: ExperienciaService,
     private sessionStorage: SessionStorageService
   ) {}
+
+
   ngOnInit(): void {
     if (this.cpf || this.idcandidato) {
       console.log('cpf no inicio', this.cpf);
@@ -90,12 +99,7 @@ export class ExperienciaComponent implements OnInit {
     this.experienciaService;
     let valores: any = { idcandidato: idcandidato, cpf: cpf };
     this.experienciaService.getExperiencia(valores, this.headers).subscribe({
-      next: (response: any) => {
-        console.log(
-          'Experiência obtida com sucesso:',
-          response[0][0].primeiroEmprego
-        );
-
+      next: (response: any) => {    
         this.experienciaForm.patchValue({
           primeiroEmprego: response[0][0]?.primeiroEmprego,
           empresa: response[0][0]?.empresa || '',
@@ -106,7 +110,7 @@ export class ExperienciaComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Erro ao obter experiência:', error);
-        this.mensagem.toast('error', 'Erro', 'Erro ao obter experiência');
+        this.mensagem.erro('Erro ao obter experiência');
         this.loading = false;
         this.showProgress = true;
       },
@@ -122,28 +126,29 @@ export class ExperienciaComponent implements OnInit {
       idcandidato,
       cpf,
     };
-
-    console.log('experienciaData', experienciaData);
+  
     this.experienciaService
       .postExperiencia(experienciaData, this.headers)
       .subscribe({
-        next: (response: any) => {
-          console.log('Experiência salva com sucesso:', response);
-          this.mensagem.toast('success', 'Sucesso', 'Salva com sucesso');
+        next: (response: any) => {                 
           this.loading = false;
-
+          this.mensagem.sucesso('Salvo com sucesso');
+          console.log('Experiência salva com sucesso:', response);
           if (valores.primeiroEmprego === 'S') {
-            console.log('valor primeiro emprego:', valores.primeiroEmprego);
             this.experienciaForm.get('empresa')?.reset();
             this.experienciaForm.get('cidade')?.reset();
             this.experienciaForm.get('cargo')?.reset();
           }
         },
-        error: (error: any) => {
-          console.error('Erro ao salvar experiência:', error);
-          this.mensagem.toast('error', 'Erro', 'Erro ao salvar');
+        error: (error: any) => {      
+          this.mensagem.erro('Erro ao salvar');
           this.showProgress = true;
         },
       });
   }
+
+
+
 }
+
+

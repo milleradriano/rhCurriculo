@@ -8,18 +8,36 @@ export class SessionStorageService {
   private isBrowser! : boolean;
   // private storage : window.localStorage;
 private storage!: Storage;
-private nomeCurriculoTop = new BehaviorSubject<string | null>(sessionStorage.getItem('nome'));
-constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+//private nomeCurriculoTop = new BehaviorSubject<string | null>(sessionStorage.getItem('nome'));
+private nomeCurriculoTop: BehaviorSubject<string | null>;
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+
+    let initialValue: string | null = null;
+    if (this.isBrowser) {
+      initialValue = sessionStorage.getItem('nome');
+    }
+
+    this.nomeCurriculoTop = new BehaviorSubject<string | null>(initialValue);
   }
+
 getUserName():Observable<string | null> {
 
   return this.nomeCurriculoTop.asObservable();
 }
-updateUserName(nome: string): void {
-
-  sessionStorage.setItem('nome', nome);
-  this.nomeCurriculoTop.next(nome);
+  updateUserName(nome: string): void {
+    if (this.isBrowser) {
+      sessionStorage.setItem('nome', nome);
+    }
+    this.nomeCurriculoTop.next(nome);
+  }
+remove(value: string): void {
+  if (this.isBrowser) {
+    sessionStorage.removeItem( value);
+  }
+  
 }
 setUserName(key: string,value: string): void {
     if (this.isBrowser) {

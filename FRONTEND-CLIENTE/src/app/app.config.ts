@@ -12,9 +12,10 @@ import { ToastModule } from 'primeng/toast';
 import { HttpClient, HttpClientModule,provideHttpClient,withFetch  } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastComponent } from '../app/components/toast/toast.component';
+
+
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideHttpClient(),BrowserAnimationsModule,BrowserModule,
-    MessageService,ConfirmationService ,ConfirmDialogModule, ToastModule,ToastComponent, HttpClientModule,CommonModule, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()],
+    MessageService,ConfirmationService ,ConfirmDialogModule, ToastModule,ToastModule, HttpClientModule,CommonModule, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()],
 };

@@ -4,7 +4,7 @@ import { Observable, throwError, catchError, shareReplay } from 'rxjs';
 import { interfaceCurriculo } from '../interface/curriculo';
 import { environment } from '../../environments/environment';
 import { interfaceCadastraLogin } from '../interface/cadastraLogin';
-
+import { firstValueFrom } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +16,7 @@ private url= environment.api;
   ) { 
 
   }  
-postCadastroLogin(valores: any): Observable<interfaceCadastraLogin> {
+ postCadastroLogin(valores: any): Observable<interfaceCadastraLogin> {
     return this.httpclient
       .post<interfaceCadastraLogin>(this.url+'/cadastro-login', valores)
       .pipe(shareReplay(1), catchError(this.handleError));

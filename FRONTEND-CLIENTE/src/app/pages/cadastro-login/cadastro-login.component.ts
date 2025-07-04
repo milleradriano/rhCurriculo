@@ -25,7 +25,7 @@ import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
 import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
 
 import { SessionStorageService } from '../../service/sessionlstorage.service';
-import { ToastComponent } from '../../components/toast/toast.component';
+import { ToastService } from '../../service/toast.service';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
@@ -60,8 +60,6 @@ import { Router } from '@angular/router';
     ToastModule,
     InputMaskModule,
     FormatacpfDirective,
-    FormatatelefoneDirective,
-    ToastComponent,
     InputpreenchidoDirective,
     CheckboxModule,
     PasswordModule,
@@ -78,7 +76,7 @@ export class CadastroLoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private toast: ToastComponent,
+    private toast: ToastService,
     private cadastraLoginservice: CadastroLoginService,
     private routes: Router
   ) {}
@@ -110,13 +108,13 @@ export class CadastroLoginComponent {
     this.showProgress = false;
 
     if (value.senha !== value.confirmaSenha) {
-      this.toast.toast('error', 'Erro', 'As senhas não conferem');
+      this.toast.erro('As senhas não conferem');
       this.isLoadingResults = false;
       this.showProgress = false;
       return;
     }
     if (value.email !== value.confirmaEmail) {
-      this.toast.toast('error', 'Erro', 'Os e-mails não conferem');
+      this.toast.erro('Os e-mails não conferem');
       this.isLoadingResults = false;
       this.showProgress = false;
       return;
@@ -135,7 +133,7 @@ export class CadastroLoginComponent {
         resultado = 0;
       }
       if (resultado != parseInt(cpf.charAt(9))) {
-        this.toast.toast('error', 'Erro', 'CPF inválido');
+        this.toast.erro('CPF inválido');
         this.isLoadingResults = false;
         this.showProgress = false;
         return;
@@ -150,7 +148,7 @@ export class CadastroLoginComponent {
         resultado = 0;
       }
       if (resultado != parseInt(cpf.charAt(10))) {
-        this.toast.toast('error', 'Erro', 'CPF inválido');
+        this.toast.erro('CPF inválido');
         this.isLoadingResults = false;
         this.showProgress = false;
         return;
@@ -158,9 +156,7 @@ export class CadastroLoginComponent {
     }
     /*************  ✨ VALIDACAO DO CPF ⭐  *************/
 
-    console.log(value);
-    // this.isLoadingResults = false;
-    // this.showProgress = false;
+ 
 let valores = {
       cpf: value.cpf,
       nome: value.nome,
@@ -176,18 +172,20 @@ let valores = {
           let mensagem = JSON.parse(data[0][0].result).status;
           if (codigo == '0') {
 
-            this.toast.toast('success', 'Sucesso', mensagem);
+            this.toast.sucesso( mensagem);
             setTimeout(() => {
               this.routes.navigate(['/']);
             }, 3000);
+            
           }
+          
           if (codigo == '1') {
-            this.toast.toast('error', 'Erro', mensagem);
+            this.toast.erro( mensagem);
 
           }
         } else {
           let mensagem = JSON.parse(JSON.stringify(data)).error;
-          this.toast.toast('error', 'Erro', mensagem);
+          this.toast.erro( mensagem);
         }
         this.isLoadingResults = false;
         this.showProgress = false;
@@ -195,8 +193,13 @@ let valores = {
       (error: any) => {
         this.isLoadingResults = false;
         this.showProgress = false;
-        this.toast.toast('error', 'Erro', 'Erro ao salvar., tente mais tarde.');
+        this.toast.erro('Erro ao salvar, tente mais tarde.');
       }
     );
   }
+
+
+
+  
+  
 }
