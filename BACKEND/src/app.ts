@@ -20,6 +20,7 @@ const residencia = require("./routes/residencia");
 const login = require("./routes/login");
 const experiencia = require("./routes/experiencia");
 const documento = require("./routes/documento");
+const email = require("./routes/email");
 //const  postLogin  = require("./routes/cadastraLogin");
 //const login = require("./routes/login");
 const bcrypt = require("bcrypt"); // para criptografar a senha
@@ -359,6 +360,7 @@ app.get("/cep", verifyToken, async (req: Request, res: Response) => {
 //************************** FIM CEP **************************/
 //**************************INICIA RESIDENCIA*********************/
 
+
 app.post(
   "/retornaresidencia/",
   verifyToken,
@@ -499,5 +501,18 @@ app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
   });
 });
 //************************FIM EXPERIENCIA***************************/
+
+//*************************INICIO EMAIL ****************************/
+app.post("/email", async (req: Request, res: Response) => {
+  const valores = req.body;
+  console.log("post email ", valores);
+  email.postMail(valores).then((result: any) => {
+    res.send(result);
+  });
+});
+
+//************************FIM EMAIL **************************** */
+
+
 
 export default app;
