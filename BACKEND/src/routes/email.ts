@@ -5,7 +5,9 @@ const fs = require("fs");
 // Substitua pela senha real
 
 const postMail = (email: any, senha: any) => {
-  console.log("postMail email", senha);
+  console.log("postMail email", email);
+  console.log("postMail senha", senha);
+
   let htmlContent = "";
   htmlContent = fs.readFileSync("./src/htmlEmail/recuperaSenha.html", "utf-8");
   htmlContent = htmlContent.replace("{{senha}}", senha);
@@ -45,6 +47,7 @@ const postMail = (email: any, senha: any) => {
       } else {
         
         resolve(info.response);
+          
       }
     });
   });

@@ -285,9 +285,9 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
     ];
 
     if (validaIdade(req.body.dataNascimento) < 14) {
-      res.send({ error: "Voce precisa ser maior de 14 anos." });
+      res.status(400).send({ error: "Voce precisa ser maior de 14 anos." });
     } else if (req.body.dataEmissao < req.body.dataNascimento) {
-      res.send({ error: "Data de emissão do RG inválida." });
+      res.status(419).send({ error: "Data de emissão do RG inválida." });
     } else {
       curriculo.postcurriculo(dados).then((result: any) => {
         //   console.log("result no post curriculo", result);
@@ -466,6 +466,7 @@ app.post(
       };
       documento.postDocumento(valores).then((result: any) => {
         res.send(result);
+        
       });
       return;
     }
@@ -532,6 +533,7 @@ console.log("valores do cpf no replace ",valores.cpf.replace(/[^0-9]/g, ""))
             .postMail(valores, novaSenha)
             .then((result: any) => {
               console.log("email enviado", result);
+              console.log("-------------------------------------------");
               if (envio.error) {
                 console.error("Erro ao enviar e-mail 523:", envio.error);
               }
