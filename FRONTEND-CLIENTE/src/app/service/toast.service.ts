@@ -12,7 +12,7 @@ export class ToastService {
   }
 
   erro(message: string) {
-    this.messageService.add({ severity: 'error', summary: 'Erro', detail: message });
+    this.messageService.add({ severity: 'error', summary: 'Atenção', detail: message });
   }
 
   info(message: string) {

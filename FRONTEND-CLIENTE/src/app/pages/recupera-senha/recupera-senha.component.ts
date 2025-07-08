@@ -15,61 +15,68 @@ import { RadioButtonClickEvent, RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
+
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
-
-import { ApenasNumeroDirective } from '../../diretiva/apenasnumero.directive';
-import { FormatatelefoneDirective } from '../../diretiva/formatatelefone.directive';
-
-import { SessionStorageService } from '../../service/sessionlstorage.service';
-import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
-
 import { PasswordModule } from 'primeng/password';
+import { RecuperaSenhaService } from '../../service/recupera-senha.service';
+import { ToastService } from '../../service/toast.service';
 
 @Component({
   selector: 'app-recupera-senha',
   standalone: true,
- imports: [
-     MatGridListModule,
-     MatMenuModule,
-     MatIconModule,
-     MatButtonModule,
-     MatCardModule,
-     InputTextModule,
-     FormsModule,
-     CommonModule,
-     RadioButtonModule,
-     DropdownModule,
-     ReactiveFormsModule,
-     ButtonModule,
-     FileUploadModule,
-     ToastModule,
-     InputMaskModule,
-     FormatacpfDirective,  
+  imports: [
+    MatGridListModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    InputTextModule,
+    FormsModule,
+    CommonModule,
+    RadioButtonModule,
+    DropdownModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    FileUploadModule,
+    ToastModule,
+    InputMaskModule,
+    FormatacpfDirective,
 
-     PasswordModule     
-   ],
+    PasswordModule,
+  ],
   templateUrl: './recupera-senha.component.html',
-  styleUrl: './recupera-senha.component.css'
+  styleUrl: './recupera-senha.component.css',
 })
-
 export class RecuperaSenhaComponent {
   constructor(
-    private formBuilder: FormBuilder
-  ) { }
+    private formBuilder: FormBuilder,
+    private recuperarSenha: RecuperaSenhaService,
+    private mensagem: ToastService
+  ) {}
   recuperarSenhaForm = this.formBuilder.group({
-    email:[
+    cpf: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
+    email: [
       '',
       [
         Validators.required,
         Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
       ],
-    ],
-  })
-    recuperarSenha() {
-  throw new Error('Method not implemented.');
-  }  
+    ],    
+  });
+  recuperaSenha(valores: any) {
+    console.log('Recuperar Senha Valores:', valores);
+    this.recuperarSenha.postEmailRecuperaSenha(valores.cpf,valores.email).subscribe({
+      next: (response) => {
+        console.log('Recuperar Senha Response:', response);
+        this.mensagem.sucesso('E-mail enviado, verfique seu e-mail.');
+      },
+      error: (error) => {
+        console.error('Recuperar Senha Error:', error);
+        this.mensagem.erro(error.error.mensagem || 'Erro ao enviar e-mail de recuperação.');
+      },
+    });
+  }
 }

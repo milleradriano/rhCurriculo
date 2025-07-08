@@ -11,6 +11,7 @@ export class LoginService {
   url = environment.api;
   constructor(private httpClient: HttpClient) {}
   postLogin(valores: any): Observable<Login> {
+     console.log('valores', valores);
     return this.httpClient
       .post<Login>(this.url + '/login', valores)
       .pipe(catchError(this.handleError));
@@ -18,23 +19,23 @@ export class LoginService {
 
   private handleError(error: HttpErrorResponse) {
     let mensagemRetorno = '';
-    console.log('error', error?.error?.mensagem || 'Erro desconhecido');
+   
 
     mensagemRetorno = error.error.mensagem;
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
+
       console.error('ocorreu um de rede :', error.error);
     } else {
       //* este e o erro do servidor
-      console.error('codigo do erro ', error.status);
+      console.error('codigo do erro ', error.message);
       if (error.status === 0) {
         mensagemRetorno = 'Serviço indisponível';
       }
       if (error.status === 401) {
-        mensagemRetorno = 'Usuário ou senha inválidos';
+        mensagemRetorno = 'Usuário ou senha inválidos';      
       }
       if (error.status === 400) {
-        mensagemRetorno = 'Parâmetros inválidos';
+        mensagemRetorno = 'Dados inválidos';
       }
       if (error.status === 403) {
         mensagemRetorno = 'Usuário sem permissão';
@@ -46,7 +47,7 @@ export class LoginService {
         mensagemRetorno = 'Erro interno do servidor';
       }
 
-      return throwError(() => new Error(mensagemRetorno));
+      return throwError(() => mensagemRetorno);
     }
     // return an observable with a user-facing error message
     // retorno padrão caso nao seja catalogado

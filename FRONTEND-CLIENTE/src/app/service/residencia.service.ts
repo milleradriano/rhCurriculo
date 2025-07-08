@@ -13,7 +13,7 @@ export class ResidenciaService  {
   sessionToken: string | null = sessionStorage.getItem('token'); 
   cpf: any  = sessionStorage.getItem('cpf');
   idcandidato: any = sessionStorage.getItem('idcand');
-  constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object,private httpClient: HttpClient) { }
+  constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
 
 getCep(cep: any, headers?: any): Observable<interfaceCep> {
   console.log('cep no get',cep)

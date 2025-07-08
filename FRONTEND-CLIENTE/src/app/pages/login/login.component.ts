@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit {
     
   
     loginForm = this.formBuilder.group({
-      cpf: ['', Validators.required],
+      cpf: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
       senha: ['', Validators.required],
     });
     postLogin($event: Partial<{ cpf: string; senha: string }>) {
@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
     this.loginService.postLogin($event).subscribe(
       (data: any) => {
         this.isLoadingResults = false;
-      console.log('login ',data);
+     // console.log('login ',data);
         if (data.token) {
         
 
@@ -120,13 +120,13 @@ export class LoginComponent implements OnInit {
         }
         else{
           console.log('login ',data);
-          this.toast.erro(data);
+          this.toast.erro(data.mensagem);
         }
       },
       (error: any) => {
         this.isLoadingResults = false;
-        console.error('Erro ao realizar login:', error);
-        this.toast.erro(`Atenção, ${error}`);
+      //  console.error('Erro ao realizar login:', error);
+        this.toast.erro(error);
       }
     );
   }

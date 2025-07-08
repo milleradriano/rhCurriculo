@@ -1,10 +1,21 @@
 <div class="container">
   <div class="recupera">
-  
-    <p>Enviaremos para o e-mail cadastrado sua nova senha. </p>
-    <form [formGroup]="recuperarSenhaForm" (ngSubmit)="recuperarSenha()">
-      
-        <div class="email">
+    <p>Enviaremos para o e-mail cadastrado sua nova senha.</p>
+    <form [formGroup]="recuperarSenhaForm" (ngSubmit)="recuperaSenha(recuperarSenhaForm.value)">
+        <div class="cpf">
+        <label for="cpf">CPF:</label>
+        <input
+          id="cpf"
+          formControlName="cpf"
+          pInputText
+          type="text"
+          placeholder="CPF"
+          maxlength="14"
+          appFormatacpf
+          appInputpreenchido
+        />
+      </div>
+      <div class="email">
         <label for="email">Email:</label>
         <input
           id="email"
@@ -18,16 +29,15 @@
 
       <div class="envia">
         <button
-            id="botaoRecuperarSenha"
+          id="botaoRecuperarSenha"
           type="submit"
           pButton
           label="Recuperar Senha"
           severity="success"
           [disabled]="!recuperarSenhaForm.valid"
+        
           title="Recuperar Senha"
         ></button>
-
-      
       </div>
     </form>
   </div>
