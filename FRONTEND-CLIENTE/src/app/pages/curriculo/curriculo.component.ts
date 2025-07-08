@@ -295,6 +295,15 @@ export class CurriculoComponent implements OnInit {
     valores.cpf = valores.cpf.replace(/\D/g, '');
     /*Adiciona o idcandidato ao objeto valores*/
     valores = { ...valores, idcandidato };    
+
+    const dataNascimento = new Date(valores.dataNascimento);
+    const idade = new Date().getFullYear() - dataNascimento.getFullYear();
+    if (idade < 18) {    
+      this.loading = false;
+      this.mensagem.erro('Candidato menor de idade.');        
+      return;
+    }
+
     if (valores.dataEmissao < valores.dataNascimento) { 
       this.loading = false;
       this.mensagem.erro('Data de emissão maior que a data de nascimento');    

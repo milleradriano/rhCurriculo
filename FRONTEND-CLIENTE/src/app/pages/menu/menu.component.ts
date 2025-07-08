@@ -67,6 +67,11 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-fw pi-building',
         routerLink: 'experiencia',
       },
+        {
+        label: 'Modificar Senha',
+        icon: 'pi pi-fw pi-key',
+        routerLink: 'modificarsenha',
+      },
       //  {     
       //   label: 'Sair',
       //   icon: 'pi pi-fw pi-sign-out',
