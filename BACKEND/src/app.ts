@@ -45,7 +45,6 @@ app.use(bodyParser.json({ type: "application/json; charset=utf-8" }));
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 const storageLogo = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    
     cb(null, "./src/images/logo");
   },
   filename: function (req: any, file: any, cb: any) {
@@ -124,8 +123,7 @@ const uploadDocumento = multer({
   },
 });
 
-
-const apagaDocumentoStorage = async (caminho: string,  nome: string)  => {
+const apagaDocumentoStorage = async (caminho: string, nome: string) => {
   const dir = `./src/images/docs/${caminho}`;
   const filePath = path.join(dir, nome);
   try {
@@ -172,39 +170,52 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
 //************************LOGIN USUARIO ***************************************/
 
 app.post("/login", async (req: Request, res: Response) => {
-  const cpf = req.body.cpf.replace(/[^0-9]/g, "");
-  let retorno, situacao;
   console.log("login", req.body);
-  try {
-    await login.postLogin([cpf]).then(async (result: any) => {
-      retorno = result[0][0].SENHA;
-      situacao = result[0][0].SITUACAO;
+  if (req.body.senha || req.body.cpf) {
+    const cpf = req.body.cpf.replace(/[^0-9]/g, "");
+    if (cpf.length == 11) {
+      let retorno, situacao;
+      console.log("login", req.body);
+      try {
+        await login.postLogin([cpf]).then(async (result: any) => {
+          retorno = result[0][0].SENHA;
+          situacao = result[0][0].SITUACAO;
 
-      if (situacao == "B") {
-        res
-          .status(600)
-          .send({ mensagem: "Excesso de tentativas, tente mais tarde." });
-        console.log("situacao", situacao);
+          if (situacao == "B") {
+            res
+              .status(600)
+              .send({ mensagem: "Excesso de tentativas, tente mais tarde." });
+            console.log("situacao", situacao);
+            return;
+          }
+
+          const senha = await verifyPassword(req.body.senha, retorno);
+          console.log("senha", req.body.senha);
+
+          if (result.status === "1") {
+            res.status(401).send({ mensagem: "Usuário ou senha inválida." });
+            return;
+          }
+
+          if (senha) {
+            const token = await generateToken({ cpf, senha }); //gero o token
+            res.send({ token: token });
+          } else {
+            res.status(401).send({ mensagem: "Usuário ou senha inválida." });
+            return;
+          }
+        });
+      } catch (error) {
+        res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
         return;
       }
-
-      const senha = await verifyPassword(req.body.senha, retorno);
-      console.log("senha", senha);
-      if (result.status === "1") {
-        res.status(401).send({ mensagem: "Usuário ou senha inválida." });
-        return;
-      }
-
-      if (senha) {
-        const token = await generateToken({ cpf, senha }); //gero o token
-        res.send({ token: token });
-      } else {
-        res.status(401).send({ mensagem: "Usuário ou senha inválida." });
-        return;
-      }
-    });
-  } catch (error) {
-    res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
+    }
+    else { //caso o cpf for menor de 11
+      res.status(400).send({ mensagem: "CPF inválido." });
+      return;
+    }
+  } else {
+    res.status(400).send({ mensagem: "Dados inválidos." });
     return;
   }
 });
@@ -277,8 +288,7 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
       res.send({ error: "Voce precisa ser maior de 14 anos." });
     } else if (req.body.dataEmissao < req.body.dataNascimento) {
       res.send({ error: "Data de emissão do RG inválida." });
-    }    
-    else {
+    } else {
       curriculo.postcurriculo(dados).then((result: any) => {
         //   console.log("result no post curriculo", result);
         res.send(result);
@@ -360,7 +370,6 @@ app.get("/cep", verifyToken, async (req: Request, res: Response) => {
 //************************** FIM CEP **************************/
 //**************************INICIA RESIDENCIA*********************/
 
-
 app.post(
   "/retornaresidencia/",
   verifyToken,
@@ -435,21 +444,25 @@ app.get(
   }
 );
 
-app.post("/uploaddocumento", uploadDocumento.single("documento"), verifyToken,
+app.post(
+  "/uploaddocumento",
+  uploadDocumento.single("documento"),
+  verifyToken,
   async (req: any, res: any) => {
     console.log("no uploadDocumento 418 ", uploadDocumento.single("documento"));
     if (!req.file) {
       console.log("req file no ! ", req.file);
       return res.status(400).send({ error: "Nenhum arquivo enviado" });
     } else {
-      let nomeArquivo = Buffer.from(req.file.originalname,'binary').toString("utf-8") ;
+      let nomeArquivo = Buffer.from(req.file.originalname, "binary").toString(
+        "utf-8"
+      );
       console.log("nome do arquivo  424", nomeArquivo);
       res.send(req.file);
       const valores = {
         idcandidato: req.body.idcandidato,
         cpf: req.body.cpf,
-        documento: nomeArquivo
-       
+        documento: nomeArquivo,
       };
       documento.postDocumento(valores).then((result: any) => {
         res.send(result);
@@ -460,9 +473,9 @@ app.post("/uploaddocumento", uploadDocumento.single("documento"), verifyToken,
 );
 
 app.delete(
-  "/documento/:idcandidato/:cpf/:nome",  verifyToken,
+  "/documento/:idcandidato/:cpf/:nome",
+  verifyToken,
   async (req: Request, res: Response) => {
-  
     const { idcandidato, cpf, nome } = req.params;
     console.log("delete documento ", idcandidato, cpf, nome);
     const result = await documento.deleteDocumento(
@@ -471,13 +484,13 @@ app.delete(
       nome
     );
 
-    const val = await apagaDocumentoStorage(idcandidato, nome) 
+    const val = await apagaDocumentoStorage(idcandidato, nome);
     if (val.error) {
       console.error("Erro ao deletar arquivo:", val.error);
       res.status(500).send({ error: "Erro ao deletar arquivo." });
     } else {
       console.log("Arquivo deletado com sucesso:", val.message);
-    res.send(result);
+      res.send(result);
     }
   }
 );
@@ -503,16 +516,40 @@ app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
 //************************FIM EXPERIENCIA***************************/
 
 //*************************INICIO EMAIL ****************************/
-app.post("/email", async (req: Request, res: Response) => {
-  const valores = req.body;
-  console.log("post email ", valores);
-  email.postMail(valores).then((result: any) => {
-    res.send(result);
-  });
+app.post("/recuperar-senha", async (req: Request, res: Response) => {
+  try {
+    const valores = req.body;
+    let novaSenha = Math.random().toString(36).slice(-6);
+    console.log("novaSenha", novaSenha);
+    let novaSenhaHash = await hashPassword(novaSenha);
+console.log("valores do cpf no replace ",valores.cpf.replace(/[^0-9]/g, ""))
+    //ENVIA PARA O BANCO
+    login.putAlteraSenha([ valores.cpf.replace(/[^0-9]/g, ""),valores.email, novaSenhaHash ])
+      .then((result: any) => {
+        if (result.affectedRows === 1) {
+          //ENVIAR EMAIL
+          const envio = email
+            .postMail(valores, novaSenha)
+            .then((result: any) => {
+              console.log("email enviado", result);
+              if (envio.error) {
+                console.error("Erro ao enviar e-mail 523:", envio.error);
+              }
+              res.send(result.responseCode);
+            })
+            .catch((error: any) => {
+              console.error("Erro ao enviar e-mail 528:", error);
+              res.status(500).send({ error: "Erro ao enviar e-mail. 529" });
+            });
+        }
+        res.send({ mensagem: "recebido" });
+      });
+  } catch (error) {
+    console.error("Erro ao enviar e-mail:535", error);
+    res.status(500).send({ error: "Erro ao enviar e-mail.536 " });
+  }
 });
 
 //************************FIM EMAIL **************************** */
-
-
 
 export default app;

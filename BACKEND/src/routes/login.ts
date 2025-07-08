@@ -41,12 +41,29 @@ const  postLogin = (valores: any) => {
                     console.log("POST LOGIN error", error);
                     reject(error);
                 } else {
-                    //  console.log("POST LOGIN results", results);
+                     console.log("POST LOGIN results", results);
                     resolve(results);
                 }
             }
         );      
     })
 }
-          
-export { postCadastraLogin, postLogin};
+const putAlteraSenha = (valores: any) => {
+    const [cpf,email, senha] = valores;    
+    return new Promise((resolve, reject) => {
+        PoolMysql.query(
+            "call putSenha(?,?,?)",
+            [cpf, email, senha],
+            (error: any, results: unknown, fields: any) => {
+                if (error) {
+                    console.log("PUT ALTERA SENHA error", error);
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            }
+        );
+    });
+}
+
+export { postCadastraLogin, postLogin, putAlteraSenha };

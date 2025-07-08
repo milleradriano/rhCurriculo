@@ -14,13 +14,11 @@ async function hashPassword(password: any) {
 
 // Função para verificar senha
 async function verifyPassword(password: any, hashedPassword : any) {
- console.log('verifyPassword services.ts 17 ',hashedPassword);
+
  if (hashedPassword === undefined) {
-    console.log('verifyPassword services.ts 19 undefined',hashedPassword);
     return false
  }
     else 
-    console.log('verifyPassword services.ts 19 undefined',hashedPassword);
     return (await bcrypt.compare(password, hashedPassword));
    
    
