@@ -266,17 +266,18 @@ export class CurriculoComponent implements OnInit {
             this.getDocumento(); // Chama o método para obter o documento após preencher o formulário
           } catch (error: any) {
             this.loading = false;
-            console.error('Erro ao fazer parse do nome:', error);
-            this.mensagem.erro(`Erro ${error}`);
+          
+            this.mensagem.erro(error);
           }
         } else {
           this.loading = false;
-         this.mensagem.atencao(`Atencao ${cpf} não cadastrado`);
+         this.mensagem.atencao(`Atenção ${cpf} não cadastrado`);
+         this.showProgress = true;
         }
       },
       (error: any) => {
         this.loading = false;
-        this.mensagem.erro(`Erro ${error}`);
+        this.mensagem.erro(error);
         this.showProgress = true;
       }
     );
@@ -284,46 +285,50 @@ export class CurriculoComponent implements OnInit {
 
   postCurriculo(valores: any) {
     this.loading = true;
-
     const pcdControl = this.curriculoForm.get('pcd');
     if (pcdControl && pcdControl.value === 'S') {
       this.postDocumento();
-    }
+     }
 
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');
     valores.cpf = valores.cpf.replace(/\D/g, '');
     /*Adiciona o idcandidato ao objeto valores*/
-    valores = { ...valores, idcandidato };
+    valores = { ...valores, idcandidato };    
+    if (valores.dataEmissao < valores.dataNascimento) { 
+      this.loading = false;
+      this.mensagem.erro('Data de emissão maior que a data de nascimento');    
+      return;
+    }
     this.curriculoService.postCurriculo(valores, this.headers).subscribe(
       (data) => {
-        if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
-          console.log('SALVO');
+     
+        if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {       
           this.loading = false;
           this.mensagem.sucesso('Registro salvo.');
           this.getDocumento(); // Atualiza os documentos após salvar o currículo
         } else {
            this.mensagem.erro('Erro não atualizado');
-          console.log('NAO SALVO');
+       
         }
       },
       (error: any) => {
         this.loading = false;
+        this.mensagem.erro(error );
         this.showProgress = true;
-        console.error('Erro ao salvar o currículo:', error);
-        this.mensagem.erro('Erro ao salvar, tente mais tarde.' );
+       
       }
     );
   }
 
   getDocumento() {
-    console.log('getDocumento');
+   
     this.loading = true;
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');
     const valores = [idcandidato, cpf ? cpf.replace(/\D/g, '') : ''];
     if (!idcandidato || !cpf) {
-      console.error('ID do candidato não encontrado no sessionStorage.');
+     
       this.loading = false;
       return;
     }
@@ -332,22 +337,17 @@ export class CurriculoComponent implements OnInit {
         (data: any) => {
           if (data.length > 0) {
            this.nomeDocumento = data[0].map((doc: any) => doc.nome);
-              console.log('Documento encontrado:', this.nomeDocumento);
-           
             this.loading = false;
-          } else {
-            console.warn('Nenhum documento encontrado para o ID:', idcandidato);
+          } else {           
             this.loading = false;
           }
         },
         (error: any) => {
-          this.loading = false;
-          console.error('Erro ao obter o documento:', error);
+          this.loading = false;        
           this.mensagem.erro('Erro ao obter documento.');
         }
       );
-    } else {
-      console.error('ID do candidato não encontrado no sessionStorage.');
+    } else {    
       this.loading = false;
     }
   }
@@ -360,12 +360,10 @@ export class CurriculoComponent implements OnInit {
         this.submitSuccess = success;
         this.submitError = !success;
       });
-      this.getDocumento();
+      this.getDocumento();   
      
-      console.log('tentou');
       
-    } catch (error) {
-      console.error('Erro ao obter o nome do arquivo:', error);
+    } catch (error) {   
       this.mensagem.erro('Erro ao salvar imagem, tente mais tarde.');
     }
   }
@@ -373,23 +371,23 @@ export class CurriculoComponent implements OnInit {
     this.loading = true;
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');
-    console.log('INFO PARA EX excluir ',idcandidato, cpf ,nomeDocumento)
+   
   if (!idcandidato || !cpf) {
-    console.error('ID do candidato não encontrado no sessionStorage.');
+ 
     this.loading = false;
     return;
   }
   this.documentoService.deleteDocumento({ idcandidato, cpf,nomeDocumento }, this.headers)
     .subscribe(
       (data: any) => {
-        console.log('Documento excluído com sucesso dentro do deleteDocumento 388:', data);
+      
         this.loading = false;
         this.mensagem.sucesso('Documento excluído com sucesso.');
        this.getDocumento(); // Atualiza a lista de documentos após a exclusão
       },
       (error: any) => {
         this.loading = false;
-        console.error('Erro ao excluir o documento:', error);
+     
         this.mensagem.erro('Erro ao excluir documento.');
       }
     );

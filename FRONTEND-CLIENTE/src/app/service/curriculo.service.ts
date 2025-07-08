@@ -17,7 +17,7 @@ export class CurriculoService {
 
   }
   getCurriculo(cpf: string, headers?: any): Observable<interfaceCurriculo[]> {
-    console.log('cpf', cpf);
+   
     const params = new HttpParams().set('cpf', cpf); // Constrói a URL corretamente
     return this.httpclient
       .get<interfaceCurriculo[]>(this.url + '/curriculo', { params, headers })
@@ -44,10 +44,11 @@ export class CurriculoService {
     mensagemRetorno = error.error.mensagem;
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
-      console.error('ocorreu um de rede :', error.error);
+   
+      mensagemRetorno = 'Erro de rede, tente novamente mais tarde.';
     } else {
       //* este e o erro do servidor
-      console.error('codigo do erro ', error.status);
+     
       if (error.status === 0) {
         mensagemRetorno = 'Serviço indisponível';
       }
@@ -63,16 +64,21 @@ export class CurriculoService {
       if (error.status === 404) {
         mensagemRetorno = 'Página ou recurso não encontrado';
       }
+
+      if (error.status === 419) {
+        mensagemRetorno = 'Data de emissão incorreta';
+      }
+
       if (error.status === 500) {
         mensagemRetorno = 'Erro interno do servidor';
       }
 
-      return throwError(() => new Error(mensagemRetorno));
+      return throwError(() =>mensagemRetorno);
     }
     // return an observable with a user-facing error message
     // retorno padrão caso nao seja catalogado
     return throwError(
-      () => new Error('Algo deu errado; tente novamente mais tarde.')
+      () => mensagemRetorno
     );
   }
 }

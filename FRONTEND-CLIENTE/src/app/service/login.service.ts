@@ -11,7 +11,7 @@ export class LoginService {
   url = environment.api;
   constructor(private httpClient: HttpClient) {}
   postLogin(valores: any): Observable<Login> {
-     console.log('valores', valores);
+    
     return this.httpClient
       .post<Login>(this.url + '/login', valores)
       .pipe(catchError(this.handleError));
@@ -23,8 +23,10 @@ export class LoginService {
 
     mensagemRetorno = error.error.mensagem;
     if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
 
-      console.error('ocorreu um de rede :', error.error);
+      mensagemRetorno = 'Erro de rede, tente novamente mais tarde.';
+
     } else {
       //* este e o erro do servidor
       console.error('codigo do erro ', error.message);
@@ -52,7 +54,7 @@ export class LoginService {
     // return an observable with a user-facing error message
     // retorno padrão caso nao seja catalogado
     return throwError(
-      () => new Error('Algo deu errado; tente novamente mais tarde.')
+      () => 'Algo deu errado; tente novamente mais tarde.'
     );
   }
 }

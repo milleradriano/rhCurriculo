@@ -86,9 +86,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private sessionStorage: SessionStorageService, 
    
-  ) {
-   
-  }
+  ) { }
   ngOnInit(): void {
    this.sessionStorage.remove("cpf");
    this.sessionStorage.remove("idcand");
@@ -110,8 +108,6 @@ export class LoginComponent implements OnInit {
         this.isLoadingResults = false;
      // console.log('login ',data);
         if (data.token) {
-        
-
           //recebe token caso login seja bem sucedido       
         this.isLoadingResults = false;
         sessionStorage.setItem("token", data.token); 
