@@ -21,6 +21,7 @@ const login = require("./routes/login");
 const experiencia = require("./routes/experiencia");
 const documento = require("./routes/documento");
 const email = require("./routes/email");
+const alteraSenha = require("./routes/alteraSenha");
 //const  postLogin  = require("./routes/cadastraLogin");
 //const login = require("./routes/login");
 const bcrypt = require("bcrypt"); // para criptografar a senha
@@ -209,8 +210,8 @@ app.post("/login", async (req: Request, res: Response) => {
         res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
         return;
       }
-    }
-    else { //caso o cpf for menor de 11
+    } else {
+      //caso o cpf for menor de 11
       res.status(400).send({ mensagem: "CPF inválido." });
       return;
     }
@@ -466,7 +467,6 @@ app.post(
       };
       documento.postDocumento(valores).then((result: any) => {
         res.send(result);
-        
       });
       return;
     }
@@ -516,22 +516,19 @@ app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
 });
 //************************FIM EXPERIENCIA***************************/
 
-//*************************INICIO EMAIL ****************************/
+//*************************INICIO EMAIL / ALTERA SENHA ****************************/
 app.post("/recuperar-senha", async (req: Request, res: Response) => {
   try {
     const valores = req.body;
     let novaSenha = Math.random().toString(36).slice(-6);
     console.log("novaSenha", novaSenha);
     let novaSenhaHash = await hashPassword(novaSenha);
-console.log("valores do cpf no replace ",valores.cpf.replace(/[^0-9]/g, ""))
     //ENVIA PARA O BANCO
-    login.putAlteraSenha([ valores.cpf.replace(/[^0-9]/g, ""),valores.email, novaSenhaHash ])
-      .then((result: any) => {
+    alteraSenha.putRecuperaSenha([  valores.cpf.replace(/[^0-9]/g, ""),valores.email,novaSenhaHash,]).then(
+      (result: any) => {
         if (result.affectedRows === 1) {
           //ENVIAR EMAIL
-          const envio = email
-            .postMail(valores, novaSenha)
-            .then((result: any) => {
+          const envio = email.postMail(valores, novaSenha).then((result: any) => {
               console.log("email enviado", result);
               console.log("-------------------------------------------");
               if (envio.error) {
@@ -552,6 +549,33 @@ console.log("valores do cpf no replace ",valores.cpf.replace(/[^0-9]/g, ""))
   }
 });
 
-//************************FIM EMAIL **************************** */
+app.post("/altera-senha",verifyToken, async (req: Request, res: Response) => {
+
+  try {    
+    let valores = req.body;
+if (valores.novaSenha.length < 6) {
+      res.status(400).send({ error: "A senha deve ter pelo menos 6 caracteres" });
+      return;
+    } 
+if (valores.novaSenha !== valores.confirmaSenha) {
+      console.log("compara senha", valores.novaSenha, valores.confirmaSenha);
+      res.status(400).send({ error: "As senhas devem sem iguais." });
+      return;
+    }
+ 
+     let novaSenhaHash = await hashPassword(valores.novaSenha);
+     console.log("valores da senha NO APP", valores.novaSenha, novaSenhaHash);
+     valores = [valores.codcli, valores.cpf.replace(/[^0-9]/g, ""),novaSenhaHash];
+     const result = await alteraSenha.putAlteraSenha(valores);
+     res.send(result);
+  } catch (error) {
+    console.error("Erro ao alterar senha:", error);
+    res.status(500).send({ error: "Erro ao alterar senha." });
+  }
+ });
+
+/**/
+
+//************************FIM  EMAIL / ALTERA SENHA **************************** */
 
 export default app;
