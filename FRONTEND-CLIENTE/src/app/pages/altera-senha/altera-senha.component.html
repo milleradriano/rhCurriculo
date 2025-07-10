@@ -1,1 +1,75 @@
-<p>altera-senha works!</p>
+<div class="container">
+  <div class="titulo">
+    <h1>Alteração de senha</h1>
+    <p>Preencha os dados abaixo.</p>
+  </div>
+  @if ( loading){
+  <app-loading></app-loading>
+  <div class="loading"></div>
+  }
+  <form   [formGroup]="alteraSenhaForm"
+    (ngSubmit)="
+      postAlteraSenha({
+        novaSenha: alteraSenhaForm.value.novaSenha!,
+        confirmaSenha: alteraSenhaForm.value.confirmaSenha!
+      })
+    "
+  >
+    @if(showProgress){
+    <div class="loading">
+      <app-progressbar></app-progressbar>
+    </div>
+    }
+    <div class="card flex justify-content-center">
+      <div class="senha">
+        <label for="Senha">Senha:</label>
+        <p-password
+          id="senha"
+          formControlName="novaSenha"
+          [toggleMask]="true"
+          [feedback]="true"
+          placeholder="Digite sua senha"
+          promptLabel="Nivel de segurança."
+          weakLabel="Senha Fraca"
+          mediumLabel="Senha Média"
+          strongLabel="Senha Forte"
+          appInputpreenchido
+        >
+          <ng-template pTemplate="footer">
+            <p-divider />
+            <p class="mt-2">Sugestão de senha!</p>
+            <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+              <li>Dever ter pelo menos uma letra minúscula</li>
+              <li>Dever ter pelo menos uma letra maiúscula</li>
+              <li>Dever ter pelo menos um número</li>
+              <li>Mínimo de 8 caracteres</li>
+            </ul>
+          </ng-template>
+        </p-password>
+      </div>
+
+      <div class="senha">
+        <label for="confirmarSenha">Confirmar Senha:</label>
+        <p-password
+          id="confirmaSenha"
+          formControlName="confirmaSenha"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Confirme sua senha"
+          appInputpreenchido
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="botaoSalvar">
+      <p-button
+        type="submit"
+        icon="pi pi-check"
+        severity="success"
+        label="Salvar"
+        [disabled]="!alteraSenhaForm.valid"
+      ></p-button>
+    </div>
+  </form>
+  <hr />
+</div>

@@ -3,17 +3,18 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { interfaceVaga } from '../interface/vaga'; // corrigido o nome
 import { Observable, shareReplay, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment.prod';
 @Injectable({
   providedIn: 'root',
 })
 export class VagasService {
-  private readonly url = 'http://localhost:3001/vagas'; // REMOVER 
+  private readonly url = environment.api; // REMOVER 
 
   constructor(private httpClient: HttpClient) {}
 
   getVagas(): Observable<interfaceVaga[]> {
     return this.httpClient
-      .get<interfaceVaga[]>(this.url)
+      .get<interfaceVaga[]>(this.url+'/vagas')
       .pipe(catchError(this.handleError)
       );
   }

@@ -1,0 +1,47 @@
+
+.container {
+   padding-left: 1rem; 
+   padding-right: 1rem; 
+   height: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+ 
+}
+.titulo {
+   margin-top: 10rem;
+   color: #606062;
+   align-items: center;
+   justify-content: center;
+
+   font-family: Montserrat, Arial, Tahoma, sans-serif;
+}
+.senha
+ {  
+  width: 15rem;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  flex-direction: column; 
+}
+
+.botaoSalvar{
+   width: 15rem;
+   margin-top: 12px;
+   display: flex;
+   justify-content: center;
+   align-items: left;
+   flex-direction: column; 
+}
+@media screen and (max-width: 600px) {
+   .titulo {
+      margin-top: 5rem;
+   }
+   .senha, .botaoSalvar {
+      width: 100%;
+      margin-top: 10px;
+   }
+   
+}

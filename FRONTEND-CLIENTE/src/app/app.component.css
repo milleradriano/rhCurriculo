@@ -1,0 +1,13 @@
+@media screen and (max-width: 600px) {
+    /* ::ng-deep .p-toast-message {
+     text-align: center;
+     padding-left: 0;
+    } */
+    ::ng-deep .p-toast {
+  /* Tamanho máximo do toast */
+  width: 250px;       /* Ou use uma largura fixa como width: 250px */
+}
+::ng-deep .p-toast-icon-close {
+  font-size: 1rem;       /* Diminui o ícone de fechar */
+}
+}

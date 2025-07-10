@@ -9,15 +9,16 @@ import { CadastroLoginComponent } from './pages/cadastro-login/cadastro-login.co
 import { TermoUsoComponent } from './pages/termo-uso/termo-uso.component';
 import { RecuperaSenhaComponent } from './pages/recupera-senha/recupera-senha.component';
 import { authGuard } from './service/auth.guard';
+import { AlteraSenhaComponent } from './pages/altera-senha/altera-senha.component';
 export const routes: Routes = [
   {
-    path: 'vagas',
+    path: '',
     component: VagasComponent,
+    pathMatch: 'full',
   },
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
-    pathMatch: 'full',
   },
   {
     path: 'registroLogin',
@@ -33,7 +34,7 @@ component:RecuperaSenhaComponent,
   },
   
   {
-    path: 'menu',    
+    path: 'menu',       
     component: MenuComponent,
     // pathMatch: 'full',
     canActivate: [authGuard],
@@ -54,6 +55,17 @@ component:RecuperaSenhaComponent,
         component: ExperienciaComponent,
         // pathMatch: 'full',
       },
+      {
+        path: 'modificarsenha',
+        component: AlteraSenhaComponent,
+        // pathMatch: 'full',
+      },
+       { path: '', redirectTo: 'curriculo', pathMatch: 'full' }, // rota padrão do menu
     ],
   },
+{
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
+  }
 ];
