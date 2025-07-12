@@ -81,8 +81,7 @@ export class VagasComponent implements OnInit, OnDestroy {
 
   getVagas(): void {
     this.loading = true;
-
-    this.subscription.add(
+  
       this.vagasService.getVagas().subscribe({
         next: (data: interfaceVaga[]) => {
           this.vagas = data;
@@ -91,7 +90,7 @@ export class VagasComponent implements OnInit, OnDestroy {
           
           this.loading = false;
         },
-        error: (error) => {
+        error: (error: any) => {
           this.errorMessage = `Erro ao carregar vagas: ${error.message}`;
           console.error('Erro:', error);
           this.loading = false;
@@ -100,7 +99,7 @@ export class VagasComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
       })
-    );
+    
   }
 
   mostraVaga(dadosVaga: object):void {

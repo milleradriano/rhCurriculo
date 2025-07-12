@@ -14,29 +14,33 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import {
-
-  FileUploadModule,
-
-  FileUpload,
-} from 'primeng/fileupload';
+import { FileUploadModule, FileUpload } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { GridComponent } from '../../components/grid/grid.component';
 import { ConfirmacaoComponent } from '../../components/confirmacao/confirmacao.component';
-import { ToastComponent } from '../../components/toast/toast.component';
+import { ToastService } from '../../service/toast.service';
 import { EmpresaService } from '../../service/empresa.service';
 import { UploadLogoService } from '../../service/upload-logo.service';
 import { ProgressbarComponent } from '../../components/progressbar/progressbar.component';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { Image, ImageModule } from 'primeng/image';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
+
+import { SessionStorageService } from '../../service/sessionStorage.service';
+import { FileUploaderComponent } from '../../components/file-uploader/uploaddocumento.component';
 @Component({
   selector: 'app-empresa',
   standalone: true,
-  providers: [MessageService, ConfirmacaoComponent],
+  providers: [
+    MessageService,
+    ConfirmacaoComponent,
+    ToastService,
+    EmpresaService,
+    UploadLogoService,
+  ],
   imports: [
     MatGridListModule,
     MatMenuModule,
@@ -56,12 +60,12 @@ import { environment } from '../../../environments/environment';
     InputGroupAddonModule,
     GridComponent,
     ConfirmacaoComponent,
-    ToastComponent,
     ProgressbarComponent,
     LoadingComponent,
     TooltipModule,
     FileUploadModule,
     ImageModule,
+    FileUploaderComponent,
   ],
   templateUrl: './empresa.component.html',
   styleUrl: './empresa.component.css',
@@ -76,14 +80,17 @@ export class EmpresaComponent {
   loading: boolean = false;
 
   private formbuilder = inject(FormBuilder);
-  @ViewChild('fileUploader') fileUploader!: FileUpload;
+  @ViewChild(FileUploaderComponent) fileUploader!: FileUploaderComponent;
   urlLogo: any;
+  submitSuccess: boolean = false;
+  submitError: boolean = false;
   constructor(
     private messageService: MessageService,
-    private toast: ToastComponent,
+    private toast: ToastService,
     private confirmacao: ConfirmacaoComponent,
     private empresaService: EmpresaService,
-    private uploadLogoService: UploadLogoService
+    private uploadLogoService: UploadLogoService,
+    private sessionStorage: SessionStorageService
   ) {}
   empresaForm = this.formbuilder.group({
     idempresa: [''],
@@ -94,7 +101,7 @@ export class EmpresaComponent {
   });
 
   ngOnDestroy() {
-    this.retornoApi$.unsubscribe();
+    if (this.retornoApi$) this.retornoApi$.unsubscribe();
   }
   /* TITULO DO GRID*/
   title: string[] = ['idempresa', 'descempresa', 'atualizar'];
@@ -109,44 +116,44 @@ export class EmpresaComponent {
   }
 
   recebeValores(valores: any) {
-    console.log('valores', valores);
-    console.log('valores EMPRESA', environment.api + JSON.stringify( valores.logo));
+    console.log('click grid', valores);
+    // console.log('valores EMPRESA', environment.api + JSON.stringify( valores.logo));
     this.empresaForm.controls['idempresa'].setValue(valores.idempresa);
     this.empresaForm.controls['descempresa'].setValue(valores.descempresa);
     this.empresaForm.controls['desccidade'].setValue(valores.desccidade);
     this.empresaForm.controls['maps'].setValue(valores.maps);
     this.empresaForm.controls['logo'].setValue(valores.logo);
     if (valores.logo !== null) {
-      this.urlLogo = environment.api +'/'+  valores.logo;
+      this.urlLogo = environment.api + '/' + valores.logo;
+      console.log('click grid', this.urlLogo);
     }
-    
   }
 
+  /*************  ✨ Windsurf Command 🌟  *************/
   carregaGrid() {
     this.isLoadingResults = true;
-    this.retornoApi$ = this.empresaService.getEmpresa().subscribe(
-      (data) => {
+    this.empresaService.getEmpresa().subscribe({
+      next: (data) => {
         if (Array.isArray(data)) {
           this.dataSourceGrid = data;
+          console.log('get empresa', this.dataSourceGrid);
         } else {
           this.dataSourceGrid = JSON.parse(JSON.stringify(data));
         }
       },
-      (error) => {
-        if (error.status == 403) {
+      error: (error) => {
+        if (error.status === 403) {
           this.showProgress = true;
-        } else if (error.status == 0) {
-          this.toast.toast('error', 'Erro', 'Sem conexão com o servidor');
+        } else if (error.status === 0) {
+          this.toast.erro(error);
           this.showProgress = true;
-        } else
-          this.toast.toast(
-            'error',
-            'Erro',
-            error.status.toString() + '-' + error.statusText
-          );
-      }
-    );
+        } else {
+          this.toast.erro(error);
+        }
+      },
+    });
   }
+
   limparCampos() {
     this.empresaForm.reset();
     this.urlLogo = '';
@@ -166,7 +173,7 @@ export class EmpresaComponent {
               mensagem = JSON.parse(JSON.stringify(data));
               console.log('result me1', JSON.parse(JSON.stringify(data)));
             }
-            this.toast.toast('success', 'Sucesso', mensagem);
+            this.toast.sucesso(mensagem);
             this.carregaGrid();
             this.limparCampos();
             this.loading = false;
@@ -174,11 +181,7 @@ export class EmpresaComponent {
           (error) => {
             this.loading = false;
             console.log('error nop emp', error);
-            this.toast.toast(
-              'error',
-              'Erro',
-              'Erro ao salvar.' + error.message
-            );
+            this.toast.erro(error);
           }
         );
       }
@@ -186,72 +189,51 @@ export class EmpresaComponent {
   }
   onErrorUpload($event: any) {
     console.log('error no upload', $event);
-    this.toast.toast('error', 'Erro', $event.error.message);
+    this.toast.erro($event);
   }
   renameFile(file: File, newName: string): File {
     const blob = file.slice(0, file.size, file.type);
     return new File([blob], newName, { type: file.type });
   }
   nomeImagem: string = '';
-  postImagem(nomeArquivo: string) {
-    if (this.fileUploader.files && this.fileUploader.files.length > 0) {
-      //****carregas as informações do arquivo
-      this.fileUploader.upload();
-      //****carregas as informações do arquivo
-      let file = this.renameFile(
-        this.fileUploader.files[0],
-        nomeArquivo + '.jpg'
-      );
-      this.nomeImagem = file.name;
-      if (this.fileUploader.files) {
-        this.uploadLogoService.uploadlogo([file]).subscribe(
-          (data) => {
-            console.log('data', data);
-            console.log('imagem enviada');
-            this.fileUploader.clear();
-          },
-
-          (error) => {
-            if (error.status == 403) {
-              this.showProgress = true;
-            } else if (error.status == 0) {
-              this.toast.toast('error', 'Erro', 'Sem conexão com o servidor');
-              this.showProgress = true;
-            } else
-              this.toast.toast(
-                'error',
-                'Erro',
-                error.status.toString() + '-' + error.statusText
-              );
-            console.log('error aqio', error);
-          }
-        );
-      }
-    }
+  postImagem() {  
+    this.fileUploader.uploadFiles();
+    // Ouve o evento de conclusão do upload
+    this.fileUploader.uploadComplete.subscribe((success) => {
+      this.submitSuccess = success;
+      this.submitError = !success;
+  
+    });   
   }
-alerta(){
-  this.toast.toast('success', 'Sucesso', 'teste');
+recebeNomeImagem(valores: any) {
+  this.nomeImagem = valores;
+  console.log('nomeImagem', this.nomeImagem);
 }
   postEmpresa(valores: any) {
-    this.postImagem(valores.idempresa);
+    // // this.postImagem(valores.idempresa);
     this.loading = true;
-    console.log('post VALOR', valores.idempresa);
+   
     this.isLoadingResults = true;
     let mensagem: string = '';
     valores.logo = 'logo/' + this.nomeImagem;
+  
+  
+    console.log('valores EMPRESA', valores);
     this.empresaService.postEmpresa(valores).subscribe(
       (data) => {
-        if (Array.isArray(data)) {
-          mensagem = JSON.parse(data[0][0].result).status;
-          console.log('result linha 82', JSON.parse(data[0][0].result).status);
+      
+        if (1+1 === 2) {
+          mensagem = JSON.parse(JSON.stringify(data)).serverStatus;
+        
           this.loading = false;
-          this.toast.toast('success', 'Sucesso', mensagem);
-     
+          this.toast.sucesso(mensagem);
+          this.postImagem();          
+
           this.carregaGrid();
         } else {
-          console.log('result2', JSON.parse(JSON.stringify(data)));
+         
           mensagem = JSON.parse(JSON.stringify(data));
-          this.toast.toast('error', 'Erro', mensagem);
+          this.toast.erro(mensagem);
           this.loading = false;
         }
 
@@ -262,13 +244,9 @@ alerta(){
         this.loading = false;
       },
       (error) => {
-        console.log('error aqio', error);
+     
         this.loading = false;
-        this.toast.toast(
-          'error',
-          'Erro',
-          'Erro ao excluir., tente mais tarde.'
-        );
+        this.toast.erro(error);
       }
     );
   }

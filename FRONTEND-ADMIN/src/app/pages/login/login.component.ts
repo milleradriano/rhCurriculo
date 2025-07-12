@@ -20,13 +20,11 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FormatacpfDirective } from '../../diretivas/formatacpf.directive';
-import { ObservacaobottonComponent } from '../../components/observacaobotton/observacaobotton.component';
-import { ApenasNumeroDirective } from '../../diretivas/apenasnumero.directive';
-import { FormatatelefoneDirective } from '../../diretivas/formatatelefone.directive';
-import { UploaddocumentoComponent } from '../../components/uploaddocumento/uploaddocumento.component';
+
+
 import { LocalstorageService } from '../../service/localstorage.service';
 import { MensagemAlertaComponent } from '../../components/mensagem-alerta/mensagem-alerta.component';
-import { ToastComponent } from '../../components/toast/toast.component';
+import { ToastService } from '../../service/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +46,7 @@ import { ToastComponent } from '../../components/toast/toast.component';
     ToastModule,
     InputMaskModule,
     FormatacpfDirective,  
-    ToastComponent,
+   
     
   ],
   templateUrl: './login.component.html',
@@ -57,7 +55,8 @@ import { ToastComponent } from '../../components/toast/toast.component';
 export class LoginComponent {
   constructor(
     private messageService: MessageService,
-    private localStorageService: LocalstorageService
+    private localStorageService: LocalstorageService,
+    private toast: ToastService,
   ) {}
   login($event: any) {
     console.log($event);

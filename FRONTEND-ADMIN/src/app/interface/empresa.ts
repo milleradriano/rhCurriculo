@@ -1,7 +1,7 @@
 export interface interfaceEmpresa {
-    idEmpresa: number;
-    descEmpresa: string;
-    cidade: string;
+    idempresa: number;
+    descempresa: string;
+    desccidade: string;
     maps: string;
     logo: string;
 }

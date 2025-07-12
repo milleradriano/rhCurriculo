@@ -1,27 +1,51 @@
-# Rhcurriculo
+Utilizado TOAST
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.2.
+1º CRIAR UM SERVICE 
+# COLAR import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
+@Injectable({
+  providedIn: 'root'
+})
+export class ToastService {
 
-## Development server
+  constructor(private messageService: MessageService) { }
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+  sucesso(message: string) {
+    this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: message });
+  }
 
-## Code scaffolding
+  erro(message: string) {
+    this.messageService.add({ severity: 'error', summary: 'Atenção', detail: message });
+  }
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+  info(message: string) {
+    this.messageService.add({ severity: 'info', summary: 'Info', detail: message });
+  }
 
-## Build
+  atencao(message: string) {
+    this.messageService.add({ severity: 'warn', summary: 'Atenção', detail: message });
+  }
+  clear() {
+    this.messageService.clear();
+  }
+}
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2º NO APP.CONFIG.TS ADICIONAR 
+import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+EXEMPLO DE EXPORT: 
+export const appConfig: ApplicationConfig = {
+  providers: [provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideHttpClient(),BrowserAnimationsModule,BrowserModule,
+    MessageService,ConfirmationService ,ConfirmDialogModule, ToastModule,ToastModule, HttpClientModule,CommonModule, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()],
+};
 
-## Running unit tests
+3º NO APP.COMPONENT.HTML
+<div class="conteudo">
+  <!-- <app-vagas></app-vagas>   -->
+<p-toast  position="top-right"></p-toast>
+  <router-outlet></router-outlet> 
+   
+ </div>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+ 

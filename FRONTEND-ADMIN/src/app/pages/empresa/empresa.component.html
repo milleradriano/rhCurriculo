@@ -4,17 +4,13 @@
     <app-loading></app-loading>
   </div>
   }
-  <form [formGroup]="empresaForm">
+  <form [formGroup]="empresaForm" (ngSubmit)="postEmpresa(empresaForm.value)">
     <div class="empresaDescEmpresa">
-@if(urlLogo){
-  <div class="logo">
-    <p-image
-    width="50"
-      src={{urlLogo}}
-      alt="Image"        
-    ></p-image>
-    </div>
-} 
+      @if(urlLogo){
+      <div class="logo">
+        <p-image width="50" src="{{ urlLogo }}" alt="Image"></p-image>
+      </div>
+      }
       <p-inputGroup class="idempresa">
         <p-inputGroupAddon>
           <i class="pi pi-key"></i>
@@ -47,49 +43,35 @@
         <p-inputGroupAddon>
           <i class="pi pi-map-marker"></i>
         </p-inputGroupAddon>
-          <input
-            pTooltip="Cidade"
-            type="text"
-            placeholder="Cidade"
-            formControlName="desccidade"
-            pInputText
-          />    
-        </p-inputGroup>
+        <input
+          pTooltip="Cidade"
+          type="text"
+          placeholder="Cidade"
+          formControlName="desccidade"
+          pInputText
+        />
+      </p-inputGroup>
       <div class="maps">
         <p-inputGroup class="maps">
           <p-inputGroupAddon>
             <i class="pi pi-share-alt"></i>
           </p-inputGroupAddon>
-        <input
-          pTooltip="Usar o de compartilhamento do Maps"          
-          type="text"
-          placeholder="Link de compartilhamento do Maps"
-          formControlName="maps"
-          pInputText
-        />
+          <input
+            pTooltip="Usar o de compartilhamento do Maps"
+            type="text"
+            placeholder="Link de compartilhamento do Maps"
+            formControlName="maps"
+            pInputText
+          />
         </p-inputGroup>
       </div>
     </div>
-    
+
     <div class="uploadLogo">
-      <p-fileUpload
-      #fileUploader
-        id="upload"
-        mode="advanced"
-        [customUpload]="true"
-        [multiple]="false"
-        [auto]="false"
-        chooseLabel="Selecione o logo"
-        name="logo"
-        url="http://localhost:3000/uploadlogo"
-        accept="image/*"
-        maxFileSize="512000"       
-        (onError)="onErrorUpload($event)"
-        [showUploadButton]="false"
-        [showCancelButton]="false"
-        [disabled]="!empresaForm.valid"
-        >
-      ></p-fileUpload>
+      <app-file-uploader
+        #fileUploader
+        (nomeArquivoSelecionado)="recebeNomeImagem($event)"
+      ></app-file-uploader>
     </div>
     <div class="botao">
       <button
@@ -98,7 +80,7 @@
         label="Salvar"
         class="p-button-success"
         [disabled]="!empresaForm.valid"
-        (click)="postEmpresa(empresaForm.value)"
+    
       ></button>
       <button
         pButton
@@ -108,7 +90,6 @@
         [disabled]="!empresaForm.valid"
         (click)="delEmpresa(empresaForm.value)"
       ></button>
-      
     </div>
   </form>
   <ng-container *ngIf="!showProgress; else progressSection" />
@@ -118,11 +99,11 @@
 
   <div class="cardGrid">
     <app-grid
-    (eventoFilho)="recebeValores($event)"
-    [translatedTitles]="translatedTitles"
-    [datasourceGrid]="dataSourceGrid"
+      (eventoFilho)="recebeValores($event)"
+      [translatedTitles]="translatedTitles"
+      [datasourceGrid]="dataSourceGrid"
     ></app-grid>
   </div>
-  </div> 
+</div>
 <app-confirmacao></app-confirmacao>
-<app-toast></app-toast>
+

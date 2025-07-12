@@ -32,10 +32,7 @@ export class MenuComponent {
   items: MenuItem[] = [];
   constructor(private httpClient: HttpClient) {
     this.items = [
-      {
-        label: 'Cadastro',
-        icon: 'pi pi-desktop',
-        items: [
+  
             {
                 label: 'Empresa',
                 icon: 'pi pi-mobile',
@@ -51,27 +48,9 @@ export class MenuComponent {
                 icon: 'pi pi-tablet'
             }
         ]
-    },
-   
-      {
-        label: 'Dados Pessoais',
-        icon: 'pi pi-fw pi-building',
-        routerLink: 'curriculo',
-      },
- 
-      {
-        label: 'Dados Residenciais',
-        icon: 'pi pi-fw pi-building',
-        routerLink: 'residencia',
-      },
-
-      {
-        label: 'Experiência Profissional',
-        icon: 'pi pi-fw pi-building',
-        routerLink: 'experiencia',
-      },
-    ];
-  }
+    }
+    
+  
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
