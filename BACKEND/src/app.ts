@@ -322,27 +322,29 @@ app.post("/vaga", async (req: Request, res: Response) => {
 
 //********************* INICIO EMPRESA *************************/
 
-app.get("/empresa/", verifyToken, async (req: Request, res: Response) => {
+app.get("/empresa/",  async (req: Request, res: Response) => {
   const result = await empresa.getEmpresa();
+  //console.log("get empresa 327", result);
   res.send(result);
 
   // console.log("get empresa 101", res);
 });
 
-app.post("/empresa", verifyToken, async (req: Request, res: Response) => {
-  console.log("post empresa ", req.body);
-  const valores = [
-    req.body.idempresa,
-    req.body.descempresa,
-    req.body.desccidade,
-    req.body.maps,
-    req.body.logo,
-  ];
+app.post("/empresa",  async (req: Request, res: Response) => {
+ 
+  const valores = [{
+   idempresa: req.body.idempresa,
+   descempresa: req.body.descempresa,
+   desccidade: req.body.desccidade,
+   maps: req.body.maps,
+   logo: req.body.logo,
+}];
+  console.log("post empresa no app ", valores[0].logo);
 
   empresa.postEmpresa(valores).then((result: any) => {
     res.send(result);
   });
-  console.log("post empresa ", valores);
+ 
 });
 app.delete("/empresa/:id", verifyToken, async (req: Request, res: Response) => {
   console.log("delete empresa ", req.params.id);
@@ -407,7 +409,7 @@ app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
 app.post(
   "/uploadlogo",
   uploadLogo.single("logo"),
-  verifyToken,
+  
   async (req: any, res: any) => {
     if (!req.file) {
       console.log("req file ", req.file);

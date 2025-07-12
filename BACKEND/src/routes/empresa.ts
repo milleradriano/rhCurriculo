@@ -19,20 +19,20 @@ const getEmpresa= () =>{
 
 const postEmpresa = (dados:any) => {
     return new Promise((resolve, reject) => {
-        console.log("post empresa empresa ", dados);
-        const  [idempresa, descempresa, desccidade, maps, logo] = dados;
+      const  [idempresa, descempresa, desccidade, maps, logo] = dados;
+      console.log("post empresa empresa campo ", dados[0].idempresa);
         PoolMysql.query(
           "call postempresa(?,?,?,?,?)",
           [
-           idempresa,
-            descempresa,
-            desccidade,
-            maps,
-            logo,
+           dados[0].idempresa,
+           dados[0].descempresa,
+           dados[0].desccidade,
+           dados[0].maps,
+           dados[0].logo,
           ],
           (error: any, results: unknown) => {
             if (error) {
-              console.error("Erro aqui Atualiza curriculo");
+              console.error("Erro aqui Atualiza empresa");
               //   getLog("error", JSON.stringify(error));
               reject(error);
             } else {

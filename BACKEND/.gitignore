@@ -12,7 +12,7 @@ npm-debug.log
 yarn-error.log
 
 # docs
-/src/images/docs
+/src/images/
 
 # IDEs and editors
 .idea/
