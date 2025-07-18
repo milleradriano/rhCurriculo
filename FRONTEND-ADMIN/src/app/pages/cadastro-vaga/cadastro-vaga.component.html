@@ -1,2 +1,162 @@
-<p>cadastro-vaga works!</p>
-<app-grid> </app-grid>
+<div class="container">
+  <form [formGroup]="vagaForm" (ngSubmit)="postVaga(vagaForm.value)">
+    <div class="id-nomeVaga-status">
+      <div class="status">
+        <span id="status">Status da Vaga</span>
+        <p-inputSwitch id="ativa_desativa" formControlName="status" />
+      </div>
+      <div class="idVaga">
+        <label id="label" id="label" for="idvaga">Cod. Vaga:</label>
+        <input
+          id="idvaga"
+          pTooltip="Cod Vaga"
+          type="text"
+          placeholder="Cod. Vaga"
+          formControlName="idVaga"
+          pInputText
+          inputreadonly
+          
+        />
+      </div>
+
+      <div class="nomeVaga">
+        <label id="label" id="label" for="nomevaga">Nome da Vaga:</label>
+        <input
+          id="nomevaga"
+          pTooltip="Nome da Vaga"
+          type="text"
+          placeholder="Nome da Vaga"
+          formControlName="nomeVaga"
+          pInputText
+          appInputpreenchido
+        />
+      </div>
+    </div>
+
+    <div class="descVaga">
+      <label id="label" for="descvaga">Descrição da Vaga:</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        placeholder="Descrição da Vaga"
+        formControlName="descVaga"
+        pInputText
+        appInputpreenchido
+      ></textarea>
+    </div>
+
+    <div class="empresa_escolaridade">
+      <div class="empresa">
+        <label id="label" for="empresa">Empresa:</label>
+       <p-dropdown
+  [options]="empresaInterface"
+  formControlName="idEmpresa"
+  optionLabel="descempresa"
+  optionValue="idempresa"
+  appCombopreenchido
+  placeholder="Selecione a empresa">
+
+</p-dropdown>
+      </div>
+
+      <div class="escolaridade">
+        <label id="label" for="escolaridade">Escolaridade:</label>      
+        <p-dropdown
+          [options]="escolaridade"
+          [(ngModel)]="escolaridadeSelecionada"
+          optionLabel="escolaridade"
+          placeholder="Escolaridade"
+          formControlName="escolaridade"
+          appCombopreenchido
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="experiencia">
+      <label id="label" for="experiencia">Experiência:</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        placeholder="Experiência"
+        formControlName="experiencia"
+        pInputText
+        appInputpreenchido
+      ></textarea>
+    </div>
+
+    <div class="tipoContrato">
+      <label id="label" for="tipoContrato">Contrato:</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        placeholder="Tipo de contrato"
+        formControlName="tipoContrato"
+        appInputpreenchido
+      ></textarea>
+    </div>
+
+    <div class="beneficio">
+      <label id="label" for="beneficio">Benefícios:</label>
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        placeholder="Beneficio"
+        formControlName="beneficio"
+        appInputpreenchido
+      ></textarea>
+    </div>
+
+    <div class="horario">
+      <label id="label" for="horario">Horário:</label>
+      <input
+        id="horario"
+        pTooltip="Horario"
+        type="text"
+        placeholder="Horario"
+        formControlName="horario"
+        pInputText
+        appInputpreenchido
+      />
+    </div>
+
+    <div class="observacao">
+      <label id="label" for="observacao">Observação:</label>
+      <textarea
+        rows="5"
+        cols="50"
+        pInputTextarea
+        placeholder="Observação"
+        formControlName="observacao"
+        appInputpreenchido
+      ></textarea>
+    </div>
+
+    <div class="botao">
+      <div class="salvar">
+        <button
+          pButton
+          type="submit"
+          label="Cadastrar"
+          class="p-button-success"
+          [disabled]="!vagaForm.valid"
+        ></button>
+      </div>
+      <div class="excluir">
+        <button
+          pButton
+          type="submit"
+          label="Excluir"
+          class="p-button-danger"
+          (click)="confirmaExclusao()"
+          [disabled]="!vagaForm.valid"
+        ></button>
+      </div>
+    
+    </div>
+  </form>
+</div>
+<app-grid (eventoFilho)="recebeValores($event)" [translatedTitles]="translatedTitles" [datasourceGrid]="dataSourceGrid" >  </app-grid>

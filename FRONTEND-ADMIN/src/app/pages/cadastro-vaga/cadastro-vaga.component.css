@@ -1,0 +1,78 @@
+.container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+/* CLASSES PARA GRUPO DE COMPONENTES*/
+.id-nomeVaga-status,
+.empresa_escolaridade,
+.localidade,
+.salario,
+.descricaoVaga {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f6f6f6;
+  padding: 1rem;
+
+}
+
+
+/* DIV PARA ITEM INDIVIDUAL*/
+.descVaga,
+.experiencia,
+.tipoContrato,
+.beneficio,
+.observacao,
+.horario,
+.observacao {
+  display: flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  flex-direction: column;
+  background-color: #f6f6f6;
+  padding: 1rem;
+}
+
+#idvaga {
+  width: 8rem;
+}
+.nomeVaga{
+  /* display: flex;
+  flex-direction: row;
+  
+  border: 1 px solid red;
+  width: 50%; */
+ /* background-color: rebeccapurple; */
+  width: 67.1%;
+}
+#nomevaga {
+   width: 85%;
+}
+#label{
+ 
+   margin-right:0.5rem ; 
+}
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 10rem;
+}
+
+#status {
+  color: black;
+  font-size: 14px;
+}
+
+#ativa_desativa {
+  display: inline-grid;
+}
+
+.botao {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

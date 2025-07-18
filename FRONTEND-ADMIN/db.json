@@ -1,3 +1,4 @@
+
 {
   "vagas": [
     {
@@ -9,8 +10,7 @@
       "desccidade": "São Jerônmimo - RS.",
       "requisito": "Ensino fundamental.",
       "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."      
     },
     {
       "idvaga": 2, 
@@ -21,8 +21,7 @@
       "desccidade": "Charquedas - RS",
       "requisito": "Ensino fundamental.",
       "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."      
     },
     
     {
@@ -34,8 +33,7 @@
       "desccidade": "São Jerônmimo - RS.",
       "requisito": "Ensino fundamental.",
       "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."     
     },
     {
       "idvaga": 4, 
@@ -45,8 +43,7 @@
       "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
       "desccidade": "São Jerônmimo - RS.",
       "escolaridade": "Ensino fundamental.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."      
     },
     {
       "idvaga": 5, 
@@ -57,8 +54,7 @@
       "desccidade": "São Jerônmimo - RS.",
       "requisito": "Ensino fundamental.",
       "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."      
     },
     {
       "idvaga": 6, 
@@ -69,8 +65,7 @@
       "desccidade": "Charquedas - RS",
       "requisito": "Ensino fundamental.",
       "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."     
     },
     {
       "idvaga": 7, 
@@ -81,8 +76,7 @@
       "desccidade": "São Jerônmimo - RS.",
       "requisito": "Ensino fundamental.",
       "experiencia": "Contratamos sem experiência, oferecemos treinamento.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."      
     },
     {
       "idvaga": 8, 
@@ -92,8 +86,7 @@
       "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
       "desccidade": "São Jerônmimo - RS.",
       "requisito": "Ensino fundamental.",
-      "informacao_contrato": "CLT.",
-      "formatosalario": "Forma de pagamento mensal."
+      "informacao_contrato": "CLT."      
     },
     {
         "idvaga": 9, 
@@ -103,8 +96,7 @@
         "descvaga": "Garantir o abastecimento e organização dos produtos, da área de mercearia, oferidos aos clientes.",
         "desccidade": "São Jerônmimo - RS.",
         "requisito": "Ensino fundamental.",
-        "informacao_contrato": "CLT.",
-        "formatosalario": "Forma de pagamento mensal."
+        "informacao_contrato": "CLT."        
       } 
   ]
 }

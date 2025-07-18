@@ -31,6 +31,8 @@ import { environment } from '../../../environments/environment.prod';
 
 import { SessionStorageService } from '../../service/sessionStorage.service';
 import { FileUploaderComponent } from '../../components/file-uploader/uploaddocumento.component';
+import { TituloTopoComponent } from '../../components/titulo-topo/titulo-topo.component';
+import { TituloTopoService } from '../../service/titulo-topo.service';
 @Component({
   selector: 'app-empresa',
   standalone: true,
@@ -79,7 +81,7 @@ export class EmpresaComponent {
   // resultsLength = 0;
   loading: boolean = false;
 
-  private formbuilder = inject(FormBuilder);
+  private formBuilder = inject(FormBuilder);
   @ViewChild(FileUploaderComponent) fileUploader!: FileUploaderComponent;
   urlLogo: any;
   submitSuccess: boolean = false;
@@ -90,9 +92,12 @@ export class EmpresaComponent {
     private confirmacao: ConfirmacaoComponent,
     private empresaService: EmpresaService,
     private uploadLogoService: UploadLogoService,
-    private sessionStorage: SessionStorageService
-  ) {}
-  empresaForm = this.formbuilder.group({
+    private sessionStorage: SessionStorageService,
+    private nomeTopoService: TituloTopoService
+  ) {
+  this.nomeTopoService.setTituloTopo('Cadastro de Empresa');
+  }
+  empresaForm = this.formBuilder.group({
     idempresa: [''],
     descempresa: ['', Validators.required],
     desccidade: ['', Validators.required],

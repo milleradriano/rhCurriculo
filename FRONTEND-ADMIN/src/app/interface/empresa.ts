@@ -5,3 +5,8 @@ export interface interfaceEmpresa {
     maps: string;
     logo: string;
 }
+
+export interface interfaceGetEmpresa{
+    idempresa: string;
+    descempresa: string;
+}

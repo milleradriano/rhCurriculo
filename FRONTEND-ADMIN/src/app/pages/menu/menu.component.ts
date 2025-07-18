@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,11 +7,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-import { TopoComponent } from '../../components/topo/topo.component';
+import { map,  take } from 'rxjs/operators';
+
 import { MenuItem } from 'primeng/api';
-import { HttpClient } from '@angular/common/http';
+
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { TituloTopoComponent } from "../../components/titulo-topo/titulo-topo.component";
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -25,12 +26,13 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     MatIconModule,
     AsyncPipe,
     PanelMenuModule,
-  ],
+    TituloTopoComponent
+],
 })
 export class MenuComponent {
   private breakpointObserver = inject(BreakpointObserver);
   items: MenuItem[] = [];
-  constructor(private httpClient: HttpClient) {
+  constructor() {
     this.items = [
   
             {
@@ -50,12 +52,12 @@ export class MenuComponent {
         ]
     }
     
-  
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
       map((result) => result.matches),
-      shareReplay()
+      take(1)
     );
+    
 }

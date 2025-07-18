@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, Output, Inject, PLATFORM_ID, inject,OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
-import { VagasService } from '../../service/vagas.service';
+import { VagasService } from '../../service/vaga.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { interfaceVaga} from '../../interface/vaga';
@@ -43,8 +43,8 @@ import { MenuComponent } from "../menu/menu.component";
     ]),
   ],
   providers: [VagasService, DialogService],
-  templateUrl: './vagas.component.html',
-  styleUrl: './vagas.component.css',
+  templateUrl: './painelVagas.component.html',
+  styleUrl: './painelVagas.component.css',
 })
 export class VagasComponent implements OnInit, OnDestroy {
 
@@ -82,7 +82,7 @@ export class VagasComponent implements OnInit, OnDestroy {
   getVagas(): void {
     this.loading = true;
   
-      this.vagasService.getVagas().subscribe({
+      this.vagasService.getVaga().subscribe({
         next: (data: interfaceVaga[]) => {
           this.vagas = data;
           // console.log('Vagas carregadas:', this.vagas);

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { VagasComponent } from './pages/vagas/vagas.component';
+import { VagasComponent } from './pages/painelVagas/painelVagas.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { EmpresaComponent } from './pages/empresa/empresa.component';
