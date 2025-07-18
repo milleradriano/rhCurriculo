@@ -311,11 +311,10 @@ app.get("/vaga/", async (req: Request, res: Response) => {
 });
 
 app.post("/vaga", async (req: Request, res: Response) => {
-  console.log("post vaga ", req.body);
+  console.log("post vaga APP ", req.body);
   const valores = [req.body];
-  vaga.postVaga(valores).then((result: any) => {
-    const dados = [req.body];
-    res.send(result);
+  vaga.postVaga(valores).then((result: any) => { 
+   res.send(result);
   });
 });
 //************************ FIM VAGAS  *************************/

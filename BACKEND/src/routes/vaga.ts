@@ -16,44 +16,30 @@ const getVaga = () => {
   });
 };
 const postVaga = (valores: any) => {
-  const [
-    idvaga,
-    idempresa,
-    idcidade,
-    pagamento,
-    descvaga,
-    atividade,
-    status,
-    requsito,
-    nomevaga,
-    informacaocontrato,
-    beneficio,
-    horario,
-    observacaohorario
-  ] = valores;
-  console.log("Dentro do post vaga ", valores);
+  console.log("Valores postVaga ", valores);
+ 
   return new Promise ((resolve, reject) => {
     PoolMysql.query(
-      "call postvaga(?,?,?,?,?,?,?,?,?,?,?,?)",
-      [ idvaga,
-        idempresa,
-        idcidade,
-        pagamento,
-        descvaga,
-        atividade,
-        status,
-        requsito,
-        nomevaga,
-        informacaocontrato,
-        beneficio,
-        horario,
-        observacaohorario
+      "call postvaga(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      [ valores[0].idVaga || null,
+        valores[0].nomeVaga,      
+        valores[0].status,
+        valores[0].descVaga,
+        valores[0].idEmpresa,
+        valores[0].escolaridade.escolaridade,
+        valores[0].experiencia,
+        valores[0].tipoContrato,
+        valores[0].beneficio,
+        valores[0].beneficio,
+        valores[0].horario,
+        valores[0].observacao,
+        'adriano'
       ],
       (error: any, results: unknown, fields: any) => {
         if (error) {
+          console.log("POST VAGA error", error);
           reject(error);
-        } else {
-          console.log("resultado vaga ", results);
+        } else {         
           resolve(results);
         }
       }
