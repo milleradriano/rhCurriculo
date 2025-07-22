@@ -19,7 +19,7 @@ import { MessageService } from 'primeng/api';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { InputMaskModule } from 'primeng/inputmask';
-import { FormatacpfDirective } from '../../diretivas/formatacpf.directive';
+import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
 
 
 import { LocalstorageService } from '../../service/localstorage.service';

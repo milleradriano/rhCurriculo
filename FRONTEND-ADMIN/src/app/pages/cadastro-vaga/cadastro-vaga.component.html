@@ -65,7 +65,8 @@
         <p-dropdown
           [options]="escolaridade"
           [(ngModel)]="escolaridadeSelecionada"
-          optionLabel="escolaridade"
+          optionLabel="descEscolaridade"
+          optionValue="idEscolaridade"
           placeholder="Escolaridade"
           formControlName="escolaridade"
           appCombopreenchido
@@ -159,4 +160,6 @@
     </div>
   </form>
 </div>
+<div class="grid">
 <app-grid (eventoFilho)="recebeValores($event)" [translatedTitles]="translatedTitles" [datasourceGrid]="dataSourceGrid" >  </app-grid>
+</div>

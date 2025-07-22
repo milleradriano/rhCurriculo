@@ -1,3 +1,4 @@
+
 import { Component, inject, Inject } from '@angular/core';
 import { GridComponent } from '../../components/grid/grid.component';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -19,8 +20,8 @@ import { ToastService } from '../../service/toast.service';
 import { interfaceGetEmpresa } from '../../interface/empresa';
 import { Console } from 'console';
 import { EmpresaService } from '../../service/empresa.service';
-import { InputpreenchidoDirective } from '../../diretivas/inputpreenchido.directive';
-import { CombopreenchidoDirective } from '../../diretivas/combopreenchido.directive';
+import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
+import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directive';
 @Component({
   selector: 'app-cadastro-vaga',
   standalone: true,
@@ -42,9 +43,7 @@ import { CombopreenchidoDirective } from '../../diretivas/combopreenchido.direct
   styleUrl: './cadastro-vaga.component.css',
 })
 export class CadastroVagaComponent {
-recebeValores($event: any) {
-throw new Error('Method not implemented.');
-}
+
   isLoadingResults: boolean = false;
 
   showProgress: boolean = false;
@@ -53,7 +52,7 @@ onChangeCombo($event: DropdownChangeEvent) {
 console.log('onChangeCombo', $event);
 }
   formBuilder = inject(FormBuilder);
-  escolaridade: interfaceEscolaridade[];
+  escolaridade: interfaceEscolaridade[] = [];
   escolaridadeSelecionada: interfaceEscolaridade | undefined;
   empresaInterface: interfaceGetEmpresa[] = [];
   dataSourceGrid : any[] = [];
@@ -66,21 +65,22 @@ console.log('onChangeCombo', $event);
     private empresaService: EmpresaService
   ) {
     this.escolaridade = [
-      { idEscolaridade: 1, escolaridade: 'Ensino Fundamental Incompleto' },
-      { idEscolaridade: 2, escolaridade: 'Ensino Fundamental Completo' },
-      { idEscolaridade: 3, escolaridade: 'Ensino Medio Completo Incompleto' },
-      { idEscolaridade: 4, escolaridade: 'Ensino Medio Completo' },
-      { idEscolaridade: 5, escolaridade: 'Ensino Superior Incompleto' },
-      { idEscolaridade: 6, escolaridade: 'Ensino Superior Completo' },
+      { idEscolaridade: 1, descEscolaridade: 'Ensino Fundamental Incompleto' },
+      { idEscolaridade: 2, descEscolaridade: 'Ensino Fundamental Completo' },
+      { idEscolaridade: 3, descEscolaridade: 'Ensino Medio Completo Incompleto' },
+      { idEscolaridade: 4, descEscolaridade: 'Ensino Medio Completo' },
+      { idEscolaridade: 5, descEscolaridade: 'Ensino Superior Incompleto' },
+      { idEscolaridade: 6, descEscolaridade: 'Ensino Superior Completo' },
     ];
 
     this.nomeTopoService.setTituloTopo('Cadastro de Vaga');
   }
   /* TITULO DO GRID*/
-  title: string[] = ['idempresa', 'nomevaga', 'atualizar'];
+  title: string[] = ['idempresa', 'nomevaga','status', 'atualizar'];
   translatedTitles: { [key: string]: string } = {
     idempresa: 'Empresa',
     nomevaga: 'Descrição da Vaga',
+    status: 'Status',
     atualizar: 'Ação',
   };
 
@@ -100,12 +100,12 @@ console.log('onChangeCombo', $event);
     observacao: ['',Validators.required],
   });
 
-  postVaga(valores: any) {
+  postVaga(events$: any) {
     //adcionar usuario
-   
-    this.vagaService.postVaga(valores).subscribe({
+    console.log('valores no post', events$);
+
+    this.vagaService.postVaga(events$).subscribe({
       next: (valores: any) => {
-        console.log('valores', valores);
         this.mensagem.sucesso('Vaga cadastrada com sucesso');
         this.carregaGrid();
       },
@@ -124,7 +124,7 @@ console.log('onChangeCombo', $event);
   getEmpresa() {
  
     this.empresaService.getEmpresa().subscribe({
-      next: (data) => {
+      next: (data:any) => {
             console.log('getEmpresa',data);
            
         if (Array.isArray(data)) {
@@ -138,7 +138,7 @@ console.log('onChangeCombo', $event);
           this.mensagem.info('Nenhuma empresa cadastrada');
         }
       },
-      error: (error) => {
+      error: (error:any) => {
         this.mensagem.erro(error);
       },
     });
@@ -147,15 +147,18 @@ console.log('onChangeCombo', $event);
   carregaGrid() {
     this.isLoadingResults = true;
     this.vagaService.getVaga().subscribe({
-      next: (data) => {
+      next: (data:any) => {
         if (Array.isArray(data)) {
-          this.dataSourceGrid = data;
-          console.log('get empresa', this.dataSourceGrid);
+          this.dataSourceGrid = data.map((item: any) => ({
+            ...item,
+            status: item.status ? 'Ativo' : 'Inativo',
+          }));
+          console.log('dentro do carregaGrid', this.dataSourceGrid);
         } else {
           this.dataSourceGrid = JSON.parse(JSON.stringify(data));
         }
       },
-      error: (error) => {
+      error: (error:any) => {
         if (error.status === 403) {
           this.showProgress = true;
         } else if (error.status === 0) {
@@ -167,5 +170,26 @@ console.log('onChangeCombo', $event);
       },
     })
   }
+recebeValores($event: any) {
+  console.log('recebeValores', $event);
+ 
+  this.vagaForm.patchValue({
+    idVaga: $event.idvaga,
+    nomeVaga: $event.nomevaga,
+    status: $event.status === 'Ativo',
+    descVaga: $event.descvaga,
+    idEmpresa: $event.idempresa,
+    escolaridade:$event.idescolaridade , // Se for um ID ou objeto, ajuste conforme necessário
+    // idEscolaridade: $event.escolaridade ? this.escolaridade.find(item
+    // escolaridade: $event.escolaridade, // Se for um ID ou objeto, ajuste conforme necessário
+    // escolaridade: $event.escolaridade ? this.escolaridade.find(item => item
+    experiencia: $event.experiencia,
+    tipoContrato: $event.tipocontrato,
+    beneficio: $event.beneficio,
+    horario: $event.horario,
+    observacao: $event.observacao
+  });
+}
+
   confirmaExclusao() {}
 }

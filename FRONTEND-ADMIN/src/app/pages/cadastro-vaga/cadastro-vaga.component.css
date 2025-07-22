@@ -16,7 +16,14 @@
   padding: 1rem;
 
 }
-
+.grid{
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+}
 
 /* DIV PARA ITEM INDIVIDUAL*/
 .descVaga,
@@ -25,7 +32,8 @@
 .beneficio,
 .observacao,
 .horario,
-.observacao {
+.observacao
+{
   display: flex;
   margin-top: 1rem;
   margin-bottom: 1rem;
