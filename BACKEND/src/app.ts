@@ -307,7 +307,7 @@ app.get("/vaga/", async (req: Request, res: Response) => {
   vaga.getVaga().then((result: any) => {
     res.send(result);
   });
-  console.log("get vaga 101", res);
+
 });
 
 app.post("/vaga", async (req: Request, res: Response) => {

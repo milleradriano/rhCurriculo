@@ -8,7 +8,7 @@ const getVaga = () => {
         if (error) {
           reject(error);
         } else {
-          console.log("resultado vaga ", results);
+          console.log("get vaga.ts 11", results);
           resolve(results);
         }
       }
@@ -16,7 +16,7 @@ const getVaga = () => {
   });
 };
 const postVaga = (valores: any) => {
-  console.log("Valores postVaga ", valores);
+  console.log("Valores postVaga vaga.ts ", valores);
  
   return new Promise ((resolve, reject) => {
     PoolMysql.query(
@@ -26,11 +26,11 @@ const postVaga = (valores: any) => {
         valores[0].status,
         valores[0].descVaga,
         valores[0].idEmpresa,
-        valores[0].escolaridade.escolaridade,
+        valores[0].escolaridade,
         valores[0].experiencia,
         valores[0].tipoContrato,
         valores[0].beneficio,
-        valores[0].beneficio,
+        valores[0].requisito,
         valores[0].horario,
         valores[0].observacao,
         'adriano'
