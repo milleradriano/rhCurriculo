@@ -22,6 +22,7 @@ const experiencia = require("./routes/experiencia");
 const documento = require("./routes/documento");
 const email = require("./routes/email");
 const alteraSenha = require("./routes/alteraSenha");
+const painelvaga = require("./routes/painelVaga");
 //const  postLogin  = require("./routes/cadastraLogin");
 //const login = require("./routes/login");
 const bcrypt = require("bcrypt"); // para criptografar a senha
@@ -302,6 +303,18 @@ app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
 });
 /**********************FIM CURRICULO ******************************/
 
+//*********************PAINEL VAGA**********************************/
+
+app.get("/painelvaga", async (req: Request, res: Response) => {
+  painelvaga.getPainelVaga().then((result: any) => {
+    res.send(result);
+  });
+});
+
+
+//*********************FIM PAINEL VAGA***************************** */
+
+
 //*************************INICIO VAGAS ***********************/
 app.get("/vaga/", async (req: Request, res: Response) => {
   vaga.getVaga().then((result: any) => {
@@ -311,10 +324,18 @@ app.get("/vaga/", async (req: Request, res: Response) => {
 });
 
 app.post("/vaga", async (req: Request, res: Response) => {
-  console.log("post vaga APP ", req.body);
+ 
   const valores = [req.body];
   vaga.postVaga(valores).then((result: any) => { 
    res.send(result);
+  });
+});
+
+app.delete("/vaga/:id",  async (req: Request, res: Response) => {
+  console.log("delete vaga ", req.params.id);
+  const id = req.params.id;
+  vaga.deleteVaga(id).then((result: any) => {
+    res.send(result);
   });
 });
 //************************ FIM VAGAS  *************************/

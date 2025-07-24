@@ -1,6 +1,6 @@
 import  PoolMysql  from "../dados/dados";
 const getVaga = () => {
-  console.log("dentro da vaga");
+ 
   return new Promise((resolve, reject) => {
     PoolMysql.query(
       "select * from vaga",
@@ -8,7 +8,7 @@ const getVaga = () => {
         if (error) {
           reject(error);
         } else {
-          console.log("get vaga.ts 11", results);
+ 
           resolve(results);
         }
       }
@@ -20,7 +20,7 @@ const postVaga = (valores: any) => {
  
   return new Promise ((resolve, reject) => {
     PoolMysql.query(
-      "call postvaga(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+      "call postvaga(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
       [ valores[0].idVaga || null,
         valores[0].nomeVaga,      
         valores[0].status,
@@ -28,7 +28,8 @@ const postVaga = (valores: any) => {
         valores[0].idEmpresa,
         valores[0].escolaridade,
         valores[0].experiencia,
-        valores[0].tipoContrato,
+        valores[0].infoContrato,
+        valores[0].regimeContrato,
         valores[0].beneficio,
         valores[0].requisito,
         valores[0].horario,
@@ -40,6 +41,23 @@ const postVaga = (valores: any) => {
           console.log("POST VAGA error", error);
           reject(error);
         } else {         
+          console.log("POST VAGA results", results);
+          resolve(results);
+        }
+      }
+    );
+  });
+};
+const deleteVaga = (id: number) => {
+  return new Promise((resolve, reject) => {
+    PoolMysql.query(
+      "call deleteVaga(?)",
+      [id],
+      (error: any, results: unknown, fields: any) => {
+        if (error) {
+          reject(error);
+        } else {
+ 
           resolve(results);
         }
       }
@@ -50,4 +68,5 @@ const postVaga = (valores: any) => {
 module.exports = {
   getVaga,
   postVaga,
+  deleteVaga
 };
