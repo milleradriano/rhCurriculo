@@ -28,7 +28,8 @@
 /* DIV PARA ITEM INDIVIDUAL*/
 .descVaga,
 .experiencia,
-.tipoContrato,
+.infoContrato,
+.regimeContrato,
 .beneficio,
 .observacao,
 .horario,
@@ -46,16 +47,23 @@
   width: 8rem;
 }
 .nomeVaga{
-  /* display: flex;
+  display: flex;
   flex-direction: row;
+justify-self: center;
+justify-content: space-between;
+  width: 67%;
+}
+#labelvaga {
   
-  border: 1 px solid red;
-  width: 50%; */
- /* background-color: rebeccapurple; */
-  width: 67.1%;
+  display: flex;
+  align-items: center;
+  width: 17%;
+  
+  
 }
 #nomevaga {
-   width: 85%;
+    
+   background-color: red;
 }
 #label{
  

@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="vagaForm" (ngSubmit)="postVaga(vagaForm.value)">
+  <form [formGroup]="vagaForm" class="formVaga">
     <div class="id-nomeVaga-status">
       <div class="status">
         <span id="status">Status da Vaga</span>
@@ -15,12 +15,11 @@
           formControlName="idVaga"
           pInputText
           inputreadonly
-          
         />
       </div>
 
       <div class="nomeVaga">
-        <label id="label" id="label" for="nomevaga">Nome da Vaga:</label>
+        <label id="labelvaga" for="nomevaga">Nome da Vaga:</label>
         <input
           id="nomevaga"
           pTooltip="Nome da Vaga"
@@ -49,19 +48,19 @@
     <div class="empresa_escolaridade">
       <div class="empresa">
         <label id="label" for="empresa">Empresa:</label>
-       <p-dropdown
-  [options]="empresaInterface"
-  formControlName="idEmpresa"
-  optionLabel="descempresa"
-  optionValue="idempresa"
-  appCombopreenchido
-  placeholder="Selecione a empresa">
-
-</p-dropdown>
+        <p-dropdown
+          [options]="empresaInterface"
+          formControlName="idEmpresa"
+          optionLabel="descempresa"
+          optionValue="idempresa"
+          appCombopreenchido
+          placeholder="Selecione a empresa"
+        >
+        </p-dropdown>
       </div>
 
       <div class="escolaridade">
-        <label id="label" for="escolaridade">Escolaridade:</label>      
+        <label id="label" for="escolaridade">Escolaridade:</label>
         <p-dropdown
           [options]="escolaridade"
           [(ngModel)]="escolaridadeSelecionada"
@@ -87,14 +86,25 @@
       ></textarea>
     </div>
 
-    <div class="tipoContrato">
-      <label id="label" for="tipoContrato">Contrato:</label>
+    
+    <div class="regimeContrato">
+      <label id="label" for="regimeContrato">Regime de Contrato(painel de descrição da vaga):</label>
+      <input
+        pInputText
+        placeholder="Tipo de contrato"
+        formControlName="regimeContrato"
+        appInputpreenchido
+      />
+    </div>
+
+    <div class="infoContrato">
+      <label id="label" for="infoContrato">Informação sobre o contrato:</label>
       <textarea
         rows="5"
         cols="30"
         pInputTextarea
         placeholder="Tipo de contrato"
-        formControlName="tipoContrato"
+        formControlName="infoContrato"
         appInputpreenchido
       ></textarea>
     </div>
@@ -144,6 +154,7 @@
           label="Cadastrar"
           class="p-button-success"
           [disabled]="!vagaForm.valid"
+          (click)="postVaga(vagaForm.value)"
         ></button>
       </div>
       <div class="excluir">
@@ -152,14 +163,18 @@
           type="submit"
           label="Excluir"
           class="p-button-danger"
-          (click)="confirmaExclusao()"
+          (click)="deleteVaga(vagaForm.value.idVaga)"
           [disabled]="!vagaForm.valid"
         ></button>
       </div>
-    
     </div>
   </form>
 </div>
 <div class="grid">
-<app-grid (eventoFilho)="recebeValores($event)" [translatedTitles]="translatedTitles" [datasourceGrid]="dataSourceGrid" >  </app-grid>
+  <app-grid
+    (eventoFilho)="recebeValores($event)"
+    [translatedTitles]="translatedTitles"
+    [datasourceGrid]="dataSourceGrid"
+  >
+  </app-grid>
 </div>

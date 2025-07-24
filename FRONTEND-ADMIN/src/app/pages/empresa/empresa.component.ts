@@ -226,8 +226,8 @@ recebeNomeImagem(valores: any) {
     console.log('valores EMPRESA', valores);
     this.empresaService.postEmpresa(valores).subscribe(
       (data) => {
-      
-        if (1+1 === 2) {
+        // TODO Ajustar o retorno do servidor
+        if (1 + 1 === 2) {
           mensagem = JSON.parse(JSON.stringify(data)).serverStatus;
         
           this.loading = false;

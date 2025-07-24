@@ -46,7 +46,7 @@ img {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   flex-wrap: wrap;
   flex-direction: row;
   gap: 1rem;
@@ -83,10 +83,28 @@ img {
   align-items: center;
   height: 35%;
 }
+
+/* para os campos que possuem quebras de linha */
 .formatacaoTexto{
   padding-top: 0.5rem;
-  text-indent: 1.5rem;
+  /* text-indent: 1.5rem; */
+  white-space: pre-line; 
+  margin-left: 1rem;
 }
+.formatacaoTexto::before {
+  content: "";
+}
+
+.formatacaoTexto span::before {
+  content: "⮚ ";
+  display: inline-block;
+  width: 1.2rem;
+  margin-left: -1.2rem;
+  color: #444;
+  font-weight: bold;
+}
+/*******************************************/
+
 .descricaoEmpresaVaga {
   display: flex;
   justify-content: left;
@@ -107,6 +125,7 @@ img {
   color: var(--main-color);
   line-height: 1.5;
   word-break: break-all;
+  margin: 0.5rem 0 0.5rem 1rem;
 }
 
 .botaoCidadeRegime {

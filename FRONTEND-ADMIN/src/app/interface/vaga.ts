@@ -5,7 +5,8 @@ export interface interfaceVaga {
     nomevaga:string
     descvaga:string;    
     desccidade:string;
-    informacao_contrato:string;
+    info_contrato:string;
+    regime_contrato:string;
     experiencia:string;
     requisito:string;
     status:boolean;
