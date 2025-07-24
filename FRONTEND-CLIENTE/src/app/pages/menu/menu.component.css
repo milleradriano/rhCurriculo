@@ -6,13 +6,20 @@
 }
 .sidenav-container {
   height: 100vh;
-  background-color: #ffffff;
+  background-color: #ffffff; 
+ 
 }
 .toolbar {
   background-color: #ffffff;
 }
 hr:not([size]) {
   height: 1px;
+}
+.botaoHamburguer {
+  background-color: #ff0000;
+}
+.iconeBotaoHamburguer {
+  color: white;
 }
 .titulo {
   /* padding-top: 0.3rem; */
@@ -32,6 +39,7 @@ hr {
 }
 .sidenav {
   width: 290px;
+ 
 }
 
 .sidenav .mat-toolbar {

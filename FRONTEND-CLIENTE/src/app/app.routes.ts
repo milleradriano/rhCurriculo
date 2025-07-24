@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { VagasComponent } from './pages/vagas/vagas.component';
+import { PainelVagaComponent } from './pages/painelVaga/painelVaga.component';
 import { CurriculoComponent } from './pages/curriculo/curriculo.component';
 import { ResidenciaComponent } from './pages/residencia/residencia.component';
 import { ExperienciaComponent } from './pages/experiencia/experiencia.component';
@@ -13,7 +13,7 @@ import { AlteraSenhaComponent } from './pages/altera-senha/altera-senha.componen
 export const routes: Routes = [
   {
     path: '',
-    component: VagasComponent,
+    component: PainelVagaComponent,
     pathMatch: 'full',
   },
   {

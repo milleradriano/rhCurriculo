@@ -1,7 +1,7 @@
-import { Component, Input, OnDestroy, Output, Inject, PLATFORM_ID, inject,OnInit } from '@angular/core';
+import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
-import { VagasService } from '../../service/vagas.service';
+import { PainelVagaService } from '../../service/painel-vaga.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { interfaceVaga} from '../../interface/vaga';
@@ -20,7 +20,9 @@ import {
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { TopoComponent } from "../../components/topo/topo.component";
-import { MenuComponent } from "../menu/menu.component";
+
+import { environment } from '../../../environments/environment.prod';
+
 
 @Component({
   selector: 'app-vagas',
@@ -31,8 +33,7 @@ import { MenuComponent } from "../menu/menu.component";
     HttpClientModule,
     DynamicDialogModule,
     DialogModule,
-    TopoComponent,
-    MenuComponent
+    TopoComponent
 ],
   animations: [
     trigger('fadeInOut', [
@@ -41,11 +42,11 @@ import { MenuComponent } from "../menu/menu.component";
       transition(':leave', [animate(300, style({ opacity: 0 }))]),
     ]),
   ],
-  providers: [VagasService, DialogService],
-  templateUrl: './vagas.component.html',
-  styleUrl: './vagas.component.css',
+  providers: [PainelVagaService, DialogService],
+  templateUrl: './painelVaga.component.html',
+  styleUrl: './painelVaga.component.css',
 })
-export class VagasComponent implements OnInit, OnDestroy {
+export class PainelVagaComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
   vagas: interfaceVaga[] = [];
@@ -57,17 +58,21 @@ export class VagasComponent implements OnInit, OnDestroy {
   logo: any;
   vaga!: string ;
   descempresa!: string ;
-  nomevaga!: string ;
+  nomevaga!: any ;
   descvaga!: string ;
   desccidade!: string ;
-  informacao_contrato!: string ;
+  info_contrato!: string ;
+  regime_contrato!: string ;
   requisito!: string ;
   experiencia!: string ;
   totalVagas!: number;
   escolaridade!: string ;
+  beneficio!: string;
+  horario!: string;
+  observacao!: string;
  
   constructor(
-    private vagasService: VagasService,
+    private painelVagaService: PainelVagaService,
     public dialogService: DialogService,
     private storage: SessionStorageService,
     private router: Router
@@ -77,20 +82,17 @@ export class VagasComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getVagas();
   }
-
+url = environment.api;
   getVagas(): void {
     this.loading = true;
 
-    this.subscription.add(
-      this.vagasService.getVagas().subscribe({
+      this.painelVagaService.getCarregaPainelVaga().subscribe({
         next: (data: interfaceVaga[]) => {
-          this.vagas = data;
-          // console.log('Vagas carregadas:', this.vagas);
+          this.vagas = data;       
           this.totalVagas = this.vagas.length;
-          
           this.loading = false;
         },
-        error: (error) => {
+        error: (error: any) => {
           this.errorMessage = `Erro ao carregar vagas: ${error.message}`;
           console.error('Erro:', error);
           this.loading = false;
@@ -99,29 +101,38 @@ export class VagasComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
       })
-    );
+    
   }
 
   mostraVaga(dadosVaga: object):void {
-    this.visible = true;
-     console.log('Vaga mostrada:', JSON.parse(JSON.stringify(( dadosVaga))).nomevaga);
+    this.visible = true; 
+
+
      this.nomevaga = JSON.parse(JSON.stringify(( dadosVaga))).nomevaga;
      this.descvaga = JSON.parse(JSON.stringify(( dadosVaga))).descvaga;
-     this.desccidade = JSON.parse(JSON.stringify(( dadosVaga))).desccidade;
-     this.informacao_contrato = JSON.parse(JSON.stringify(( dadosVaga))).informacao_contrato;
+     this.desccidade = JSON.parse(JSON.stringify(( dadosVaga))).desccidade.split('\n').map((linha: any) => `⮚ ${linha}`).join('\n');
+   //  this.info_contrato = JSON.parse(JSON.stringify(( dadosVaga))).info_contrato;//informacao_contrato;
+      this.info_contrato = JSON.parse(JSON.stringify(( dadosVaga))).info_contrato?.split('\n').map((linha: any) => `⮚ ${linha}`).join('\n');
+     //this.regime_contrato = JSON.parse(JSON.stringify(( dadosVaga))).regime_contrato;
+    this.regime_contrato = JSON.parse(JSON.stringify(dadosVaga)).regime_contrato
+  ?.split('\n')
+  .map((linha: any) => `⮚ ${linha}`)
+  .join('\n');
      this.descempresa = JSON.parse(JSON.stringify(( dadosVaga))).descempresa;
-     this.logo = JSON.parse(JSON.stringify(( dadosVaga))).logo;
+     
      this.requisito = JSON.parse(JSON.stringify(( dadosVaga))).requisito;
      this.experiencia = JSON.parse(JSON.stringify(( dadosVaga))).experiencia;
      this.escolaridade = JSON.parse(JSON.stringify(( dadosVaga))).escolaridade;
+     this.beneficio = JSON.parse(JSON.stringify(( dadosVaga))).beneficio?.split('\n').map((linha: any) => `⮚ ${linha}`).join('\n');
+      this.horario = JSON.parse(JSON.stringify(( dadosVaga))).horario?.split('\n').map((linha: any) => `⮚ ${linha}`).join('\n');
+      this.observacao = JSON.parse(JSON.stringify(( dadosVaga))).observacao?.split('\n').map((linha: any) => `⮚ ${linha}`).join('\n')
 }
 
 curriculoBotaoModal(){
-  
   this.curriculo(this.storage.getCurriculo());
 }
 curriculo(id: any){ 
-
+//  alert(id);
    this.storage.setCurriculo('id', id);
    this.router.navigate(['/login']);
    

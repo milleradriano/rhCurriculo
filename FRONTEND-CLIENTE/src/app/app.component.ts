@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TopoComponent } from "./components/topo/topo.component";
 import { MenuComponent } from "./pages/menu/menu.component";
-import { VagasComponent } from "./pages/vagas/vagas.component";
+import { PainelVagaComponent } from "./pages/painelVaga/painelVaga.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { ToastModule } from 'primeng/toast';
 

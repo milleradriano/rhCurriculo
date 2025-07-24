@@ -1,33 +1,26 @@
 <!-- <app-topo></app-topo> -->
 <div class="container">
   <div class="topo">
-    <app-topo></app-topo>
-
-    <div class="contaVagas">
-      <div class="vagas">
-        <h3>Vagas</h3>
-        <p>Localizamos: {{ totalVagas }} vaga(s)</p>
-      </div>
-      <div class="atualizarCadastro">
-        <button type="button" id="btnAtualizaCadastro">
-          <span pButtonLabel>Atualize seu cadastro</span>
-        </button>
-      </div>
+    <div class="atualizarCadastro">
+      <button type="button" id="btnAtualizaCadastro" >       
+        <span pButtonLabel>Atualize seu cadastro</span>       
+    </button>
     </div>
-  </div>
+<app-topo></app-topo>
+</div>
 </div>
 <div class="fundo-card">
-  <!-- <div class="contaVagas">
+  <div class="contaVagas">
     <h3>Vagas</h3>
     <p>Localizamos: {{ totalVagas }} vaga(s)</p>
-  </div>  -->
+  </div>
 
   <div class="card-container">
     @for (vaga of vagas; track vaga.descvaga) {
 
     <div class="card">
       <div class="tituloEmpresa">
-        <img class="img-card" src="{{ vaga.logo }}" alt="" srcset="" />
+        <img class="img-card" src="{{url  + '/' + vaga.logo }}" alt="" srcset="" />
         <h6 class="descricaoEmpresaVaga">{{ vaga.descempresa }}</h6>
       </div>
       <div class="descricaoVaga">
@@ -35,8 +28,9 @@
       </div>
       <div class="botaoCidadeRegime">
         <div class="ciadadeRegime">
-          <p><i class="icon">🏢</i> {{ vaga.informacao_contrato }}</p>
+          <p><i class="icon">🏢</i> {{ vaga.regime_contrato }}</p>
           <p>
+
             <i class="icon"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -56,12 +50,8 @@
           <button type="button" id="btnVerVagas" (click)="mostraVaga(vaga)">
             Ver vaga
           </button>
-          <button
-            type="button"
-            id="btnCandidatar"
-            (click)="curriculo(vaga.idvaga)"
-          >
-            Canditar-se
+          <button type="button" id="btnCandidatar"   (click)="curriculo(vaga.idvaga)">Canditar-se
+            
           </button>
         </div>
       </div>
@@ -72,11 +62,11 @@
 
 <p-dialog
   [modal]="true"
-  [draggable]="true"
-  [resizable]="true"
+  [draggable]="false"
+  [resizable]="false"
   [(visible)]="visible"
   [style]="{ width: '50rem', height: '80rem', marginTop: '1rem' }"
-  [breakpoints]="{ '1199px': '99vw', '575px': '99vw' }"
+  [breakpoints]="{ '1199px': '100vw', '575px': '100vw' }"
 >
   <ng-template pTemplate="header">
     <div class="titulo">
@@ -86,50 +76,28 @@
       </div>
 
       <div class="botaoCadastra">
-        <button
-          p-Button
-          type="button"
-          id="btnCadastrar"
-          (click)="curriculoBotaoModal()"
-        >
-          Candidatar-se
-        </button>
+        <button p-Button type="button" id="btnCadastrar" (click)="curriculoBotaoModal()">Candidatar-se</button>
       </div>
     </div>
   </ng-template>
 
   <h3 class="informacaoGeral">Informações gerais</h3>
-  <p><i class="icon-location"></i> {{ desccidade }}</p>
+  <h4 class="subtitulo">Cidade</h4>
+  <p class="formatacaoTexto">{{ desccidade }}</p>
   <h4 class="subtitulo">Atividade da vaga</h4>
   <p class="formatacaoTexto">&#11162; {{ descvaga }}</p>
-  <h4 class="subtitulo">Requisitos</h4>
-  <p class="formatacaoTexto">&#11162; {{ requisito }}</p>
-  <!-- <p class="formatacaoTexto">&#11162; {{ requisitos }}</p> -->
-  <h4 class="subtitulo">Experiência:</h4>
+  <h4 class="subtitulo">Experiência:</h4> 
   <p class="formatacaoTexto">&#11162; {{ experiencia }}</p>
-  <h3 class="informacaoGeral">Outras Informações</h3>
 
+
+  <h3 class="informacaoGeral">Outras Informações</h3>
   <h4 class="subtitulo">CONTRATO</h4>
-  <p class="formatacaoTexto">&#11162; {{ informacao_contrato }}</p>
+  <p class="formatacaoTexto "> {{ info_contrato }}</p>
 
   <h4 class="subtitulo">BENEFÍCIOS</h4>
-  <p class="formatacaoTexto">&#11162; Plano de saúde</p>
-  <p class="formatacaoTexto">&#11162; Convênio para compras</p>
-  <p class="formatacaoTexto">
-    &#11162; Prêmio para trabalho nos domingos e feriados
-  </p>
+  <p class="formatacaoTexto"> {{ beneficio}}</p>
   <h4 class="subtitulo">HORÁRIO</h4>
-  <p class="formatacaoTexto">&#11162; Flexível</p>
-  <h3 class="informacaoGeral">OBSERVAÇÕES SOBRE HORÁRIOS</h3>
-  <p class="formatacaoTexto">&#11162; Disponilidade de horarios</p>
-  <p class="formatacaoTexto">
-    &#11162; Disponilidade para trabalhar nos domingos e feriados
-  </p>
-  <p class="formatacaoTexto">&#11162; Escala 6x1</p>
-  <p class="formatacaoTexto">
-    &#11162; Escala de domingo 2 x 1 para o sexo masculino
-  </p>
-  <p class="formatacaoTexto">
-    &#11162; Escala de domingo 1 x 1 para o sexo feminino
-  </p>
-</p-dialog>
+  <p class="formatacaoTexto"> {{ horario}}</p>
+  <span class="informacaoGeral">OBSERVAÇÕES SOBRE HORÁRIOS</span>
+  <p class="formatacaoTexto"> {{ observacao }}</p>
+  </p-dialog>

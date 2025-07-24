@@ -5,18 +5,14 @@
   width: 100vw;
 }
 .atualizarCadastro{
-  /* position: fixed;
+  position: fixed;
   top: 0.7rem;
   right: 0;
-  z-index: 1000; */
+  z-index: 1000;
 
 }
-#btnAtualizaCadastro{
-  border: none; 
-  height:'1rem';
-  margin-right: 4rem;  
-  background-color: #f4f6f9;
-}
+
+
 
 .topo {
   position: fixed;
@@ -24,7 +20,6 @@
   width: 100vw;
   z-index: 1000; 
   background:#fff;
-  
 } 
 .conteudo{     
     margin-top: 11rem;   
@@ -35,43 +30,32 @@ img {
   height: 150px;
 }
 .maps{
-  height: 24px; 
+  height: 24px;
+ 
 }
 
 .fundo-card {
   background-color: #f4f6f9;
-   margin-top: 16rem; 
+  margin-top: 11rem;
   padding: 1rem 0 2rem 2rem;
  width:  100vw - 1vw ;
- /* height: 100vh; */
+ height: 100vh;
 }
 
 .card-container {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   flex-wrap: wrap;
   flex-direction: row;
   gap: 1rem;
 
 }
 
-.contaVagas{
-  background-color:   #f4f6f9;
-  height: 10vh;
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.vagas {
- margin-left: 5rem;
-}
-
-.vagas > h3 {
+.contaVagas > h3 {
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--main-color);
   text-align: left;
 }
@@ -93,17 +77,34 @@ img {
   height: 36px;
 }
 
-
 .tituloEmpresa {
   display: flex;
   justify-content: left;
   align-items: center;
   height: 35%;
 }
+
+/* para os campos que possuem quebras de linha */
 .formatacaoTexto{
   padding-top: 0.5rem;
-  text-indent: 1.5rem;
+  /* text-indent: 1.5rem; */
+  white-space: pre-line; 
+  margin-left: 1rem;
 }
+.formatacaoTexto::before {
+  content: "";
+}
+
+.formatacaoTexto span::before {
+  content: "⮚ ";
+  display: inline-block;
+  width: 1.2rem;
+  margin-left: -1.2rem;
+  color: #444;
+  font-weight: bold;
+}
+/*******************************************/
+
 .descricaoEmpresaVaga {
   display: flex;
   justify-content: left;
@@ -124,10 +125,9 @@ img {
   color: var(--main-color);
   line-height: 1.5;
   word-break: break-all;
+  margin: 0.5rem 0 0.5rem 1rem;
 }
-.botaoCadastra{
-  margin-right: 1rem;
-}
+
 .botaoCidadeRegime {
   display: flex;
   justify-content: space-between;
@@ -160,7 +160,12 @@ span {
   width: 40%;
 }
 
-
+#btnAtualizaCadastro{
+  color: #2c2c2c;
+  border: none;
+  background: #ffff;
+  height:'1rem'
+}
 #btnAtualizaCadastro:hover{
   color: red;
   border: none;
@@ -220,8 +225,8 @@ span {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2px; 
-  border-bottom:  1px solid #313130;
+  margin-bottom: 2px;
+border-bottom:  1px solid #313130;
   height: 5rem;
 }
 .informacaoGeral {
