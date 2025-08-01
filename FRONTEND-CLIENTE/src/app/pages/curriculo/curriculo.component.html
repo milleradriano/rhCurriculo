@@ -9,6 +9,22 @@
     <div class="loading">
       <app-progressbar></app-progressbar>
     </div>
+    } @if(nomeVaga){
+    <div class="vaga">
+
+        <label for="vaga">Vaga: {{ nomeVaga }}</label>
+        <label for="vaga">Empresa: {{ empresaVaga }}</label>
+         <label for="vaga">Cidade: {{ cidadeVaga }}</label>
+        <p-button
+          pButton
+          type="button"
+          label="Salvar"
+          icon="pi pi-times"
+          class="botaoFecharVaga"
+          pButton
+        ></p-button>
+    
+    </div>
     }
     <!-- <app-uploaddocumento></app-uploaddocumento> -->
     <div class="titulo">
@@ -286,7 +302,6 @@
               formControlName="deficiencia"
               placeholder="Deficiência"
               [options]="deficiencia"
-              
             ></p-dropdown>
           </div>
         </div>

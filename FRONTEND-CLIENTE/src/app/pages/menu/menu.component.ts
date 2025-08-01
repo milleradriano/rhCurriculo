@@ -32,6 +32,9 @@ import { NometopoComponent } from '../../components/nometopo/nometopo.component'
 ]
 })
 export class MenuComponent implements OnInit {
+sair() {
+this.sessionStorageService.clear();
+}
   private breakpointObserver = inject(BreakpointObserver);
   items: MenuItem[] = [];
  
@@ -42,6 +45,7 @@ export class MenuComponent implements OnInit {
               private nomeTopo: NometopoComponent) {  }
               
   ngOnInit(): void {
+
     this.sessionStorageService.getUserName().subscribe((userName) => {
     
     //this.nomeCandidato = "Seja bem vindo, " + this.sessionStorageService.getUserName() || '';
@@ -87,4 +91,5 @@ isHandset$: Observable<boolean> = this.breakpointObserver
     map((result) => result.matches),
     shareReplay()
   );
+ 
 }

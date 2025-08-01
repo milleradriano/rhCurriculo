@@ -24,6 +24,7 @@ export class InputpreenchidoDirective implements AfterViewInit,OnDestroy {
   }
   ngOnDestroy() {
     this.observer?.disconnect();
+      this.valueChangeSub?.unsubscribe();
   }
   @HostListener('input') onInputChange() {
     this.changeColor();

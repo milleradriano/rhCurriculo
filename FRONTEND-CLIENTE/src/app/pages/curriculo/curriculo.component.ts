@@ -1,13 +1,5 @@
-import {
-  Component,
-  inject,
-  Input,
-  input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -32,9 +24,6 @@ import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { CurriculoService } from '../../service/curriculo.service';
 import { InputreadonlyDirective } from '../../diretiva/inputreadonly.directive';
 import { InputpreenchidoDirective } from '../../diretiva/inputpreenchido.directive';
-import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directive';
-import { interfaceCurriculo } from '../../interface/curriculo';
-// import { LoadingComponent } from '../../components/loading/loading.component';
 import { ToastService } from '../../service/toast.service';
 import { ConfirmacaoComponent } from '../../components/confirmacao/confirmacao.component';
 import { HttpHeaders } from '@angular/common/http';
@@ -43,6 +32,7 @@ import { ProgressbarComponent } from '../../components/progressbar/progressbar.c
 import { Console } from 'node:console';
 import { FileUploaderComponent } from '../../components/file-uploader/file-uploader.component';
 import { DocumentoService } from '../../service/documento.service';
+import { VagaService } from '../../service/vaga.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -72,10 +62,8 @@ interface UploadEvent {
     FormatacpfDirective,
     ApenasNumeroDirective,
     FormatatelefoneDirective,
-   
     InputreadonlyDirective,
     InputpreenchidoDirective,
-    // LoadingComponent,
     LoadingComponent,
     ProgressbarComponent,
     FileUploaderComponent,
@@ -88,9 +76,6 @@ export class CurriculoComponent implements OnInit {
   loading: boolean = false; // habilita/desabilita o spinner
   isReadonly: boolean = true;
 
-  limparFilhos($event: any) {
-    console.log('Limpar Filhos ', $event);
-  }
   estadoCivil: any = [];
   estadoEmissor: any[] | undefined;
   grauInstrucao: any[] | undefined;
@@ -100,10 +85,18 @@ export class CurriculoComponent implements OnInit {
   sessionCpf: string | null = this.sessionStorage.getLogin('cpf');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
 
+  nomeVaga: any = '';
+  cidadeVaga: any = '';
+  empresaVaga: any = '';
+
   submitSuccess = false;
   submitError = false;
-  nomeDocumento : string[] = [];
+  nomeDocumento: string[] = [];
   headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
+
+  limparFilhos($event: any) {
+    console.log('Limpar Filhos ', $event);
+  }
   constructor(
     private messageService: MessageService,
     private breakpointObserver: BreakpointObserver,
@@ -113,6 +106,7 @@ export class CurriculoComponent implements OnInit {
     private curriculoService: CurriculoService,
     private sessionService: SessionStorageService,
     private documentoService: DocumentoService,
+    private vagaService: VagaService,
 
     // private loadingComponent: LoadingComponent,
     private confirmacaoComponent: ConfirmacaoComponent
@@ -214,10 +208,29 @@ export class CurriculoComponent implements OnInit {
   }
   ngOnInit() {
     if (this.sessionCpf) {
+      console.log('cpf no inicio', this.sessionCpf);
       this.getCurriculo(this.sessionCpf);
+      this.getVaga(this.sessionStorage.getVaga('codvaga'));
     } else {
       console.error('CPF is null or undefined');
     }
+  }
+  getVaga(codVaga: any) {
+    console.log('codVaga', codVaga);
+    this.vagaService.getVaga(codVaga).subscribe(
+      (data:any) => {
+        if (data) {
+          console.log('Vaga encontrada:', data[0].nomevaga);
+          this.nomeVaga = data[0].nomevaga;
+          this.empresaVaga = data[0].empresavaga;
+          this.cidadeVaga = data[0].cidadevaga;
+        }
+      },
+      (error: any) => {
+        console.error('Erro ao buscar vaga:', error);
+        this.mensagem.erro('Erro ao buscar vaga: ' + error);
+      }
+    );
   }
 
   private nome: string = '';
@@ -231,7 +244,10 @@ export class CurriculoComponent implements OnInit {
           try {
             this.nome = data[0].nome;
             this.sessionStorage.setUserName('nome', data[0].nome || '');
-            this.sessionStorage.setUserName('idcand', data[0].idcandidato || '');
+            this.sessionStorage.setUserName(
+              'idcand',
+              data[0].idcandidato || ''
+            );
             this.sessionStorage.updateUserName(this.nome || '');
             this.curriculoForm.patchValue({
               nome: data[0].nome,
@@ -266,13 +282,13 @@ export class CurriculoComponent implements OnInit {
             this.getDocumento(); // Chama o método para obter o documento após preencher o formulário
           } catch (error: any) {
             this.loading = false;
-          
+
             this.mensagem.erro(error);
           }
         } else {
           this.loading = false;
-         this.mensagem.atencao(`Atenção ${cpf} não cadastrado`);
-         this.showProgress = true;
+          this.mensagem.atencao(`Atenção ${cpf} não cadastrado`);
+          this.showProgress = true;
         }
       },
       (error: any) => {
@@ -288,75 +304,72 @@ export class CurriculoComponent implements OnInit {
     const pcdControl = this.curriculoForm.get('pcd');
     if (pcdControl && pcdControl.value === 'S') {
       this.postDocumento();
-     }
+    }
 
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');
     valores.cpf = valores.cpf.replace(/\D/g, '');
     /*Adiciona o idcandidato ao objeto valores*/
-    valores = { ...valores, idcandidato };    
+    valores = { ...valores, idcandidato };
 
     const dataNascimento = new Date(valores.dataNascimento);
     const idade = new Date().getFullYear() - dataNascimento.getFullYear();
-    if (idade < 18) {    
+    if (idade < 18) {
       this.loading = false;
-      this.mensagem.erro('Candidato menor de idade.');        
+      this.mensagem.erro('Candidato menor de idade.');
       return;
     }
 
-    if (valores.dataEmissao < valores.dataNascimento) { 
+    if (valores.dataEmissao < valores.dataNascimento) {
       this.loading = false;
-      this.mensagem.erro('Data de emissão maior que a data de nascimento');    
+      this.mensagem.erro('Data de emissão maior que a data de nascimento');
       return;
     }
     this.curriculoService.postCurriculo(valores, this.headers).subscribe(
       (data) => {
-     
-        if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {       
+        if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
           this.loading = false;
           this.mensagem.sucesso('Registro salvo.');
           this.getDocumento(); // Atualiza os documentos após salvar o currículo
         } else {
-           this.mensagem.erro('Erro não atualizado');
-       
+          this.mensagem.erro('Erro não atualizado');
         }
       },
       (error: any) => {
         this.loading = false;
-        this.mensagem.erro(error );
+        this.mensagem.erro(error);
         this.showProgress = true;
-       
       }
     );
   }
 
   getDocumento() {
-   
     this.loading = true;
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');
     const valores = [idcandidato, cpf ? cpf.replace(/\D/g, '') : ''];
     if (!idcandidato || !cpf) {
-     
       this.loading = false;
       return;
     }
     if (idcandidato) {
-      this.documentoService.getDocumento(idcandidato, cpf,this.headers).subscribe(
-        (data: any) => {
-          if (data.length > 0) {
-           this.nomeDocumento = data[0].map((doc: any) => doc.nome);
+      this.documentoService
+        .getDocumento(idcandidato, cpf, this.headers)
+        .subscribe(
+          (data: any) => {
+            if (data.length > 0) {
+              this.nomeDocumento = data[0].map((doc: any) => doc.nome);
+              this.loading = false;
+            } else {
+              this.loading = false;
+            }
+          },
+          (error: any) => {
             this.loading = false;
-          } else {           
-            this.loading = false;
+            this.mensagem.erro('Erro ao obter documento.');
           }
-        },
-        (error: any) => {
-          this.loading = false;        
-          this.mensagem.erro('Erro ao obter documento.');
-        }
-      );
-    } else {    
+        );
+    } else {
       this.loading = false;
     }
   }
@@ -369,37 +382,33 @@ export class CurriculoComponent implements OnInit {
         this.submitSuccess = success;
         this.submitError = !success;
       });
-      this.getDocumento();   
-     
-      
-    } catch (error) {   
+      this.getDocumento();
+    } catch (error) {
       this.mensagem.erro('Erro ao salvar imagem, tente mais tarde.');
     }
   }
-  deleteDocumento(nomeDocumento:string) {
+  deleteDocumento(nomeDocumento: string) {
     this.loading = true;
     const idcandidato = sessionStorage.getItem('idcand');
     const cpf = sessionStorage.getItem('cpf');
-   
-  if (!idcandidato || !cpf) {
- 
-    this.loading = false;
-    return;
-  }
-  this.documentoService.deleteDocumento({ idcandidato, cpf,nomeDocumento }, this.headers)
-    .subscribe(
-      (data: any) => {
-      
-        this.loading = false;
-        this.mensagem.sucesso('Documento excluído com sucesso.');
-       this.getDocumento(); // Atualiza a lista de documentos após a exclusão
-      },
-      (error: any) => {
-        this.loading = false;
-     
-        this.mensagem.erro('Erro ao excluir documento.');
-      }
-    );
 
-}
+    if (!idcandidato || !cpf) {
+      this.loading = false;
+      return;
+    }
+    this.documentoService
+      .deleteDocumento({ idcandidato, cpf, nomeDocumento }, this.headers)
+      .subscribe(
+        (data: any) => {
+          this.loading = false;
+          this.mensagem.sucesso('Documento excluído com sucesso.');
+          this.getDocumento(); // Atualiza a lista de documentos após a exclusão
+        },
+        (error: any) => {
+          this.loading = false;
+
+          this.mensagem.erro('Erro ao excluir documento.');
+        }
+      );
+  }
 }

@@ -1,12 +1,26 @@
 :root {
-  color: #606062;
+   color: #606062; 
   --subtitulo-color: #ff355e;
   --corBorda-input: #1dc755a8;
 }
+
 .container {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
+.vaga{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; 
+}
+
 
 input:hover {
   border: 1px solid var(--corBorda-input);

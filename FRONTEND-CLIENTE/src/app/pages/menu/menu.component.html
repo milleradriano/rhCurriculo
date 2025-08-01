@@ -18,7 +18,9 @@
       <p-panelMenu [model]="items" [style]="{'width':'289px'}"></p-panelMenu>
     </mat-nav-list>
     <div class="botaoSair">
-      <button mat-stroked-button routerLink="/" >
+      <button mat-stroked-button routerLink="/" 
+    (click)="sair()"
+      >
         <mat-icon>logout</mat-icon>
         Sair
       </button>
