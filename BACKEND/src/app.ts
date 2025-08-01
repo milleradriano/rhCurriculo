@@ -338,6 +338,14 @@ app.delete("/vaga/:id",  async (req: Request, res: Response) => {
     res.send(result);
   });
 });
+
+app.get("/vaga/:id",async (req:Request, res:Response)=>{
+  console.log("get vaga ", req.params.id);
+  const id = req.params.id;
+  vaga.getVagaId(id).then((result: any) => {
+    res.send(result);
+  });
+})
 //************************ FIM VAGAS  *************************/
 
 //********************* INICIO EMPRESA *************************/

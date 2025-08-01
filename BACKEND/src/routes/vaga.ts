@@ -1,4 +1,19 @@
 import  PoolMysql  from "../dados/dados";
+const getVagaId = (id: number) => {
+  return new Promise((resolve, reject) => {
+    PoolMysql.query(
+      "select * from vw_vaga where idvaga = ?",
+      [id],
+      (error: any, results: unknown, fields: any) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+}
 const getVaga = () => {
  
   return new Promise((resolve, reject) => {
@@ -68,5 +83,6 @@ const deleteVaga = (id: number) => {
 module.exports = {
   getVaga,
   postVaga,
-  deleteVaga
+  deleteVaga,
+  getVagaId
 };
