@@ -215,16 +215,21 @@ export class CurriculoComponent implements OnInit {
     if (this.sessionCpf) {
       console.log('cpf no inicio', this.sessionCpf);
       this.getCurriculo(this.sessionCpf);
-      this.getVagaCandidato(this.sessionIdVaga);
+      if (this.sessionIdVaga) {
+        this.getVagaCandidato(this.sessionIdVaga);
+      }
+      
     } else {
       console.error('CPF is null or undefined');
     }
   }
+// RETORNA OS VALORES PARA O CARD DA VAGA SELECIONADA
   getVagaCandidato(codVaga: any) {  
+    if (codVaga) {      
     this.vagacandidatoService.getVagaCandidato(codVaga).subscribe(
       (data:any) => {
         if (data) {
-          console.log('Vaga encontrada:', data[0].nomevaga);
+          console.log('Vaga encontrada:', data[0]);
           this.nomeVaga = data[0].nomevaga;
           this.empresaVaga = data[0].empresavaga;
           this.cidadeVaga = data[0].cidadevaga;
@@ -236,8 +241,15 @@ export class CurriculoComponent implements OnInit {
       }
     );
   }
+  }
 postVagaCandidado() {
     this.loading = true;
+
+    if (!this.curriculoForm.valid) {
+      this.loading = false;
+      this.mensagem.erro('Preencha todos os campos do formulário para prosseguir.');
+      return;
+    }
 
 if (!this.sessionIdVaga || !this.sessionIdCandidato) {
       this.loading = false;
@@ -277,6 +289,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
   }
 
   getCurriculo(cpf: string) {
+
     this.loading = true;
 
     // if ( await this.validaToken()) {
@@ -349,7 +362,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
       this.postDocumento();
     }
 
-    const idcandidato = sessionStorage.getItem('idcand');
+    const idcandidato = sessionStorage.getItem('codcand');
     const cpf = sessionStorage.getItem('cpf');
     valores.cpf = valores.cpf.replace(/\D/g, '');
     /*Adiciona o idcandidato ao objeto valores*/
@@ -388,7 +401,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
 
   getDocumento() {
     this.loading = true;
-    const idcandidato = sessionStorage.getItem('idcand');
+    const idcandidato = sessionStorage.getItem('codcand');
     const cpf = sessionStorage.getItem('cpf');
     const valores = [idcandidato, cpf ? cpf.replace(/\D/g, '') : ''];
     if (!idcandidato || !cpf) {
@@ -432,7 +445,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
   }
   deleteDocumento(nomeDocumento: string) {
     this.loading = true;
-    const idcandidato = sessionStorage.getItem('idcand');
+    const idcandidato = sessionStorage.getItem('codcand');
     const cpf = sessionStorage.getItem('cpf');
 
     if (!idcandidato || !cpf) {

@@ -1,17 +1,18 @@
 <div class="container">
   <div class="topo">
-    <div class="atualizarCadastro">
-      <button type="button" id="btnAtualizaCadastro" >       
-        <span pButtonLabel>Atualize seu cadastro</span>       
-    </button>
-    </div>
-<app-topo></app-topo>
-</div>
+    <app-topo></app-topo>
+  </div>
 </div>
 <div class="fundo-card">
   <div class="contaVagas">
-    <h3>Vagas</h3>
-    <p>Localizamos: {{ totalVagas }} vaga(s)</p>
+    <div class="contagem">
+      <h3>Vagas</h3>
+      <h3>Localizamos: <strong>{{ totalVagas }} vaga(s)</strong></h3>
+    </div>
+
+    <div class="botaoAtualizaCadastro">
+      <button type="button" id="btnCadastrar"(click)="atualizaCadastro()">Atualize seu cadastro</button>
+    </div>
   </div>
 
   <div class="card-container">
@@ -19,7 +20,12 @@
 
     <div class="card">
       <div class="tituloEmpresa">
-        <img class="img-card" src="{{url  + '/' + vaga.logo }}" alt="" srcset="" />
+        <img
+          class="img-card"
+          src="{{ url + '/' + vaga.logo }}"
+          alt=""
+          srcset=""
+        />
         <h6 class="descricaoEmpresaVaga">{{ vaga.descempresa }}</h6>
       </div>
       <div class="descricaoVaga">
@@ -29,7 +35,6 @@
         <div class="ciadadeRegime">
           <p><i class="icon">🏢</i> {{ vaga.regime_contrato }}</p>
           <p>
-
             <i class="icon"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,8 +54,12 @@
           <button type="button" id="btnVerVagas" (click)="mostraVaga(vaga)">
             Ver vaga
           </button>
-          <button type="button" id="btnCandidatar"   (click)="curriculo(vaga.idvaga)">Canditar-se
-            
+          <button
+            type="button"
+            id="btnCandidatar"
+            (click)="curriculo(vaga.idvaga)"
+          >
+            Canditar-se
           </button>
         </div>
       </div>
@@ -75,7 +84,14 @@
       </div>
 
       <div class="botaoCadastra">
-        <button p-Button type="button" id="btnCadastrar" (click)="curriculoBotaoModal()">Candidatar-se</button>
+        <button
+          p-Button
+          type="button"
+          id="btnCadastrar"
+          (click)="curriculo(idvaga)"
+        >
+          Candidatar-se
+        </button>
       </div>
     </div>
   </ng-template>
@@ -85,18 +101,17 @@
   <p class="formatacaoTexto">{{ desccidade }}</p>
   <h4 class="subtitulo">Atividade da vaga</h4>
   <p class="formatacaoTexto">&#11162; {{ descvaga }}</p>
-  <h4 class="subtitulo">Experiência:</h4> 
+  <h4 class="subtitulo">Experiência:</h4>
   <p class="formatacaoTexto">&#11162; {{ experiencia }}</p>
-
 
   <h3 class="informacaoGeral">Outras Informações</h3>
   <h4 class="subtitulo">CONTRATO</h4>
-  <p class="formatacaoTexto "> {{ info_contrato }}</p>
+  <p class="formatacaoTexto">{{ info_contrato }}</p>
 
   <h4 class="subtitulo">BENEFÍCIOS</h4>
-  <p class="formatacaoTexto"> {{ beneficio}}</p>
+  <p class="formatacaoTexto">{{ beneficio }}</p>
   <h4 class="subtitulo">HORÁRIO</h4>
-  <p class="formatacaoTexto"> {{ horario}}</p>
+  <p class="formatacaoTexto">{{ horario }}</p>
   <span class="informacaoGeral">OBSERVAÇÕES SOBRE HORÁRIOS</span>
-  <p class="formatacaoTexto"> {{ observacao }}</p>
-  </p-dialog>
+  <p class="formatacaoTexto">{{ observacao }}</p>
+</p-dialog>

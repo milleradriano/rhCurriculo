@@ -96,8 +96,8 @@ export class LoginComponent implements OnInit {
     
   
     loginForm = this.formBuilder.group({
-      cpf: ['815.800.530-68', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
-      senha: ['lm77nh', Validators.required],
+      cpf: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
+      senha: ['', Validators.required],
     });
     postLogin($event: Partial<{ cpf: string; senha: string }>) {
 

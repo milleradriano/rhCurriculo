@@ -16,7 +16,7 @@ export class UploadLogoService {
   cpf: string | null = this.sessionStorage.getLogin('cpf');
   uploadDocumento(files: File[], headers?: any): Observable<any> {
     const formData = new FormData();
-    const idcandidato: string | null = this.sessionStorage.getLogin('idcand');
+    const idcandidato: string | null = this.sessionStorage.getLogin('codcand');
     const cpf: string | null = this.sessionStorage.getLogin('cpf');
     if(!idcandidato) {
       return throwError(() =>new Error('Candidato não encontrado no sessionStorage'));

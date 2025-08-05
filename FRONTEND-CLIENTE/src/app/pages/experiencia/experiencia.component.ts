@@ -64,7 +64,7 @@ import { ToastService } from '../../service/toast.service';
 export class ExperienciaComponent implements OnInit {
   loading: boolean = false;
   cpf: any = this.sessionStorage.getLogin('cpf')?.replace(/\D/g, '');
-  idcandidato: any = this.sessionStorage.getLogin('idcand');
+  idcandidato: any = this.sessionStorage.getLogin('codcand');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
   headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
 
@@ -119,7 +119,7 @@ export class ExperienciaComponent implements OnInit {
   postExperiencia(valores: any) {
     this.loading = true;
     const cpf = this.sessionStorage.getLogin('cpf')?.replace(/\D/g, '');
-    const idcandidato = this.sessionStorage.getLogin('idcand');
+    const idcandidato = this.sessionStorage.getLogin('codcand');
 
     const experienciaData = {
       ...valores,

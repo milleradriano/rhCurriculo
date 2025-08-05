@@ -38,6 +38,9 @@ import {MatCardModule} from '@angular/material/card';
   styleUrl: './painelVaga.component.css',
 })
   export class PainelVagaComponent implements OnInit, OnDestroy {
+atualizaCadastro() {
+ this.router.navigate(['/login']);
+}
   private subscription: Subscription = new Subscription();
   vagas: interfaceVaga[] = [];
   errorMessage: string = '';
@@ -47,6 +50,7 @@ import {MatCardModule} from '@angular/material/card';
   logo: any;
   vaga!: string;
   descempresa!: string;
+  idvaga!: number;
   nomevaga!: any;
   descvaga!: string;
   desccidade!: string;
@@ -98,7 +102,9 @@ import {MatCardModule} from '@angular/material/card';
 
   mostraVaga(dadosVaga: object): void {
     this.visible = true;
+    this.idvaga = JSON.parse(JSON.stringify(dadosVaga)).idvaga;
     this.nomevaga = JSON.parse(JSON.stringify(dadosVaga)).nomevaga;
+
     this.descvaga = JSON.parse(JSON.stringify(dadosVaga)).descvaga;
     this.desccidade = JSON.parse(JSON.stringify(dadosVaga))
       .desccidade.split('\n')
@@ -133,9 +139,7 @@ import {MatCardModule} from '@angular/material/card';
       .join('\n');
   }
 
-  curriculoBotaoModal() {
-    this.curriculo(this.sessionStorage.getCurriculo());
-  }
+ 
   curriculo(id: any) {  
     
     this.sessionStorage.setVaga('codvaga', id);

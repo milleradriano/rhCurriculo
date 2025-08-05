@@ -11,7 +11,7 @@ export class ExperienciaService {
   private url = environment.api
   sessionToken: string | null = sessionStorage.getItem('token'); 
   cpf: any  = sessionStorage.getItem('cpf');
-  idcandidato: any = sessionStorage.getItem('idcand');
+  idcandidato: any = sessionStorage.getItem('codcand');
   constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
   
   getExperiencia(valor:any, headers?: any): Observable<[interfaceExperiencia]> {

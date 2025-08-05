@@ -24,9 +24,8 @@
       <p-button
         icon="pi pi-check"
         severity="success"
-        label="Candidatar"
-        [disabled]="!curriculoForm.valid"
-        (click)="postCurriculo(curriculoForm.value)"
+        label="Candidatar"      
+        (click)="postVagaCandidado()"
       ></p-button>
 
         <p-button
@@ -349,8 +348,7 @@
 
     <hr />
     <div class="botaoSalvar">
-      <p-button
-      
+      <p-button      
         icon="pi pi-check"
         severity="success"
         label="Salvar os dados pessoais"
