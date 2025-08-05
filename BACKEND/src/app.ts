@@ -595,9 +595,9 @@ if (valores.novaSenha !== valores.confirmaSenha) {
       return;
     }
  
-     let novaSenhaHash = await hashPassword(valores.novaSenha);
-     console.log("valores da senha NO APP", valores.novaSenha, novaSenhaHash);
-     valores = [valores.codcli, valores.cpf.replace(/[^0-9]/g, ""),novaSenhaHash];
+     let novaSenhaHash = await hashPassword(valores.novaSenha);     
+     valores = [valores.idcandidato, valores.cpf.replace(/[^0-9]/g, ""),novaSenhaHash];
+     console.log("valores do altera senha NO APP",  req.body);
      const result = await alteraSenha.putAlteraSenha(valores);
      res.send(result);
   } catch (error) {

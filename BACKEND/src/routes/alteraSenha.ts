@@ -13,8 +13,9 @@ const  putRecuperaSenha = (valores: any) => {
                 if (error) {
                     console.log("PUT RECUPERA SENHA error", error);
                     reject(error);
-                } else {
+                } else {                 
                     resolve(results);
+
                 }
             }
         );
@@ -23,7 +24,7 @@ const  putRecuperaSenha = (valores: any) => {
 //****************************************************************/
 
 const putAlteraSenha = (valores: any) => {
-    console.log("PUT ALTERA SENHA NA ROTA", typeof(valores), valores);
+    console.log("PUT ALTERA SENHA NA ROTA",  valores);
     const [codcli,cpf, senha] = valores;    
     return new Promise((resolve, reject) => {
         PoolMysql.query(
@@ -34,6 +35,7 @@ const putAlteraSenha = (valores: any) => {
                     console.log("PUT ALTERA SENHA error", error);
                     reject(error);
                 } else {
+                    console.log("PUT ALTERA SENHA results", results);
                     resolve(results);
                 }
             }

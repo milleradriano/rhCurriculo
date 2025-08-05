@@ -15,7 +15,7 @@ export class AlteraSenhaService {
 
   constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
   
-  idcandidato: string | null = sessionStorage.getItem('idcand');
+  idcandidato: string | null = sessionStorage.getItem('codcand');
   cpf : string  | null = sessionStorage.getItem('cpf');
 
   putAlteraSenha(valores: any, headers?: any): Observable<interfacealteraSenha> {
