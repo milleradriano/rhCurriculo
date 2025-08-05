@@ -64,7 +64,7 @@ export class ResidenciaComponent implements OnInit {
   loading: boolean = false;
   showProgress: boolean = false;
   cpf: any = this.sessionStorage.getLogin('cpf')?.replace(/\D/g, '');
-  idcandidato: any = this.sessionStorage.getLogin('idcand');
+  idcandidato: any = this.sessionStorage.getLogin('codcand');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
   headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
 
@@ -155,8 +155,9 @@ export class ResidenciaComponent implements OnInit {
     console.log('valores', valores);
     this.residenciaService.getResidencia(valores, this.headers)
       .subscribe((res: any) => {
-        console.log('residencia fora', res[0].cep);
+        console.log('residencia fora', res);
         if (res[0].cep === null || res[0].cep === '') {
+          console.log('residencia cep vazio');
           this.loading = false;          
           return;
         }

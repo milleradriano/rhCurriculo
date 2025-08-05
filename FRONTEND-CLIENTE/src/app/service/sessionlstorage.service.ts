@@ -13,7 +13,7 @@ export class SessionStorageService {
     let initialValue: string | null = null;
     if (this.isBrowser) {
       initialValue = sessionStorage.getItem('nome');
-    }
+       }
 
     this.nomeCurriculoTop = new BehaviorSubject<string | null>(initialValue);
   }
@@ -65,7 +65,19 @@ export class SessionStorageService {
       sessionStorage.setItem(codVaga, value);
     }
   }
-//getcurriculo pega o id do candidato
+
+  getCandidato(codcand: any): string | null {
+    if (this.isBrowser) {
+      return sessionStorage.getItem(codcand);
+    }
+    return null;
+  }
+  setCandidato(codcand: any, value: string): void {
+    if (this.isBrowser) {
+      sessionStorage.setItem(codcand, value);
+    }
+  }
+
   getCurriculo() {
     if (this.isBrowser) {
       sessionStorage.getItem('id');

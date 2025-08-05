@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
   ) { }
   ngOnInit(): void {
    this.sessionStorage.remove("cpf");
-   this.sessionStorage.remove("idcand");
+   this.sessionStorage.remove("codcand");
    this.sessionStorage.remove("nome");    // Limpa o token e CPF do sessionStorage ao iniciar o componente
    this.sessionStorage.remove("token");
   }

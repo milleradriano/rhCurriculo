@@ -1,5 +1,5 @@
 :root {
-   color: #606062; 
+  color: #606062;
   --subtitulo-color: #ff355e;
   --corBorda-input: #1dc755a8;
 }
@@ -9,39 +9,79 @@
   padding-right: 1rem;
 }
 
-.vaga{
+/*************  ✨ Windsurf Command 🌟  *************/
+.cardVaga {
   display: flex;
+  
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 1rem;
+  justify-content: flex-start; /* Align at the top */
+  width: auto;
+  max-width: 25rem; /* Set a maximum width for the card */
+  padding: 0.5rem;
   border-radius: 8px;
-  background-color: #f5f5f5;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; 
+  background-color: #fff;
+  border: 1px solid #d1d9e0;
+  margin: 0 auto; /* Center horizontally */
+  p,
+  h3 {
+    color: #606062;
+  }
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+.topoCardVaga {
+  border-bottom: 1px solid #606062;
+  height: 2rem;
+  margin-bottom: 0.5rem;
+}
+/*******  cfc0f703-04dd-4e74-98d4-cd964ecabcdf  *******/
+.itemCard {
+  width: 100%;
+  align-items: center;
+}
+.botaoSalvarCardVaga {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 1rem;
+  gap: 1rem;
 }
 
+#botaoCancelaVagaCandidato .p-button:hover {
+  background-color: red;
+  border: none;
+  box-shadow: none;
+}
 
 input:hover {
   border: 1px solid var(--corBorda-input);
   cursor: pointer;
   box-shadow: none;
 }
+
 .nome {
   width: 40vw;
 }
+
 .titulo {
   color: var(--titulo-color);
 }
+
 .titulo > h1 {
   font-weight: 500;
   margin-bottom: 0;
 }
+
 h2 {
   padding: 0;
   margin: 0;
   color: #606062;
 }
+
 label {
   display: flex;
   flex-direction: column;
@@ -55,14 +95,12 @@ label {
 .sexo {
   display: flex;
   flex-direction: row;
-
   margin-bottom: 1rem;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
 }
-
 
 .documento,
 .informacaoDocumento {
@@ -75,6 +113,7 @@ label {
   line-height: 22px;
   gap: 1rem;
 }
+
 .filhos {
   display: flex;
   flex-direction: row;
@@ -84,6 +123,7 @@ label {
   font-size: 16px;
   line-height: 22px;
 }
+
 .enviarArquivo {
   margin-top: 2rem;
   width: 100%;
@@ -92,16 +132,21 @@ label {
   justify-content: center;
   align-items: center;
 }
+
 .enviarArquivo > p {
   margin: 0;
 }
-.radioButton {
+
+.radioButton { 
   margin-left: 1rem;
 }
+
 .estudaAtualmente {
   display: flex;
 }
-.radioEstuda,.radiofilho {
+
+.radioEstuda,
+.radiofilho {
   margin-right: 1rem;
 }
 
@@ -109,11 +154,11 @@ label {
 .email {
   width: 20rem;
 }
-.dataNascimento{
+.dataNascimento {
   width: 10rem;
 }
 .nomePai,
-.nomeMae{
+.nomeMae {
   width: 40rem;
 }
 
@@ -150,7 +195,7 @@ label {
 
   background-color: #eeeef3;
   width: 100%;
-   border: 1px solid #606062; 
+  border: 1px solid #606062;
   .nomeDoc {
     color: var(--subtitulo-color);
     display: flex;
@@ -161,33 +206,34 @@ label {
     font-size: 1rem;
     padding-bottom: 0.75rem;
   }
-  
-.p-button {
+
+  .p-button {
     color: #ffffff;
-    background: transparent;  
-   
+    background: transparent;
+
     font-size: 1rem;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+      box-shadow 0.2s;
     border-radius: 6px;
     outline-color: transparent;
-} 
-::ng-deep  .p-ripple.p-element.p-button.p-component.p-button-icon-only {
-  /* Estilos específicos para o botão de exclusão */
+  }
+  ::ng-deep .p-ripple.p-element.p-button.p-component.p-button-icon-only {
+    /* Estilos específicos para o botão de exclusão */
     color: #ffffff;
     background: var(--mdc-filled-text-field-error-focus-label-text-color);
-    border: 1px solid  var(--mdc-filled-text-field-error-focus-label-text-color);
+    border: 1px solid var(--mdc-filled-text-field-error-focus-label-text-color);
     padding: 0.75rem 1.25rem;
     font-size: 1rem;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+      box-shadow 0.2s;
     border-radius: 6px;
     outline-color: transparent;
-}
-::ng-deep .pi {
+  }
+  ::ng-deep .pi {
     font-size: 1rem;
     color: #ffffff;
+  }
 }
-}
-
 
 @media screen and (max-width: 700px) {
   #nome,

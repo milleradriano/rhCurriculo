@@ -12,7 +12,7 @@ export class ResidenciaService  {
   private url = environment.api
   sessionToken: string | null = sessionStorage.getItem('token'); 
   cpf: any  = sessionStorage.getItem('cpf');
-  idcandidato: any = sessionStorage.getItem('idcand');
+  idcandidato: any = sessionStorage.getItem('codcand');
   constructor(private httpclient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
 
 getCep(cep: any, headers?: any): Observable<interfaceCep> {

@@ -32,7 +32,7 @@ import { ProgressbarComponent } from '../../components/progressbar/progressbar.c
 import { Console } from 'node:console';
 import { FileUploaderComponent } from '../../components/file-uploader/file-uploader.component';
 import { DocumentoService } from '../../service/documento.service';
-import { VagaService } from '../../service/vaga.service';
+import { VagaCandidatoService } from '../../service/vaga-candidato.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -84,10 +84,15 @@ export class CurriculoComponent implements OnInit {
   deficiencia: any[] | undefined;
   sessionCpf: string | null = this.sessionStorage.getLogin('cpf');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
+  sessionIdVaga: string | null = this.sessionStorage.getVaga('codvaga');
+  sessionIdCandidato: string | null = '';    
+  //***************************** */
 
   nomeVaga: any = '';
   cidadeVaga: any = '';
   empresaVaga: any = '';
+
+  private nome: string = '';
 
   submitSuccess = false;
   submitError = false;
@@ -106,7 +111,7 @@ export class CurriculoComponent implements OnInit {
     private curriculoService: CurriculoService,
     private sessionService: SessionStorageService,
     private documentoService: DocumentoService,
-    private vagaService: VagaService,
+    private vagacandidatoService: VagaCandidatoService,
 
     // private loadingComponent: LoadingComponent,
     private confirmacaoComponent: ConfirmacaoComponent
@@ -210,14 +215,13 @@ export class CurriculoComponent implements OnInit {
     if (this.sessionCpf) {
       console.log('cpf no inicio', this.sessionCpf);
       this.getCurriculo(this.sessionCpf);
-      this.getVaga(this.sessionStorage.getVaga('codvaga'));
+      this.getVagaCandidato(this.sessionIdVaga);
     } else {
       console.error('CPF is null or undefined');
     }
   }
-  getVaga(codVaga: any) {
-    console.log('codVaga', codVaga);
-    this.vagaService.getVaga(codVaga).subscribe(
+  getVagaCandidato(codVaga: any) {  
+    this.vagacandidatoService.getVagaCandidato(codVaga).subscribe(
       (data:any) => {
         if (data) {
           console.log('Vaga encontrada:', data[0].nomevaga);
@@ -232,8 +236,46 @@ export class CurriculoComponent implements OnInit {
       }
     );
   }
+postVagaCandidado() {
+    this.loading = true;
 
-  private nome: string = '';
+if (!this.sessionIdVaga || !this.sessionIdCandidato) {
+      this.loading = false;
+      this.mensagem.erro('Vaga ou Candidato não encontrado.');
+      return;
+    }
+    this.vagacandidatoService.postVagaCandidato({ idvaga: this.sessionIdVaga, idcandidato: this.sessionIdCandidato }, this.headers).subscribe(
+      (data: any) => {
+        this.mensagem.sucesso('Vaga candidatada com sucesso!');
+        console.log('Vaga candidatada com sucesso:', data);
+        this.loading = false;
+        this.nomeVaga = '';
+      },
+      (error: any) => {
+        console.error('Erro ao candidatar vaga:', error);
+        this.mensagem.erro('Erro ao candidatar vaga: ' + error);
+        this.loading = false;
+      }
+    );
+  }
+  cancelaVagaCandidato() {
+    this.nomeVaga = '';
+    this.sessionStorage.remove('codvaga');
+    // this.loading = true;
+
+    // this.vagacandidatoService.deleteVagaCandidato(this.sessionIdVaga, this.sessionIdCandidato).subscribe(
+    //   (data: any) => {
+    //     this.mensagem.sucesso('Vaga cancelada com sucesso!');
+    //     this.loading = false;
+    //   },
+    //   (error: any) => {
+    //     console.error('Erro ao cancelar vaga:', error);
+    //     this.mensagem.erro('Erro ao cancelar vaga: ' + error);
+    //     this.loading = false;
+    //   }
+    // );
+  }
+
   getCurriculo(cpf: string) {
     this.loading = true;
 
@@ -244,10 +286,11 @@ export class CurriculoComponent implements OnInit {
           try {
             this.nome = data[0].nome;
             this.sessionStorage.setUserName('nome', data[0].nome || '');
-            this.sessionStorage.setUserName(
-              'idcand',
-              data[0].idcandidato || ''
-            );
+            this.sessionIdCandidato = data[0].idcandidato || '';
+            // Atualiza o ID do candidato no sessionStorage para o restante do app
+            this.sessionStorage.setCandidato('codcand', data[0].idcandidato || '');
+            
+            this.sessionStorage.setUserName('cpf', data[0].cpf || '');
             this.sessionStorage.updateUserName(this.nome || '');
             this.curriculoForm.patchValue({
               nome: data[0].nome,
@@ -411,4 +454,7 @@ export class CurriculoComponent implements OnInit {
         }
       );
   }
+
+
+
 }

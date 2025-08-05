@@ -1,5 +1,5 @@
 export interface interfaceVaga {  
-idvaga:number;
+    idvaga:number;
     logo:string;
     descempresa:string;
     nomevaga:string
@@ -13,5 +13,10 @@ idvaga:number;
     beneficio:string;
     horario:string;
     observacao_horario:string;
+}
+
+export interface interfaceVagaCandidato {  
+    idvaga:number;
+    idcandidato:number; 
 }
 
