@@ -14,6 +14,41 @@ const getVagaId = (id: number) => {
     );
   });
 }
+const postVagaCandidato = (valores: any) => {
+  console.log("postVagaCandidato idVaga ", valores[0], " idCandidato ", valores[1]);
+  const idVaga = valores[0];
+  const idCandidato = valores[1];
+  return new Promise((resolve, reject) => {
+    PoolMysql.query(
+      "call postvagacandidato(?, ?)",
+      [idVaga, idCandidato],
+      (error: any, results: unknown, fields: any) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+};  
+
+const delVagaCandidato = (idVaga: number, idCandidato: number) => {
+  return new Promise((resolve, reject) => {
+    PoolMysql.query(
+      "call delVagaCandidato(?, ?)",
+      [idVaga, idCandidato],
+      (error: any, results: unknown, fields: any) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+};
+
 const getVaga = () => {
  
   return new Promise((resolve, reject) => {
@@ -84,5 +119,7 @@ module.exports = {
   getVaga,
   postVaga,
   deleteVaga,
-  getVagaId
+  getVagaId,
+  postVagaCandidato,
+  delVagaCandidato
 };

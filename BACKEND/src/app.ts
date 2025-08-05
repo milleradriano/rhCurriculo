@@ -547,6 +547,8 @@ app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
 //************************FIM EXPERIENCIA***************************/
 
 //*************************INICIO EMAIL / ALTERA SENHA ****************************/
+
+
 app.post("/recuperar-senha", async (req: Request, res: Response) => {
   try {
     const valores = req.body;
@@ -603,9 +605,18 @@ if (valores.novaSenha !== valores.confirmaSenha) {
     res.status(500).send({ error: "Erro ao alterar senha." });
   }
  });
-
-/**/
-
 //************************FIM  EMAIL / ALTERA SENHA **************************** */
+
+//************************ INICIO VAGA CANDIDATOS ************************ */
+
+app.post("/vaga-candidato", async (req: Request, res: Response) => {
+  console.log("post vaga candidato no app ", req.body.idvaga);
+  const valores = [req.body.idvaga, req.body.idcandidato];
+  console.log("valores post vaga candidato ", valores);
+   vaga.postVagaCandidato(valores).then((result: any) => {
+     res.send(result);
+  });
+});
+//************************ FIM VAGA CANDIDATOS ************************ */
 
 export default app;
