@@ -170,57 +170,102 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
 //**********************************************************************************/
 
 //************************LOGIN USUARIO ***************************************/
+app.post("/login",  async (req: Request, res: Response) => {
+  
+  const { cpf: rawCpf, senha } = req.body;
 
-app.post("/login", async (req: Request, res: Response) => {
-  console.log("login", req.body);
-  if (req.body.senha || req.body.cpf) {
-    const cpf = req.body.cpf.replace(/[^0-9]/g, "");
-    if (cpf.length == 11) {
-      let retorno, situacao;
-      console.log("login", req.body);
-      try {
-        await login.postLogin([cpf]).then(async (result: any) => {
-          retorno = result[0][0].SENHA;
-          situacao = result[0][0].SITUACAO;
+  if (!rawCpf || !senha) {
+     res.status(400).json({ mensagem: "CPF e senha são obrigatórios." });
+     return;
+  }
 
-          if (situacao == "B") {
-            res
-              .status(600)
-              .send({ mensagem: "Excesso de tentativas, tente mais tarde." });
-            console.log("situacao", situacao);
-            return;
-          }
+  const cpf = rawCpf.replace(/\D/g, "");
+  if (cpf.length !== 11) {
+   res.status(400).json({ mensagem: "CPF inválido." });
+     return;
+  }
 
-          const senha = await verifyPassword(req.body.senha, retorno);
-          console.log("senha", req.body.senha);
+  try {
+    const result = await login.postLogin([cpf]);
 
-          if (result.status === "1") {
-            res.status(401).send({ mensagem: "Usuário ou senha inválida." });
-            return;
-          }
-
-          if (senha) {
-            const token = await generateToken({ cpf, senha }); //gero o token
-            res.send({ token: token });
-          } else {
-            res.status(401).send({ mensagem: "Usuário ou senha inválida." });
-            return;
-          }
-        });
-      } catch (error) {
-        res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
-        return;
-      }
-    } else {
-      //caso o cpf for menor de 11
-      res.status(400).send({ mensagem: "CPF inválido." });
-      return;
+    if (!result || !result[0] || !result[0][0]) {
+     res.status(401).json({ mensagem: "Usuário ou senha inválida." });
+       return;
     }
-  } else {
-    res.status(400).send({ mensagem: "Dados inválidos." });
-    return;
+
+    const usuario = result[0][0];
+
+    if (usuario.SITUACAO === "B") {
+     res.status(429).json({ mensagem: "Excesso de tentativas, tente mais tarde." });
+       return;
+    }
+
+    const senhaValida = await verifyPassword(senha, usuario.SENHA);
+    if (!senhaValida) {
+     res.status(401).json({ mensagem: "Usuário ou senha inválida." });
+       return;
+    }
+
+    const token = await generateToken({ cpf });
+   res.json({ token });
+     return;
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+   res.status(503).json({ mensagem: "Serviço indisponível, tente mais tarde." });
+     return;
   }
 });
+// app.post("/login", async (req: Request, res: Response) => {
+//   console.log("login", req.body);
+//   if (req.body.senha || req.body.cpf) {
+//     const cpf = req.body.cpf.replace(/[^0-9]/g, "");
+//     if (cpf.length == 11) {
+//       let retorno, situacao;
+//       console.log("login", req.body);
+//       try {
+//         await login.postLogin([cpf]).then(async (result: any) => {
+//           retorno = result[0][0].SENHA;
+//           situacao = result[0][0].SITUACAO;
+
+//           if (situacao == "B") {
+//             res
+//               .status(600)
+//               .send({ mensagem: "Excesso de tentativas, tente mais tarde." });
+//             console.log("situacao", situacao);
+//             return;
+//           }
+
+//           const senha = await verifyPassword(req.body.senha, retorno);
+//           console.log("senha", req.body.senha);
+
+//           if (result.status === "1") {
+//             res.status(401).send({ mensagem: "Usuário ou senha inválida." });
+//             return;
+//           }
+
+//           if (senha) {
+//             const token = await generateToken({ cpf, senha }); //gero o token
+//             res.send({ token: token });
+//           } else {
+//             res.status(401).send({ mensagem: "Usuário ou senha inválida." });
+//             return;
+//           }
+//         });
+//       } catch (error) {
+//         res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
+//         return;
+//       }
+//     } else {
+//       //caso o cpf for menor de 11
+//       res.status(400).send({ mensagem: "CPF inválido." });
+//       return;
+//     }
+//   } else {
+//     res.status(400).send({ mensagem: "Dados inválidos." });
+//     return;
+//   }
+// });
 
 //***********************  INICIO CURRICULO                   *************************/
 
@@ -434,11 +479,7 @@ app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
 //**************************FIM RESIDENCIA*************************/
 
 /********************** INICIO LOGO ************************/
-app.post(
-  "/uploadlogo",
-  uploadLogo.single("logo"),
-  
-  async (req: any, res: any) => {
+app.post("/uploadlogo", uploadLogo.single("logo"),  async (req: any, res: any) => {
     if (!req.file) {
       console.log("req file ", req.file);
       return res.status(400).send({ error: "Nenhum arquivo enviado" });
@@ -549,7 +590,7 @@ app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
 //*************************INICIO EMAIL / ALTERA SENHA ****************************/
 
 
-app.post("/recuperar-senha", async (req: Request, res: Response) => {
+app.post("/recuperar-senha", verifyToken, async (req: Request, res: Response) => {
   try {
     const valores = req.body;
     let novaSenha = Math.random().toString(36).slice(-6);
