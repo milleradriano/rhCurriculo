@@ -213,7 +213,7 @@ export class CurriculoComponent implements OnInit {
   }
   ngOnInit() {
     if (this.sessionCpf) {
-      console.log('cpf no inicio', this.sessionCpf);
+      console.log('cpf no inicio', this.sessionIdCandidato);
       this.getCurriculo(this.sessionCpf);
       if (this.sessionIdVaga) {
         this.getVagaCandidato(this.sessionIdVaga);
