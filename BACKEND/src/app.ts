@@ -283,7 +283,7 @@ app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
 
 
 /********************** INICIO EXPERIECIA *************************/
-app.use("/experiencia1", experienciaRouter);
+app.use("/experiencia", experienciaRouter);
 //************************FIM EXPERIENCIA***************************/
 
 //*************************INICIO EMAIL / ALTERA SENHA ****************************/

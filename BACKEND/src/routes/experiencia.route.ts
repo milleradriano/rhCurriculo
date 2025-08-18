@@ -33,6 +33,7 @@ const experienciaSchema = Joi.object({
 // GET /experiencia - Buscar experiência por idcandidato e cpf
 router.get("/", verifyToken, async (req: Request, res: Response) => {
   try {
+   
     const { error, value } = experienciaQuerySchema.validate(req.query, { abortEarly: false });
     if (error) {
       const mensagem = error.details.map((err) => err.message).join(", ");
