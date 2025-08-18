@@ -1,4 +1,4 @@
-import  PoolMysql  from "../dados/dados";
+import  PoolMysql  from "../dados/dados.js";
 
 
 //**** USADO NO MODULO ESQUECI SENHA  */
@@ -45,4 +45,4 @@ const putAlteraSenha = (valores: any) => {
 //****************************************************************/
 
 
-export {putAlteraSenha, putRecuperaSenha };
+export default { putAlteraSenha, putRecuperaSenha };

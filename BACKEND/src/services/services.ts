@@ -1,7 +1,8 @@
-require("dotenv").config();
+import "dotenv/config";
 
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import e from "express";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
@@ -26,6 +27,7 @@ async function verifyPassword(password: any, hashedPassword : any) {
 
 // Função para gerar JWT
 function generateToken(user: {cpf:string, senha:string}) {
+ 
   console.log("dentro do generateToken", user);
   return jwt.sign({ cpf: user.cpf, senha: user.senha }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
@@ -54,4 +56,4 @@ function verifyToken(req : any, res : any, next: any) {
     });
 }
 
-module.exports = { hashPassword, verifyPassword, generateToken, verifyToken };
+export  { hashPassword, verifyPassword, generateToken, verifyToken };

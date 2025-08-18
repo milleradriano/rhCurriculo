@@ -1,48 +1,50 @@
-require("dotenv").config();
+import 'dotenv/config';
 import express from "express";
 import { Request, Response } from "express";
 
-const bodyParser = require("body-parser");
+
 import multer from "multer";
-const fs = require("fs").promises;
-const path = require("path");
-const cors = require("cors");
-const jwt = require("jsonwebtoken");
-const SECRET = process.env.API_key;
+import {promises as fs} from "fs"
+import path from "path";
+import cors from "cors";
+
 
 const app = express();
-//const curriculo = require("./routes/curriculo");
-const curriculo = require("./routes/curriculo");
-const cep = require("./routes/cep");
-const vaga = require("./routes/vaga");
-const empresa = require("./routes/empresa");
-const residencia = require("./routes/residencia");
-const login = require("./routes/login");
-const experiencia = require("./routes/experiencia");
-const documento = require("./routes/documento");
-const email = require("./routes/email");
-const alteraSenha = require("./routes/alteraSenha");
-const painelvaga = require("./routes/painelVaga");
-//const  postLogin  = require("./routes/cadastraLogin");
-//const login = require("./routes/login");
-const bcrypt = require("bcrypt"); // para criptografar a senha
+import curriculoRouter  from "./routes/curriculo.route.js";
+import uploadArquivoDocumento from "./routes/uploadArquivoDocumento.route.js";
+                                                   
+import vagaRouter from "./routes/vaga.route.js";
+import cepRouter from "./routes/cep.route.js";
+import empresaRouter from "./routes/empresa.route.js";
+import residenciaRouter from "./routes/residencia.route.js";
 
-const {
+
+import login from "./services/login.js";
+import experienciaRouter from "./routes/experiencia.route.js";
+import arquivoDocumentoRouter from "./routes/arquivoDocumento.route.js";
+import email from "./services/email.js";
+import alteraSenha from "./services/alteraSenha.js";
+import painelvaga from "./services/painelVaga.js";
+
+
+import {
   hashPassword,
   verifyPassword,
   generateToken,
   verifyToken,
-} = require("./services/services");
+} from "./services/services.js";
 
-import { toFormData } from "axios";
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ type: "application/json; charset=utf-8" }));
 
-// app.get("/", (request: any, response: any) => {
-//   return response.send("Hello!");
-// });
+app.use(cors({ origin: ["http://localhost:3000","http://localhost:4200"], credentials: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 const storageLogo = multer.diskStorage({
@@ -67,86 +69,8 @@ const uploadLogo = multer({
 });
 /************************* FIMM UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 /*############################# UPLOAD DO ARMAZENAMENTO DO DOCUMENTO #################################*/
-const storageDocumento = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    let uploadDirDocumento = "./src/images/docs/";
-    uploadDirDocumento += req.body.idcandidato;
-    console.log("Diretório de upload do documento:", uploadDirDocumento);
-    try {
-      await fs.access(uploadDirDocumento); // Verifica se o diretório existe
-    } catch {
-      await fs.mkdir(uploadDirDocumento, { recursive: true }); // Cria o diretório se não existir
-    }
-    cb(null, uploadDirDocumento);
-  },
-  filename: async (req, file, cb) => {
-    let baseName = file.originalname; // Nome original
-    const ext = path.extname(baseName);
-    const nameWithoutExt = path.basename(baseName, ext);
-    let newFileName = nameWithoutExt + ext; // Preserva o nome original
-    let filePath = path.join(
-      "./src/images/docs",
-      req.body.idcandidato,
-      newFileName
-    );
-    let counter = 1;
 
-    // Adiciona contador se o arquivo já existir
-    while (
-      await fs
-        .access(filePath)
-        .then(() => true)
-        .catch(() => false)
-    ) {
-      newFileName = `${nameWithoutExt}-${counter}${ext}`;
-      filePath = path.join(
-        "./src/images/docs",
-        req.body.idcandidato,
-        newFileName
-      );
-      counter++;
-    }
-
-    console.log("Nome final do arquivo:", newFileName); // Depuração
-    cb(null, newFileName);
-  },
-});
-
-const uploadDocumento = multer({
-  storage: storageDocumento,
-  // Verifique se o campo no frontend é 'logo'
-  fileFilter: (req, file, cb) => {
-    console.log("no uploadDocumento 115 ", file);
-    if (file.fieldname === "documento") {
-      cb(null, true);
-    } else {
-      cb(new Error("Unexpected field"));
-    }
-  },
-});
-
-const apagaDocumentoStorage = async (caminho: string, nome: string) => {
-  const dir = `./src/images/docs/${caminho}`;
-  const filePath = path.join(dir, nome);
-  try {
-    await fs.access(filePath);
-    await fs.unlink(filePath);
-    console.log(`Arquivo ${filePath} deletado com sucesso.`);
-    return { message: `Arquivo ${filePath} deletado com sucesso.` };
-  } catch (error) {
-    console.error(`Erro ao deletar arquivo ${filePath}:`, error);
-    return { error: `Erro ao deletar arquivo ${filePath}: ${error}` };
-  }
-};
 /*#############################  FIMMM UPLOAD DO ARMAZENAMENTO DO DOCUMENTO #################################*/
-
-//*********************** INICIO CADASTRO LOGIN ***********************************/
-
-// async function hashPassword(password:any) {
-//   const saltRounds = 12; // Define o custo do processamento
-//   const hashedPassword = await bcrypt.hash(password, saltRounds);
-//   return hashedPassword;
-// }
 
 app.post("/cadastro-login", async (req: Request, res: Response) => {
   console.log("cadastro-login", req.body);
@@ -160,7 +84,7 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
     senha,
     req.body.termoUso,
   ];
-  //tokenGeral = await generateToken({ email, senha }); //jwt.sign({ email, senha }, SECRET);   // gerar o token jwt sem usar o service.ts
+ 
   console.log("valor", valor);
   login.postCadastraLogin([valor]).then((result: any) => {
     res.send(result);
@@ -173,7 +97,6 @@ app.post("/cadastro-login", async (req: Request, res: Response) => {
 app.post("/login",  async (req: Request, res: Response) => {
   
   const { cpf: rawCpf, senha } = req.body;
-
   if (!rawCpf || !senha) {
      res.status(400).json({ mensagem: "CPF e senha são obrigatórios." });
      return;
@@ -186,9 +109,9 @@ app.post("/login",  async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await login.postLogin([cpf]);
+    const result : any = await login.postLogin([cpf]);
 
-    if (!result || !result[0] || !result[0][0]) {
+    if (!result) {
      res.status(401).json({ mensagem: "Usuário ou senha inválida." });
        return;
     }
@@ -206,7 +129,7 @@ app.post("/login",  async (req: Request, res: Response) => {
        return;
     }
 
-    const token = await generateToken({ cpf });
+    const token = await generateToken( cpf );
    res.json({ token });
      return;
 
@@ -216,269 +139,45 @@ app.post("/login",  async (req: Request, res: Response) => {
      return;
   }
 });
-// app.post("/login", async (req: Request, res: Response) => {
-//   console.log("login", req.body);
-//   if (req.body.senha || req.body.cpf) {
-//     const cpf = req.body.cpf.replace(/[^0-9]/g, "");
-//     if (cpf.length == 11) {
-//       let retorno, situacao;
-//       console.log("login", req.body);
-//       try {
-//         await login.postLogin([cpf]).then(async (result: any) => {
-//           retorno = result[0][0].SENHA;
-//           situacao = result[0][0].SITUACAO;
-
-//           if (situacao == "B") {
-//             res
-//               .status(600)
-//               .send({ mensagem: "Excesso de tentativas, tente mais tarde." });
-//             console.log("situacao", situacao);
-//             return;
-//           }
-
-//           const senha = await verifyPassword(req.body.senha, retorno);
-//           console.log("senha", req.body.senha);
-
-//           if (result.status === "1") {
-//             res.status(401).send({ mensagem: "Usuário ou senha inválida." });
-//             return;
-//           }
-
-//           if (senha) {
-//             const token = await generateToken({ cpf, senha }); //gero o token
-//             res.send({ token: token });
-//           } else {
-//             res.status(401).send({ mensagem: "Usuário ou senha inválida." });
-//             return;
-//           }
-//         });
-//       } catch (error) {
-//         res.send({ mensagem: "Serviço indisponível, tente mais tarde." });
-//         return;
-//       }
-//     } else {
-//       //caso o cpf for menor de 11
-//       res.status(400).send({ mensagem: "CPF inválido." });
-//       return;
-//     }
-//   } else {
-//     res.status(400).send({ mensagem: "Dados inválidos." });
-//     return;
-//   }
-// });
 
 //***********************  INICIO CURRICULO                   *************************/
-
-app.get("/curriculo/", verifyToken, async (req: Request, res: Response) => {
-  let cpfFormatado: string = (req.query.cpf as string).replace(/[^0-9]/g, "");
-  let tamanhoCpf: number;
-  tamanhoCpf = cpfFormatado.length as number;
-  if (tamanhoCpf != 11) {
-    res.status(400).send({ mensagem: "CPF inválido." });
-    return;
-  }
-  //const curriculo = new Curriculo(cpfFormatado);
-  curriculo.getCurriculo(cpfFormatado).then((result: any) => {
-    res.send(result);
-  });
-});
-
-const validaIdade = (dataNascimento: any) => {
-  const hoje = new Date();
-  const dataNasc = new Date(dataNascimento);
-  const idade = hoje.getFullYear() - dataNasc.getFullYear();
-  const m = hoje.getMonth() - dataNasc.getMonth();
-  if (m < 0 || (m === 0 && hoje.getDate() < dataNasc.getDate())) {
-    return idade - 1;
-  }
-  return idade;
-};
-app.post("/curriculo", verifyToken, async (req: Request, res: Response) => {
-  try {
-    // console.log("post curriculo antes linha 164", (req.body));
-    var numFilhos = "0";
-    var cpf = req.body.cpf;
-    console.log("cpf ", cpf);
-    var turno = "";
-    if (req.body.filhos === "S") {
-      numFilhos = req.body.numFilhos;
-    }
-    if (req.body.estudaAtualmente === "S") {
-      turno = req.body.turno;
-    }
-
-    const dados = [
-      req.body.idcandidato,
-      cpf,
-      req.body.nome,
-      req.body.dataNascimento,
-      req.body.sexo,
-      req.body.email,
-      req.body.rg,
-      req.body.orgaoEmissor,
-      req.body.estadoEmissor,
-      req.body.dataEmissao,
-      req.body.nomePai,
-      req.body.nomeMae,
-      req.body.grauInstrucao,
-      req.body.pcd,
-      req.body.deficiencia,
-      req.body.estudaAtualmente,
-      turno,
-      req.body.filhos,
-      numFilhos,
-      req.body.telefone,
-      req.body.estadoCivil,
-    ];
-
-    if (validaIdade(req.body.dataNascimento) < 14) {
-      res.status(400).send({ error: "Voce precisa ser maior de 14 anos." });
-    } else if (req.body.dataEmissao < req.body.dataNascimento) {
-      res.status(419).send({ error: "Data de emissão do RG inválida." });
-    } else {
-      curriculo.postcurriculo(dados).then((result: any) => {
-        //   console.log("result no post curriculo", result);
-        res.send(result);
-      });
-    }
-  } catch (error) {
-    console.log("Erro no post curriculo", error);
-    res.status(500).send({ error: "Erro ao cadastrar o currículo." });
-  }
-});
+app.use("/curriculo", curriculoRouter);
 /**********************FIM CURRICULO ******************************/
 
 //*********************PAINEL VAGA**********************************/
-
 app.get("/painelvaga", async (req: Request, res: Response) => {
   painelvaga.getPainelVaga().then((result: any) => {
     res.send(result);
   });
 });
-
-
 //*********************FIM PAINEL VAGA***************************** */
 
-
 //*************************INICIO VAGAS ***********************/
-app.get("/vaga/", async (req: Request, res: Response) => {
-  vaga.getVaga().then((result: any) => {
-    res.send(result);
-  });
-
-});
-
-app.post("/vaga", async (req: Request, res: Response) => {
- 
-  const valores = [req.body];
-  vaga.postVaga(valores).then((result: any) => { 
-   res.send(result);
-  });
-});
-
-app.delete("/vaga/:id",  async (req: Request, res: Response) => {
-  console.log("delete vaga ", req.params.id);
-  const id = req.params.id;
-  vaga.deleteVaga(id).then((result: any) => {
-    res.send(result);
-  });
-});
-
-app.get("/vaga/:id",async (req:Request, res:Response)=>{
-  console.log("get vaga ", req.params.id);
-  const id = req.params.id;
-  vaga.getVagaId(id).then((result: any) => {
-    res.send(result);
-  });
-})
+app.use("/vaga", vagaRouter);
 //************************ FIM VAGAS  *************************/
 
 //********************* INICIO EMPRESA *************************/
-
-app.get("/empresa/",  async (req: Request, res: Response) => {
-  const result = await empresa.getEmpresa();
-  //console.log("get empresa 327", result);
-  res.send(result);
-
-  // console.log("get empresa 101", res);
-});
-
-app.post("/empresa",  async (req: Request, res: Response) => {
- 
-  const valores = [{
-   idempresa: req.body.idempresa,
-   descempresa: req.body.descempresa,
-   desccidade: req.body.desccidade,
-   maps: req.body.maps,
-   logo: req.body.logo,
-}];
-  console.log("post empresa no app ", valores[0].logo);
-
-  empresa.postEmpresa(valores).then((result: any) => {
-    res.send(result);
-  });
- 
-});
-app.delete("/empresa/:id", verifyToken, async (req: Request, res: Response) => {
-  console.log("delete empresa ", req.params.id);
-  const id = req.params.id;
-  empresa.delEmpresa(id).then((result: any) => {
-    res.send(result);
-  });
-});
+app.use("/empresa",empresaRouter)
 
 //************************** FIM EMPRESA *************************/
 
 //*************************INICIO CEP  *************************/
-app.get("/cep", verifyToken, async (req: Request, res: Response) => {
-  let cepFormatado: string = (req.query.cep as string).replace(/[^0-9]/g, "");
-  let tamanhoCep: number;
-  tamanhoCep = cepFormatado.length as number;
-  if (tamanhoCep === 8) {
-    cep.getCep(cepFormatado).then((result: any) => {
-      console.log("result cep", result);
-      res.send(result);
-    });
-  } else {
-    res.send({ error: "Formato inválido" });
-  }
-});
+app.use("/cep", cepRouter)
 //************************** FIM CEP **************************/
 //**************************INICIA RESIDENCIA*********************/
-
-app.post(
-  "/retornaresidencia/",
-  verifyToken,
-  async (req: Request, res: Response) => {
-    const valores = req.body;
-    console.log("get residencia app ", valores);
-    const result = await residencia.getResidencia(valores);
-    res.send(result);
-  }
-);
-
-app.post("/residencia", verifyToken, async (req: Request, res: Response) => {
-  const valores = [
-    req.body.idcandidato,
-    req.body.cpf,
-    req.body.cep,
-    req.body.estado,
-    req.body.cidade,
-    req.body.endereco,
-    req.body.bairro,
-    req.body.numero,
-  ];
-  console.log("valores req 298", cep);
-
-  residencia.postResidencia(valores).then((result: any) => {
-    res.send(result);
-  });
-  console.log("post residencia 304");
-});
-
+app.use("/residencia", residenciaRouter);
 //**************************FIM RESIDENCIA*************************/
 
 /********************** INICIO LOGO ************************/
+
+//  app.use("/documento",documentoRouter, express.static(path.join(__dirname, "/images/docs")));
+app.use("/uploaddocumento", uploadArquivoDocumento)
+            // , express.static(path.join(__dirname, "/images/docs")));
+//*********************************** FIM DOCUMENTOS *****/
+// RETORNA O NOME DO DOCUMENTO
+ app.use("/documento",arquivoDocumentoRouter );
+
+
 app.post("/uploadlogo", uploadLogo.single("logo"),  async (req: any, res: any) => {
     if (!req.file) {
       console.log("req file ", req.file);
@@ -494,103 +193,103 @@ app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
 
 /*********************INICIO  DOCUMENTOS***********************/
 
-app.get(
-  "/documento/",
-  verifyToken,
-  async (req: Request, res: Response): Promise<void> => {
-    console.log(
-      "get documento 101",
-      req.query.idcandidato,
-      " - ",
-      req.query.cpf
-    );
-    if (!req.query.idcandidato || !req.query.cpf) {
-      res.status(400).send({ error: "ID Candidato e CPF são obrigatórios." });
-      return;
-    }
-    const result = await documento.getDocumento(
-      req.query.idcandidato,
-      req.query.cpf
-    );
-    res.send(result);
-  }
-);
+// app.get(
+//   "/documento/",
+//   verifyToken,
+//   async (req: Request, res: Response): Promise<void> => {
+//     console.log("get documento 101", req.query.idcandidato, " - ", req.query.cpf);
+//     const idcandidatoRaw = req.query.idcandidato;
+//     const cpfRaw : any = req.query.cpf;
 
-app.post(
-  "/uploaddocumento",
-  uploadDocumento.single("documento"),
-  verifyToken,
-  async (req: any, res: any) => {
-    console.log("no uploadDocumento 418 ", uploadDocumento.single("documento"));
-    if (!req.file) {
-      console.log("req file no ! ", req.file);
-      return res.status(400).send({ error: "Nenhum arquivo enviado" });
-    } else {
-      let nomeArquivo = Buffer.from(req.file.originalname, "binary").toString(
-        "utf-8"
-      );
-      console.log("nome do arquivo  424", nomeArquivo);
-      res.send(req.file);
-      const valores = {
-        idcandidato: req.body.idcandidato,
-        cpf: req.body.cpf,
-        documento: nomeArquivo,
-      };
-      documento.postDocumento(valores).then((result: any) => {
-        res.send(result);
-      });
-      return;
-    }
-  }
-);
+//     if (!idcandidatoRaw || !cpfRaw) {
+//       res.status(400).send({ error: "ID Candidato e CPF são obrigatórios." });
+//       return;
+//     }
 
-app.delete(
-  "/documento/:idcandidato/:cpf/:nome",
-  verifyToken,
-  async (req: Request, res: Response) => {
-    const { idcandidato, cpf, nome } = req.params;
-    console.log("delete documento ", idcandidato, cpf, nome);
-    const result = await documento.deleteDocumento(
-      Number(idcandidato),
-      Number(cpf),
-      nome
-    );
+//     const idcandidato = Number(Array.isArray(idcandidatoRaw) ? idcandidatoRaw[0] : idcandidatoRaw);
+//     if (isNaN(idcandidato)) {
+//       res.status(400).send({ error: "ID Candidato inválido." });
+//       return;
+//     }
 
-    const val = await apagaDocumentoStorage(idcandidato, nome);
-    if (val.error) {
-      console.error("Erro ao deletar arquivo:", val.error);
-      res.status(500).send({ error: "Erro ao deletar arquivo." });
-    } else {
-      console.log("Arquivo deletado com sucesso:", val.message);
-      res.send(result);
-    }
-  }
-);
+//     const result = await documento.getDocumento(
+//       idcandidato,
+//       cpfRaw
+//     );
+//     res.send(result);
+//   }
+// );
 
-app.use("/documento", express.static(path.join(__dirname, "/images/docs")));
-//*********************************** FIM DOCUMENTOS *****/
+// app.post(
+//   "/uploaddocumento",
+//   uploadDocumento.single("documento"),
+//   verifyToken,
+//   async (req: any, res: any) => {
+//     console.log("no uploadDocumento 418 ", uploadDocumento.single("documento"));
+//     if (!req.file) {
+//       console.log("req file no ! ", req.file);
+//       return res.status(400).send({ error: "Nenhum arquivo enviado" });
+//     } else {
+//       let nomeArquivo = Buffer.from(req.file.originalname, "binary").toString(
+//         "utf-8"
+//       );
+//       console.log("nome do arquivo  424", nomeArquivo);
+//       res.send(req.file);
+//       const valores = {
+//         idcandidato: req.body.idcandidato,
+//         cpf: req.body.cpf,
+//         documento: nomeArquivo,
+//       };
+//       documento.postDocumento(valores).then((result: any) => {
+//         res.send(result);
+//       });
+//       return;
+//     }
+//   }
+// );
+
+// app.delete(
+//   "/documento/:idcandidato/:cpf/:nome",
+//   verifyToken,
+//   async (req: Request, res: Response) => {
+//     const { idcandidato, cpf, nome } = req.params;
+//     console.log("delete documento ", idcandidato, cpf, nome);
+//     const idcandidatoNum = Number(idcandidato);
+//     if (isNaN(idcandidatoNum)) {
+//       res.status(400).send({ error: "ID Candidato inválido." });
+//       return;
+//     }
+//     const cpfNum = Number(cpf);
+//     if (isNaN(cpfNum)) {
+//       res.status(400).send({ error: "CPF inválido." });
+//       return;
+//     }
+//     const result = await documento.deleteDocumento(
+//       idcandidatoNum,
+//       cpfNum,
+//       nome
+//     );
+
+//     const val = await apagaDocumentoStorage(idcandidato, nome);
+//     if (val.error) {
+//       console.error("Erro ao deletar arquivo:", val.error);
+//       res.status(500).send({ error: "Erro ao deletar arquivo." });
+//     } else {
+//       console.log("Arquivo deletado com sucesso:", val.message);
+//       res.send(result);
+//     }
+//   }
+// );
+
 
 /********************** INICIO EXPERIECIA *************************/
-app.get("/experiencia", verifyToken, async (req: Request, res: Response) => {
-  console.log("get experiencia 101", req.query.idcandidato);
-  const valores = { idcandidato: req.query.idcandidato, cpf: req.query.cpf };
-  const result = await experiencia.getExperiencia(valores);
-  res.send(result);
-});
-
-app.post("/experiencia", verifyToken, async (req: Request, res: Response) => {
-  const valores = req.body; //[req.body.idcandidato,req.body.cpf,req.body.primeiroEmprego, req.body.empresa, req.body.cidade, req.body.cargo];
-  console.log("post experiencia ", valores);
-  experiencia.postExperiencia(valores).then((result: any) => {
-    res.send(result);
-  });
-});
+app.use("/experiencia1", experienciaRouter);
 //************************FIM EXPERIENCIA***************************/
 
 //*************************INICIO EMAIL / ALTERA SENHA ****************************/
 
 
-app.post("/recuperar-senha", verifyToken, async (req: Request, res: Response) => {
+app.post("/recuperar-senha",  async (req: Request, res: Response) => {
   try {
     const valores = req.body;
     let novaSenha = Math.random().toString(36).slice(-6);
@@ -604,8 +303,8 @@ app.post("/recuperar-senha", verifyToken, async (req: Request, res: Response) =>
           const envio = email.postMail(valores, novaSenha).then((result: any) => {
               console.log("email enviado", result);
               console.log("-------------------------------------------");
-              if (envio.error) {
-                console.error("Erro ao enviar e-mail 523:", envio.error);
+              if (envio) {
+                console.error("Erro ao enviar e-mail 523:", envio);
               }
               res.send(result.responseCode);
             })
@@ -650,14 +349,17 @@ if (valores.novaSenha !== valores.confirmaSenha) {
 
 //************************ INICIO VAGA CANDIDATOS ************************ */
 
-app.post("/vaga-candidato", async (req: Request, res: Response) => {
-  console.log("post vaga candidato no app ", req.body.idvaga);
-  const valores = [req.body.idvaga, req.body.idcandidato];
-  console.log("valores post vaga candidato ", valores);
-   vaga.postVagaCandidato(valores).then((result: any) => {
-     res.send(result);
-  });
-});
+// app.post("/vaga-candidato", async (req: Request, res: Response) => {
+//   console.log("post vaga candidato no app ", req.body.idvaga);
+//   const valores = [req.body.idvaga, req.body.idcandidato];
+//   console.log("valores post vaga candidato ", valores);
+//    vaga.postVagaCandidato(valores).then((result: any) => {
+//      res.send(result);
+//   });
+// });
 //************************ FIM VAGA CANDIDATOS ************************ */
-
 export default app;
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Sevidor rodando na porta ${PORT}`);
+});

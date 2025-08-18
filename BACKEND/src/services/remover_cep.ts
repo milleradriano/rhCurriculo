@@ -1,4 +1,4 @@
-require("dotenv").config();
+import 'dotenv/config';
 const URL_CEP = process.env.URL_CEP;
 import axios from "axios";
 
@@ -37,6 +37,4 @@ const getCep = async (cep: string): Promise<any> => {
 //           }
 //   });
 // };
-module.exports = {
-  getCep,
-};
+export default { getCep};

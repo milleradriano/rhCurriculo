@@ -1,6 +1,6 @@
 
 import mysql from 'mysql2';
-require('dotenv').config();
+import 'dotenv/config';
 
 
 const pool = mysql.createConnection  ({

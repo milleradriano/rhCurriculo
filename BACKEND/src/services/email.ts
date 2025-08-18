@@ -1,5 +1,5 @@
-const nodemailer = require("nodemailer");
-const fs = require("fs");
+import nodemailer from "nodemailer";
+import fs from "fs";
 
 // Lê o arquivo HTML
 // Substitua pela senha real
@@ -42,16 +42,13 @@ const postMail = (email: any, senha: any) => {
     // Envia o e-mail
     transporter.sendMail(mailOptions, (error: any, info: any) => {
       if (error) {
-
         reject(error);
       } else {
-        
         resolve(info.response);
-          
       }
     });
   });
 };
-module.exports = {
+export default {
   postMail,
 };

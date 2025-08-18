@@ -1,4 +1,4 @@
-import PoolMysql from "../dados/dados";
+import PoolMysql from "../dados/dados.js";
 
 const getPainelVaga = () => {
   return new Promise((resolve, reject) => {
@@ -13,6 +13,6 @@ const getPainelVaga = () => {
   });
 }
 
-module.exports = {
+export default {
   getPainelVaga,
 };

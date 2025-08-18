@@ -1,4 +1,4 @@
-import PoolMysql from "../dados/dados";
+import PoolMysql from "../dados/dados.js";
 
 const postCadastraLogin =(valores: any) => {
 const  [
@@ -40,8 +40,7 @@ const  postLogin = (valores: any) => {
                     //   getLog("error", JSON.stringify(error));
                     console.log("POST LOGIN error", error);
                     reject(error);
-                } else {
-                     console.log("POST LOGIN results", results);
+                } else {                 
                     resolve(results);
                 }
             }
@@ -50,4 +49,4 @@ const  postLogin = (valores: any) => {
 }
 
 
-export { postCadastraLogin, postLogin };
+export default { postCadastraLogin, postLogin };
