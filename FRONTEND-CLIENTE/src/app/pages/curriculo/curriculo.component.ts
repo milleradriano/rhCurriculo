@@ -85,7 +85,7 @@ export class CurriculoComponent implements OnInit {
   sessionCpf: string | null = this.sessionStorage.getLogin('cpf');
   sessionToken: string | null = this.sessionStorage.getLogin('token');
   sessionIdVaga: string | null = this.sessionStorage.getVaga('codvaga');
-  sessionIdCandidato: string | null = '';    
+  sessionIdCandidato: string | null = '';
   //***************************** */
 
   nomeVaga: any = '';
@@ -213,62 +213,67 @@ export class CurriculoComponent implements OnInit {
   }
   ngOnInit() {
     if (this.sessionCpf) {
-      console.log('cpf no inicio', this.sessionIdCandidato);
       this.getCurriculo(this.sessionCpf);
       if (this.sessionIdVaga) {
         this.getVagaCandidato(this.sessionIdVaga);
       }
-      
     } else {
       console.error('CPF is null or undefined');
     }
   }
-// RETORNA OS VALORES PARA O CARD DA VAGA SELECIONADA
-  getVagaCandidato(codVaga: any) {  
-    if (codVaga) {      
-    this.vagacandidatoService.getVagaCandidato(codVaga).subscribe(
-      (data:any) => {
-        if (data) {
-          console.log('Vaga encontrada:', data[0]);
-          this.nomeVaga = data[0].nomevaga;
-          this.empresaVaga = data[0].empresavaga;
-          this.cidadeVaga = data[0].cidadevaga;
+  // RETORNA OS VALORES PARA O CARD DA VAGA SELECIONADA
+  getVagaCandidato(codVaga: any) {
+    if (codVaga) {
+      this.vagacandidatoService.getVagaCandidato(codVaga).subscribe(
+        (data: any) => {
+          if (data) {
+            console.log('Vaga encontrada:', data);
+            this.nomeVaga = data.nomevaga;
+            this.empresaVaga = data.empresavaga;
+            this.cidadeVaga = data.cidadevaga;
+          }
+        },
+        (error: any) => {
+          console.error('Erro ao buscar vaga:', error);
+          this.mensagem.erro('Erro ao buscar vaga: ' + error);
         }
-      },
-      (error: any) => {
-        console.error('Erro ao buscar vaga:', error);
-        this.mensagem.erro('Erro ao buscar vaga: ' + error);
-      }
-    );
+      );
+    }
   }
-  }
-postVagaCandidado() {
+  postVagaCandidado() {
     this.loading = true;
 
     if (!this.curriculoForm.valid) {
       this.loading = false;
-      this.mensagem.erro('Preencha todos os campos do formulário para prosseguir.');
+      this.mensagem.erro(
+        'Preencha todos os campos do formulário para prosseguir.'
+      );
       return;
     }
 
-if (!this.sessionIdVaga || !this.sessionIdCandidato) {
+    if (!this.sessionIdVaga || !this.sessionIdCandidato) {
       this.loading = false;
       this.mensagem.erro('Vaga ou Candidato não encontrado.');
       return;
     }
-    this.vagacandidatoService.postVagaCandidato({ idvaga: this.sessionIdVaga, idcandidato: this.sessionIdCandidato }, this.headers).subscribe(
-      (data: any) => {
-        this.mensagem.sucesso('Vaga candidatada com sucesso!');
-        console.log('Vaga candidatada com sucesso:', data);
-        this.loading = false;
-        this.nomeVaga = '';
-      },
-      (error: any) => {
-        console.error('Erro ao candidatar vaga:', error);
-        this.mensagem.erro('Erro ao candidatar vaga: ' + error);
-        this.loading = false;
-      }
-    );
+    this.vagacandidatoService
+      .postVagaCandidato(
+        { idvaga: this.sessionIdVaga, idcandidato: this.sessionIdCandidato },
+        this.headers
+      )
+      .subscribe(
+        (data: any) => {
+          this.mensagem.sucesso('Vaga candidatada com sucesso!');
+          console.log('Vaga candidatada com sucesso:', data);
+          this.loading = false;
+          this.nomeVaga = '';
+        },
+        (error: any) => {
+          console.error('Erro ao candidatar vaga:', error);
+          this.mensagem.erro('Erro ao candidatar vaga: ' + error);
+          this.loading = false;
+        }
+      );
   }
   cancelaVagaCandidato() {
     this.nomeVaga = '';
@@ -289,7 +294,6 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
   }
 
   getCurriculo(cpf: string) {
-
     this.loading = true;
 
     // if ( await this.validaToken()) {
@@ -301,8 +305,11 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
             this.sessionStorage.setUserName('nome', data[0].nome || '');
             this.sessionIdCandidato = data[0].idcandidato || '';
             // Atualiza o ID do candidato no sessionStorage para o restante do app
-            this.sessionStorage.setCandidato('codcand', data[0].idcandidato || '');
-            
+            this.sessionStorage.setCandidato(
+              'codcand',
+              data[0].idcandidato || ''
+            );
+
             this.sessionStorage.setUserName('cpf', data[0].cpf || '');
             this.sessionStorage.updateUserName(this.nome || '');
             this.curriculoForm.patchValue({
@@ -335,7 +342,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
               deficiencia: data[0].pcddeficiencia,
             });
             this.loading = false;
-            this.getDocumento(); // Chama o método para obter o documento após preencher o formulário
+            this.getArquivo(); // Chama o método para obter o documento após preencher o formulário
           } catch (error: any) {
             this.loading = false;
 
@@ -359,7 +366,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
     this.loading = true;
     const pcdControl = this.curriculoForm.get('pcd');
     if (pcdControl && pcdControl.value === 'S') {
-      this.postDocumento();
+      this.postArquivo(); // envia arquivo
     }
 
     const idcandidato = sessionStorage.getItem('codcand');
@@ -386,7 +393,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
         if (JSON.parse(JSON.stringify(data))[0][0].status == '0') {
           this.loading = false;
           this.mensagem.sucesso('Registro salvo.');
-          this.getDocumento(); // Atualiza os documentos após salvar o currículo
+          this.getArquivo(); // Atualiza os documentos após salvar o currículo
         } else {
           this.mensagem.erro('Erro não atualizado');
         }
@@ -399,7 +406,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
     );
   }
 
-  getDocumento() {
+  getArquivo() {
     this.loading = true;
     const idcandidato = sessionStorage.getItem('codcand');
     const cpf = sessionStorage.getItem('cpf');
@@ -410,7 +417,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
     }
     if (idcandidato) {
       this.documentoService
-        .getDocumento(idcandidato, cpf, this.headers)
+        .getArquivo(idcandidato, cpf, this.headers)
         .subscribe(
           (data: any) => {
             if (data.length > 0) {
@@ -429,7 +436,7 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
       this.loading = false;
     }
   }
-  postDocumento() {
+  postArquivo() {
     try {
       this.fileUpdater.uploadFiles();
 
@@ -438,12 +445,12 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
         this.submitSuccess = success;
         this.submitError = !success;
       });
-      this.getDocumento();
+      this.getArquivo();
     } catch (error) {
       this.mensagem.erro('Erro ao salvar imagem, tente mais tarde.');
     }
   }
-  deleteDocumento(nomeDocumento: string) {
+  deleteArquivo(nomeArquivo: string) {
     this.loading = true;
     const idcandidato = sessionStorage.getItem('codcand');
     const cpf = sessionStorage.getItem('cpf');
@@ -453,12 +460,12 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
       return;
     }
     this.documentoService
-      .deleteDocumento({ idcandidato, cpf, nomeDocumento }, this.headers)
+      .deleteArquivo({ idcandidato, cpf, nomeArquivo }, this.headers)
       .subscribe(
         (data: any) => {
           this.loading = false;
-          this.mensagem.sucesso('Documento excluído com sucesso.');
-          this.getDocumento(); // Atualiza a lista de documentos após a exclusão
+          this.mensagem.sucesso('Arquivo excluído com sucesso.');
+          this.getArquivo(); // Atualiza a lista de arquivos após a exclusão
         },
         (error: any) => {
           this.loading = false;
@@ -467,7 +474,4 @@ if (!this.sessionIdVaga || !this.sessionIdCandidato) {
         }
       );
   }
-
-
-
 }

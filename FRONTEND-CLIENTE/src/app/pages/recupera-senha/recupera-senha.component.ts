@@ -23,6 +23,9 @@ import { FormatacpfDirective } from '../../diretiva/formatacpf.directive';
 import { PasswordModule } from 'primeng/password';
 import { RecuperaSenhaService } from '../../service/recupera-senha.service';
 import { ToastService } from '../../service/toast.service';
+import { SessionStorageService } from '../../service/sessionlstorage.service';
+import { HttpHeaders } from '@angular/common/http';
+import { LoadingComponent } from '../../components/loading/loading.component';
 
 @Component({
   selector: 'app-recupera-senha',
@@ -44,18 +47,22 @@ import { ToastService } from '../../service/toast.service';
     ToastModule,
     InputMaskModule,
     FormatacpfDirective,
-
     PasswordModule,
-  ],
+    LoadingComponent
+],
   templateUrl: './recupera-senha.component.html',
   styleUrl: './recupera-senha.component.css',
 })
 export class RecuperaSenhaComponent {
+  sessionToken: string | null = this.sessionStorage.getLogin('token');
+  loading: boolean= false;
   constructor(
     private formBuilder: FormBuilder,
     private recuperarSenha: RecuperaSenhaService,
-    private mensagem: ToastService
+    private mensagem: ToastService,
+       private sessionStorage: SessionStorageService,
   ) {}
+    headers = new HttpHeaders({ Authorization: `Bearer ${this.sessionToken}` });
   recuperarSenhaForm = this.formBuilder.group({
     cpf: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
     email: [
@@ -68,9 +75,17 @@ export class RecuperaSenhaComponent {
   });
   recuperaSenha(valores: any) {
     console.log('Recuperar Senha Valores:', valores);
-    this.recuperarSenha.postEmailRecuperaSenha(valores.cpf,valores.email).subscribe({
+    if (this.recuperarSenhaForm.invalid) {
+      this.mensagem.erro('Por favor, preencha todos os campos corretamente.');
+      return;
+    }
+    this.loading = true;
+    const cpf:any = valores.cpf;
+    const email:any = valores.email;
+    this.recuperarSenha.postEmailRecuperaSenha( cpf, email ).subscribe({
       next: (response) => {
         console.log('Recuperar Senha Response:', response);
+        // this.loading = false;
         this.mensagem.sucesso('E-mail enviado, verfique seu e-mail.');
       },
       error: (error) => {

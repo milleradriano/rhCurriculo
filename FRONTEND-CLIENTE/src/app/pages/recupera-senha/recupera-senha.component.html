@@ -1,4 +1,9 @@
 <div class="container">
+   @if (loading){
+  <div class="loading">
+    <app-loading></app-loading>
+  </div>
+  }
   <div class="recupera">
     <p>Enviaremos para o e-mail cadastrado sua nova senha.</p>
     <form [formGroup]="recuperarSenhaForm" (ngSubmit)="recuperaSenha(recuperarSenhaForm.value)">
