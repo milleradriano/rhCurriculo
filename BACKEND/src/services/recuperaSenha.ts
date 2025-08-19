@@ -2,9 +2,11 @@ import { Pool } from "mysql2/promise";
 import PoolMysql from "../dados/dados.js";
 import { hashPassword } from "./services.js";
 
-interface AlteraSenhaInput {
-  codcli: number;
+
+
+interface RecuperaSenhaInput {
   cpf: string;
+  email: string;
   senha: string;
 }
 
@@ -21,31 +23,31 @@ const executeQuery = (query: string, params: any[]): Promise<any> => {
   });
 };
 
-export const alteraSenha = async (dados: AlteraSenhaInput): Promise<any> => {
-  const { codcli, cpf, senha } = dados;
-  if (!Number.isInteger(codcli) || codcli <= 0 || !cpf || !/^\d{11}$/.test(cpf)) {
-    throw new Error("Código do cliente ou CPF inválido.");
+
+export const recuperaSenha = async (dados: RecuperaSenhaInput): Promise<any> => {
+  const { cpf, email, senha } = dados;
+  if (!cpf || !/^\d{11}$/.test(cpf) || !email) {
+    throw new Error("CPF ou e-mail inválido.");
   }
+  console.log('Dados para recuperação de senha:', dados);
   const hashedSenha = await hashPassword(senha);
-  return executeQuery("CALL putAlteraSenha(?, ?, ?)", [codcli, cpf, hashedSenha]);
+  return executeQuery("CALL putRecuperaSenha(?, ?, ?)", [cpf, email, hashedSenha]);
 };
-/*import  PoolMysql  from "../dados/dados.js";
-
-
-export const alteraSenha = (valores: any) => {
-    console.log("PUT ALTERA SENHA NA ROTA",  valores);
-    const [codcli,cpf, senha] = valores;    
+/*import PoolMysql from "../dados/dados.js"
+export const  recuperaSenha = (valores: any) => {
+    console.log("PUT RECUPERA SENHA ", typeof(valores), valores);
+    const [cpf,email, senha] = valores;    
     return new Promise((resolve, reject) => {
         PoolMysql.query(
-            "call putAlteraSenha(?,?,?)",
-            [codcli, cpf, senha],
+            "call putRecuperaSenha(?,?,?)",
+            [cpf, email, senha],
             (error: any, results: unknown, fields: any) => {
                 if (error) {
-                    console.log("PUT ALTERA SENHA error", error);
+                    console.log("PUT RECUPERA SENHA error", error);
                     reject(error);
-                } else {
-                    console.log("PUT ALTERA SENHA results", results);
+                } else {                 
                     resolve(results);
+
                 }
             }
         );

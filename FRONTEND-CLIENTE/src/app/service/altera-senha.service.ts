@@ -21,7 +21,7 @@ export class AlteraSenhaService {
   putAlteraSenha(valores: any, headers?: any): Observable<interfacealteraSenha> {
     valores = {idcandidato: this.idcandidato, cpf: this.cpf,...valores };
     console.log('cpf service', valores);   
-    return this.httpclient.post<interfacealteraSenha>(this.url + '/altera-senha', 
+    return this.httpclient.put<interfacealteraSenha>(this.url + '/altera-senha', 
       valores, { headers }).
     pipe(take(1), catchError(this.handleError));
     // this.httpclient.put<interfacealteraSenha>(this.url + '/altera-senha', valores)

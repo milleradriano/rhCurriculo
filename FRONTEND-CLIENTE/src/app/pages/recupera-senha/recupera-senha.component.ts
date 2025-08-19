@@ -82,10 +82,10 @@ export class RecuperaSenhaComponent {
     this.loading = true;
     const cpf:any = valores.cpf;
     const email:any = valores.email;
-    this.recuperarSenha.postEmailRecuperaSenha( cpf, email ).subscribe({
+    this.recuperarSenha.putEmailRecuperaSenha( cpf, email ).subscribe({
       next: (response) => {
         console.log('Recuperar Senha Response:', response);
-        // this.loading = false;
+         this.loading = false;
         this.mensagem.sucesso('E-mail enviado, verfique seu e-mail.');
       },
       error: (error) => {

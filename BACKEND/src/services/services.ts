@@ -1,12 +1,12 @@
-import "dotenv/config";
-
+import dotenv from "dotenv";
+dotenv.config();
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import e from "express";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
-const saltRounds = 12; // Segurança do hash
+const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN as string ; // Ex.: "1h", "2d"
+const saltRounds = 1; // Segurança do hash
 
 // Função para criptografar senha
 async function hashPassword(password: any) {
@@ -14,7 +14,7 @@ async function hashPassword(password: any) {
 }
 
 // Função para verificar senha
-async function verifyPassword(password: any, hashedPassword : any) {
+ async function verifyPassword(password: any, hashedPassword : any) {
 
  if (hashedPassword === undefined) {
     return false
@@ -27,10 +27,14 @@ async function verifyPassword(password: any, hashedPassword : any) {
 
 // Função para gerar JWT
 function generateToken(user: {cpf:string, senha:string}) {
- 
-  console.log("dentro do generateToken", user);
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined");
+  }
+  if (!JWT_EXPIRES_IN) {
+    throw new Error("JWT_EXPIRES_IN is not defined");
+  }
   return jwt.sign({ cpf: user.cpf, senha: user.senha }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN,
+    expiresIn: JWT_EXPIRES_IN as string | number,
   });
 }
 

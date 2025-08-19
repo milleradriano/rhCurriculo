@@ -59,7 +59,7 @@ import { Router } from '@angular/router';
 })
 export class CadastroLoginComponent  {
   showProgress: boolean = false;
-  isLoadingResults: boolean = false;
+  isLoadingResults: boolean = false;  
   codVaga: any = sessionStorage.getItem('idVaga');
   constructor(
     private formBuilder: FormBuilder,
@@ -143,7 +143,6 @@ export class CadastroLoginComponent  {
       }
     }
     /*************  ✨ VALIDACAO DO CPF ⭐  *************/
-
  
 let valores = {
       cpf: value.cpf,
@@ -152,42 +151,34 @@ let valores = {
       senha: value.senha,
       termoUso: value.termoUso
     }
-    this.cadastraLoginservice.postCadastroLogin(valores).subscribe(
-      (data: any) => {
-        if (Array.isArray(data)) {
-          console.log('no botao ', data);
-          let codigo = JSON.parse(data[0][0].result).codigo;
-          let mensagem = JSON.parse(data[0][0].result).status;
-          if (codigo == '0') {
-
-            this.toast.sucesso( mensagem);
-            setTimeout(() => {
-              this.routes.navigate(['/']);
-            }, 3000);
-            
-          }
-          
-          if (codigo == '1') {
-            this.toast.erro( mensagem);
-
-          }
-        } else {
-          let mensagem = JSON.parse(JSON.stringify(data)).error;
-          this.toast.erro( mensagem);
-        }
-        this.isLoadingResults = false;
-        this.showProgress = false;
-      },
-      (error: any) => {
-        this.isLoadingResults = false;
-        this.showProgress = false;
-        this.toast.erro('Erro ao salvar, tente mais tarde.');
-      }
-    );
-  }
-
-
-
-  
-  
+   interface CadastroResponse {
+  codStatus: '0' | '1';
+  mensagem: string;
 }
+
+this.cadastraLoginservice.postCadastroLogin(valores).subscribe({
+  next: (data: any) => {
+    this.isLoadingResults = false;
+    this.showProgress = false;
+
+    if (data.codStatus === '0') {
+      this.toast.sucesso(data.mensagem);
+      setTimeout(() => {
+        this.routes.navigate(['/']);
+      }, 3000);
+    } else if (data.codStatus === '1') {
+      this.toast.erro(data.mensagem);
+    }
+  },
+  error: (error: any) => {
+    this.isLoadingResults = false;
+    this.showProgress = false;
+    const mensagem = error.error?.mensagem || 'Erro ao salvar, tente mais tarde.';
+    this.toast.erro(mensagem);
+  }
+});
+  }
+}
+  
+  
+//}

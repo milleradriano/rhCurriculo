@@ -5,8 +5,6 @@ import fs from "fs";
 // Substitua pela senha real
 
 const postMail = (email: any, senha: any) => {
-  console.log("postMail email", email);
-  console.log("postMail senha", senha);
 
   let htmlContent = "";
   htmlContent = fs.readFileSync("./src/htmlEmail/recuperaSenha.html", "utf-8");
