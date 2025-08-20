@@ -13,14 +13,11 @@ const router = Router();
 // Esquema de validação para POST /curriculo
 const curriculoSchema = Joi.object({
   idcandidato: Joi.alternatives()
-    .try(Joi.string().pattern(/^\d+$/), Joi.number().integer())
-    .required(),
+    .try(Joi.string().pattern(/^\d+$/), Joi.number().integer()).required(),
 
   cpf: Joi.string().length(11).pattern(/^\d+$/).required(),
   nome: Joi.string().min(3).max(100).required(),
-  dataNascimento: Joi.string()
-    .pattern(/^\d{4}-\d{2}-\d{2}$/)
-    .required(),
+  dataNascimento: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/).required(),
   sexo: Joi.string().valid("M", "F").required(),
   email: Joi.string().email().required(),
   rg: Joi.string().min(3).max(20).required(),
@@ -33,11 +30,11 @@ const curriculoSchema = Joi.object({
   nomeMae: Joi.string().max(100).allow(""),
   grauInstrucao: Joi.string().max(50).required(),
   pcd: Joi.string().valid("S", "N").required(),
-  deficiencia: Joi.string().max(100).allow(""),
+  deficiencia: Joi.string().max(10).allow("",null),
   estudaAtualmente: Joi.string().valid("S", "N").required(),
-  turno: Joi.string().max(20).allow(""),
+  turno: Joi.string().max(20).allow("",null),
   filhos: Joi.string().valid("S", "N").required(),
-  numFilhos: Joi.string().pattern(/^\d+$/).allow("0"),
+  numFilhos: Joi.string().pattern(/^\d+$/).allow("0", null),
   telefone: Joi.string()
     .pattern(/^[()\-\s\d]+$/)
     .required(),
@@ -50,11 +47,13 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
     const result = await getCurriculo(cpf);
     res.json(result);
   } catch (error: any) {
+    console.error("Erro ao buscar currículo:", error);
     res.status(400).json({ mensagem: error.message });
   }
 });
 
 router.post("/", verifyToken, async (req: Request, res: Response) => {
+ console.log("Dados recebidos no router:", req.body);
   try {
    
     const { error, value } = curriculoSchema.validate(req.body, {
@@ -64,6 +63,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     if (error) {
     
       const mensagem = error.details.map((err) => err.message).join(", ");
+    
       return res.status(400).json({ mensagem });
     }
 
@@ -106,6 +106,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     const result = await postCurriculo(dados);
     res.json(result);
   } catch (error: any) {
+      console.error("Erro de validação:", error);
     res.status(400).json({ mensagem: error.message });
   }
 });
