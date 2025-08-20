@@ -82,7 +82,8 @@ atualizaCadastro() {
     this.loading = true;
 
     this.painelVagaService.getCarregaPainelVaga().subscribe({
-      next: (data: interfaceVaga[]) => {
+      next: (data: any) => {
+        console.log('Vagas recebidas:', data[0]);
         this.vagas = data;
         this.totalVagas = this.vagas.length;
         this.loading = false;

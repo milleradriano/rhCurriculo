@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { Subscription } from 'rxjs';
 
@@ -7,24 +14,28 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [],
   templateUrl: './nometopo.component.html',
-  styleUrl: './nometopo.component.css'
+  styleUrl: './nometopo.component.css',
 })
 export class NometopoComponent implements OnInit, OnDestroy {
-nomeCandidato: string = '';
-@Output() nomeCandidatoChange = new EventEmitter<string>();
-private subscription: Subscription = new Subscription();
-  teste :string = sessionStorage.getItem('nome') || ''; 
+  nomeCandidato: string = '';
+  @Output() nomeCandidatoChange = new EventEmitter<string>();
+  private subscription: Subscription = new Subscription();
+  teste: string = sessionStorage.getItem('nome') || '';
 
-constructor(  
-  private sessionStorageService: SessionStorageService,
-  private cdr: ChangeDetectorRef){}
+  constructor(
+    private sessionStorageService: SessionStorageService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-ngOnInit(): void {
- 
-     this.sessionStorageService.getUserName().subscribe( {
+  ngOnInit(): void {
+    this.sessionStorageService.getUserName().subscribe({
       next: (userName) => {
-       
-        this.nomeCandidato = "Seja bem vindo, " +  userName?.substring(0,userName.indexOf(' ')) || 'Usuário';
+        const primeiroNome =
+          userName?.substring(
+            0,
+            userName.indexOf(' ') > -1 ? userName.indexOf(' ') : userName.length
+          ) || 'Usuário';
+        this.nomeCandidato ="Seja bem-vindo, "+ primeiroNome;
         this.nomeCandidatoChange.emit(this.nomeCandidato);
       },
       error: (error) => {
@@ -32,13 +43,12 @@ ngOnInit(): void {
       },
       complete: () => {
         console.log('Obtenção do nome do usuário concluida.');
-      }
- });
-  } 
+      },
+    });
+  }
   ngOnDestroy(): void {
     // Limpa a subscrição para evitar vazamentos de memória
     this.subscription.unsubscribe();
     console.log('Componente NometopoComponent destruído.');
   }
-} 
-  
+}

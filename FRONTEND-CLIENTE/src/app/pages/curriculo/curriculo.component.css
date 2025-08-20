@@ -149,7 +149,9 @@ label {
 .radiofilho {
   margin-right: 1rem;
 }
-
+ .qtdFilhos{
+    width: 9%;
+  }
 .telefone,
 .email {
   width: 20rem;
@@ -235,6 +237,7 @@ label {
   }
 }
 
+
 @media screen and (max-width: 700px) {
   #nome,
   #nomePai,
@@ -273,6 +276,7 @@ label {
     width: 100%;
   }
   .estudaAtualmente,
+  .filhos,
   .documento,
   .informacaoDocumento,
   .parente,
@@ -289,5 +293,8 @@ label {
     background-color: #eeeef3;
     padding: 1rem;
     border: 1px solid #606062;
+  }
+  .qtdFilhos{
+    width: 30%;
   }
 }
