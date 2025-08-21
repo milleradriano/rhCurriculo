@@ -27,7 +27,7 @@ export class UploadLogoService {
   )
     // Envia o FormData para a API
     return this.httpClient
-      .post(`${environment.api}/uploadlogo`, formData, { headers})
+      .post(`${environment.api}/logo`, formData, { headers})
       .pipe(catchError(error => this.handleError.handleError(error)));
   }
   

@@ -3,3 +3,7 @@
 #TODO Salvar imagem
 
 #TODO adicionar função para gerar log
+
+#TODO tratar erro ao excluir mensagem quando expirar token nao tiver token, ou tratar erro do servidor
+
+#TODO limpar o componente de upload do logo para apos salvar 

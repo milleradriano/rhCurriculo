@@ -80,6 +80,7 @@ export class EmpresaComponent {
   // isRateLimitReached = false;
   // resultsLength = 0;
   loading: boolean = false;
+  recebeNomeLogoGrid: string = '';
 
   private formBuilder = inject(FormBuilder);
   @ViewChild(FileUploaderComponent) fileUploader!: FileUploaderComponent;
@@ -130,6 +131,7 @@ export class EmpresaComponent {
     this.empresaForm.controls['logo'].setValue(valores.logo);
     if (valores.logo !== null) {
       this.urlLogo = environment.api + '/' + valores.logo;
+      this.recebeNomeLogoGrid = valores.logo;
       console.log('click grid', this.urlLogo);
     }
   }
@@ -220,7 +222,12 @@ recebeNomeImagem(valores: any) {
    
     this.isLoadingResults = true;
     let mensagem: string = '';
+    if (this.nomeImagem){
     valores.logo = 'logo/' + this.nomeImagem;
+    }
+    else{
+      valores.logo = this.recebeNomeLogoGrid;
+    }
   
   
     console.log('valores EMPRESA', valores);

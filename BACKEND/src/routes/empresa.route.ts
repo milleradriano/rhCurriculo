@@ -27,7 +27,6 @@ router.get("/", async (req: Request, res: Response) => {
 // POST /empresa - Criar ou atualizar uma empresa
 router.post("/",  async (req: Request, res: Response) => {
   try {
-    console.log("req.body empresa", req.body);
     const { error, value } = empresaSchema.validate(req.body, { abortEarly: false });
     if (error) {
       const mensagem = error.details.map((err) => err.message).join(", ");

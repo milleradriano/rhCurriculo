@@ -9,7 +9,7 @@
   font-weight: normal;
   background-color: #f9fafb;
   color: var(--text-color);
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 

@@ -40,36 +40,8 @@ app.use(cors({ origin: ["http://localhost:3000","http://localhost:4200"], creden
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// import { fileURLToPath } from 'url';
-// import { dirname } from 'path';
 
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
-
-
-/************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
-const storageLogo = multer.diskStorage({
-  destination: function (req: any, file: any, cb: any) {
-    cb(null, "./src/images/logo");
-  },
-  filename: function (req: any, file: any, cb: any) {
-    console.log("filename", file);
-    cb(null, file.originalname);
-  },
-});
-const uploadLogo = multer({
-  storage: storageLogo,
-  // Verifique se o campo no frontend é 'logo'
-  fileFilter: (req, file, cb) => {
-    if (file.fieldname === "logo") {
-      cb(null, true);
-    } else {
-      cb(new Error("Unexpected field"));
-    }
-  },
-});
-/************************* FIMM UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
 
 app.use("/cadastro-login",cadastraLoginRoute)
 
