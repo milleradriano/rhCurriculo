@@ -36,6 +36,7 @@ export const getEmpresa = async (): Promise<Empresa[]> => {
 
 export const postEmpresa = async (dados: any[]): Promise<any> => {
   const [empresa] = dados;
+  console.log("empresa no em  ", empresa);
   return executeQuery(
     "CALL postempresa(?, ?, ?, ?, ?)",
     [

@@ -9,6 +9,7 @@ const documentoUploadSchema = Joi.object({
   idcandidato: Joi.number().integer().positive().required(),
   cpf: Joi.string().length(11).pattern(/^\d+$/).required(),
 });
+//** envia o arquivo para o storage atraves do uploadDocumento */
 router.post("/", verifyToken, uploadDocumento.single("documento"), async (req: Request, res: Response) => {
   try {
     if (!req.file) {

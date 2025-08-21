@@ -15,7 +15,12 @@ import loginRouter from "./routes/login.route.js";
 import cadastraLoginRoute from "./routes/cadastraLogin.route.js";
 
 import curriculoRouter  from "./routes/curriculo.route.js";
+
+import arquivoLogoRouter from "./routes/arquivoLogo.route.js";
+//* documentos para o candidato pcd
 import uploadArquivoDocumento from "./routes/uploadArquivoDocumento.route.js";
+import arquivoDocumentoRouter from "./routes/arquivoDocumento.route.js";
+//* documentos para o candidato pcd
                                                    
 import vagaRouter from "./routes/vaga.route.js";
 import cepRouter from "./routes/cep.route.js";
@@ -23,7 +28,6 @@ import empresaRouter from "./routes/empresa.route.js";
 import residenciaRouter from "./routes/residencia.route.js";
 
 import experienciaRouter from "./routes/experiencia.route.js";
-import arquivoDocumentoRouter from "./routes/arquivoDocumento.route.js";
 
 import alteraSenhaRouter from "./routes/alteraSenha.route.js";
 import recuperaSenhaRouter from "./routes/recuperaSenha.route.js";
@@ -36,12 +40,12 @@ app.use(cors({ origin: ["http://localhost:3000","http://localhost:4200"], creden
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+// import { fileURLToPath } from 'url';
+// import { dirname } from 'path';
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 
 /************************* UPLOAD DO ARMAZENAMENTO DO LOGO ****************************************/
@@ -83,27 +87,15 @@ app.use("/cep", cepRouter)
 
 app.use("/residencia", residenciaRouter);
 
-app.use("/uploaddocumento", uploadArquivoDocumento)
- 
 //*********************************** FIM DOCUMENTOS *****/
 // RETORNA O NOME DO DOCUMENTO
- app.use("/documento",arquivoDocumentoRouter );
+app.use("/documento",arquivoDocumentoRouter );
+app.use("/uploaddocumento", uploadArquivoDocumento)
+/*********************************** */
 
-
-app.post("/uploadlogo", uploadLogo.single("logo"),  async (req: any, res: any) => {
-    if (!req.file) {
-      console.log("req file ", req.file);
-      return res.status(400).send({ error: "Nenhum arquivo enviado" });
-    } else {
-      console.log("req file ", req.file);
-      res.send(req.file);
-      return;
-    }
-  }
-);
-app.use("/logo", express.static(path.join(__dirname, "/images/logo")));
-
-
+//RETORNA O LOGO da loja
+ app.use("/logo", arquivoLogoRouter);
+//************************************/
 
 app.use("/experiencia", experienciaRouter);
 

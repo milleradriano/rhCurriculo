@@ -25,8 +25,9 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 // POST /empresa - Criar ou atualizar uma empresa
-router.post("/", verifyToken, async (req: Request, res: Response) => {
+router.post("/",  async (req: Request, res: Response) => {
   try {
+    console.log("req.body empresa", req.body);
     const { error, value } = empresaSchema.validate(req.body, { abortEarly: false });
     if (error) {
       const mensagem = error.details.map((err) => err.message).join(", ");
@@ -40,7 +41,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 });
 
 // DELETE /empresa/:id - Deletar uma empresa por ID
-router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
+router.delete("/:id",  async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     if (isNaN(id) || id <= 0) {
