@@ -12,7 +12,7 @@ const loginSchema = Joi.object({
 });
 
 // POST /login - Autenticar usuário
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {  
   try {
     const { error, value } = loginSchema.validate(req.body, { abortEarly: false });
     if (error) {

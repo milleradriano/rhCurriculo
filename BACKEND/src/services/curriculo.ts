@@ -93,7 +93,7 @@ export const postCurriculo = async (dados: CurriculoInput): Promise<any> => {
     telefone,
     estadocivil,
   } = dados;
-console.log("Dados recebidos:", dados);
+
   return executeQuery(
     "CALL postcandidato(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [

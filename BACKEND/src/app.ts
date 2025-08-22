@@ -1,15 +1,8 @@
 import 'dotenv/config';
 import express from "express";
-import { Request, Response } from "express";
-
-
-import multer from "multer";
-import {promises as fs} from "fs"
-import path from "path";
-import cors from "cors";
-
-
 const app = express();
+
+import cors from "cors";
 
 import loginRouter from "./routes/login.route.js";
 import cadastraLoginRoute from "./routes/cadastraLogin.route.js";
@@ -36,7 +29,7 @@ import painelVagaRoute from "./routes/painelVaga.route.js";
 
 
 
-app.use(cors({ origin: ["http://localhost:3000","http://localhost:4200"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:3000","http://localhost:4200","http://192.168.0.106:3000"], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -20,8 +20,8 @@ router.post("/", verifyToken, uploadDocumento.single("documento"), async (req: R
       const mensagem = error.details.map((err) => err.message).join(", ");
       return res.status(400).json({ mensagem });
     }
-    const nomeArquivo = Buffer.from(req.file.originalname, "binary").toString("utf-8");
-    console.log("nomeArquivo", nomeArquivo);
+    let nomeArquivo = Buffer.from(req.file.originalname, "binary").toString("utf-8");
+    console.log("nomeArquivo uploadArquivoDocumento.route 24", nomeArquivo);
     const dados = { ...value, documento: nomeArquivo };
     const result = await postDocumento(dados);
     res.json(result);
