@@ -11,7 +11,7 @@ export class LoginService {
   url = environment.api;
   constructor(private httpClient: HttpClient) {}
   postLogin(valores: any): Observable<Login> {
-    
+    console.log('Valores do login:', valores);
     return this.httpClient
       .post<Login>(this.url + '/login', valores)
       .pipe(catchError(this.handleError));

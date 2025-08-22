@@ -25,20 +25,27 @@ import experienciaRouter from "./routes/experiencia.route.js";
 import alteraSenhaRouter from "./routes/alteraSenha.route.js";
 import recuperaSenhaRouter from "./routes/recuperaSenha.route.js";
 import painelVagaRoute from "./routes/painelVaga.route.js";
+import rateLimit from 'express-rate-limit';
 
-
+import { errorHandler } from "./services/errorHandler.js";
 
 
 app.use(cors({ origin: ["http://localhost:3000","http://localhost:4200","http://192.168.0.106:3000"], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+const loginLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuto
+  max: 10, // Máximo 10 requisições por IP
+  message: { mensagem: "Muitas requisições no login, tente novamente mais tarde." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 
 app.use("/cadastro-login",cadastraLoginRoute)
 
-app.use("/login", loginRouter);
+app.use("/login",loginLimiter, loginRouter);
 
 app.use("/curriculo", curriculoRouter);
 
@@ -67,6 +74,8 @@ app.use("/experiencia", experienciaRouter);
 app.use("/recupera-senha",recuperaSenhaRouter);
 
 app.use("/altera-senha",alteraSenhaRouter);
+
+app.use(errorHandler);
 
 export default app;
 const PORT = process.env.PORT || 3000;
