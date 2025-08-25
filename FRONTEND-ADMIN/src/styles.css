@@ -77,7 +77,7 @@ label {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: none;
-  border-color: var(--corBorda-input);
+ border-color: var(--corBorda-input);
 }
 .p-dropdown:hover {
   border: 1px solid var(--corBorda-input);
