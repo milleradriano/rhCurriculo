@@ -29,6 +29,7 @@ import { SessionStorageService } from '../../service/sessionlstorage.service';
 import { HttpHeaders } from '@angular/common/http';
 import { ProgressbarComponent } from "../../components/progressbar/progressbar.component";
 import { ToastService } from '../../service/toast.service';
+import { CombopreenchidoDirective } from "../../diretiva/combopreenchido.directive";
 @Component({
   selector: 'app-residencia',
   standalone: true,
@@ -49,12 +50,12 @@ import { ToastService } from '../../service/toast.service';
     FileUploadModule,
     ToastModule,
     InputGroupModule,
-    InputGroupAddonModule, 
+    InputGroupAddonModule,
     FormatacepDirective,
-  
     InputpreenchidoDirective,
     LoadingComponent,
-    ProgressbarComponent
+    ProgressbarComponent,
+    CombopreenchidoDirective
 ],
   templateUrl: './residencia.component.html',
   styleUrl: './residencia.component.css',
