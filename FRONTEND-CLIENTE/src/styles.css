@@ -1,7 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-/* html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
-/* You can add global styles to this file, and also import other style files */
 /*D:\BONATO\RH-CURRICULO\node_modules\primeng\resources\themes\lara-light-blue\theme.css*/
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
@@ -9,51 +6,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 * {
   font-family: Montserrat, Arial, Tahoma, sans-serif;
   --subtitulo-color: #ff355e;
-  --corBorda-input: #22c55e; 
+  --corBorda-input: #22c55e;
   --titulo-color: #606062;
   /* --subtitulo-color: #ff355e; */
 }
 html,
 body {
-  /* height: 100%;
-  
-  
-  margin: 0; */
-  padding-right: 0.5rem; 
-    padding-left: 0; 
-    margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  height: 100%;
 }
-input,
-select,
-button {
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 :root {
   --subtitulo-color: #ff355e;
-  --corBorda-input: #22c55e; 
+  --corBorda-input: #22c55e;
   --titulo-color: #606062;
 }
-label{
+label {
   color: var(--titulo-color);
-}
-.p-button {
-  /* background: var(--corBorda-input); */
-  border: none;
-}
-.p-button:hover {
-  /* background: #2be067c7; */
-  border: none;
-  box-shadow: none;
-}
-.p-button:not(.p-disabled).p-focus {
-  border: none;
-  box-shadow: none;
 }
 /*fundo do botao dos menus*/
 .p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
@@ -87,14 +58,14 @@ label{
   outline: 0 none;
   outline-offset: 0;
   box-shadow: none;
-  border-color:  var(--corBorda-input);
+  border-color: var(--corBorda-input);
 }
 
 .p-inputtext:hover {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: none;
-  border-color:  var(--corBorda-input);
+  border-color: var(--corBorda-input);
 }
 /* .p-inputtext:not(.p-disabled).p-focus{ 
   outline: 0 none;
@@ -102,19 +73,19 @@ label{
   box-shadow: none;
   border-color:  var(--corBorda-input);
 } */
-.p-dropdown:focus{ 
+.p-dropdown:focus {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: none;
-  border-color:  var(--corBorda-input);
+  /* border-color: var(--corBorda-input); */
 }
-.p-dropdown:hover{ 
-  border: 1px solid var(--corBorda-input);
+.p-dropdown:hover {
+ /* border: 1px solid var(--corBorda-input); */
   cursor: pointer;
   box-shadow: none;
 }
-.p-dropdown:not(.p-disabled).p-focus{ 
-  border: 1px solid var(--corBorda-input);
+.p-dropdown:not(.p-disabled).p-focus {
+  /* border: 1px solid var(--corBorda-input); */
   cursor: pointer;
   box-shadow: none;
 }
@@ -124,27 +95,18 @@ label{
   background: #8de6ad;
 }
 
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+.p-dropdown-panel
+  .p-dropdown-items
+  .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
   color: var(--titulo-color);
   background: #e2e2e2;
 }
 
-.p-checkbox .p-checkbox-box.p-highlight {
-  border-color:var(--corBorda-input);
-  background: var(--corBorda-input);
-  box-shadow: none;
-}
-.p-checkbox .p-checkbox-box {
-  border: 2px solid var(--subtitulo-color);
-  background: #ffffff;
-}
-
 .p-radiobutton .p-radiobutton-box.p-highlight {
-  border-color:var(--corBorda-input);
+  border-color: var(--corBorda-input);
   background: var(--corBorda-input);
   box-shadow: none;
 }
-
 
 .p-radiobutton:hover .p-radiobutton-box {
   border-color: var(--corBorda-input);
@@ -157,12 +119,23 @@ label{
   cursor: pointer;
   box-shadow: none;
 }
-
-
+.p-fileupload-choose {
+  background: var(--corBorda-input);
+  border: none;
+}
+.p-fileupload-choose:hover {
+  background: #2be067c7;
+  border: none;
+  box-shadow: none;
+}
+.p-fileupload-choose:not(.p-disabled).p-focus {
+  border: none;
+  box-shadow: none;
+}
 
 ::ng-deep .p-button:not(:disabled):hover {
   background: var(--corBorda-input);
-  /* color: red; */
+  color: #ffffff;
   border-color: var(--corBorda-input);
 }
 ::ng-deep .p-button {
@@ -171,10 +144,11 @@ label{
   border: 1px solid var(--corBorda-input);
   padding: 0.75rem 1.25rem;
   font-size: 1rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
   border-radius: 6px;
   outline-color: transparent;
-} 
+}
 /***/
 ::ng-deep .mat-mdc-table .mdc-data-table__table .cdk-table .mat-sort {
   table-layout: auto;
@@ -187,22 +161,42 @@ label{
   color: var(--mat-full-pseudo-checkbox-selected-checkmark-color);
 }
 
-/* funcionando*/
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: var(--corBorda-input);
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* Remove o efeito de foco azul */
+.p-inputswitch.p-focus .p-inputswitch-slider {
+  box-shadow: none !important;
+  outline: none !important;
+}
 
-   .p-dropdown {
-    background: #e8f5e9;
-    border: 1px solid green;
+/* Remove fallback de focus direto no input */
+.p-inputswitch input:focus + .p-inputswitch-slider {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Continua aplicando a cor de fundo quando está ativado */
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: var(--corBorda-input);
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* SETA PARA BAIXO DO BOTAO COMBOBOX*/
+chevrondownicon {
+  color: var(--titulo-color);
+}
+/************************************/
+
+@media screen and (max-width: 1024px) {
+  .p-dropdown {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s,
       box-shadow 0.2s;
     border-radius: 6px;
-  
-  } 
-
-/* .p-toast .p-toast-message .p-toast-message-content {
-  align-items: center;
-   
+    width: 96%;
+  }
 }
-.p-toast .p-toast-message .p-toast-message-text {
-  white-space: nowrap;
-}
- */

@@ -15,7 +15,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 
+
+
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideHttpClient(),BrowserAnimationsModule,BrowserModule,
     MessageService,ConfirmationService ,ConfirmDialogModule, ToastModule,ToastModule, HttpClientModule,CommonModule, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()],
 };
+
+
+

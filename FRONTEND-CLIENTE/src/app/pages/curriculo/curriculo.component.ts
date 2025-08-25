@@ -33,6 +33,7 @@ import { Console } from 'node:console';
 import { FileUploaderComponent } from '../../components/file-uploader/file-uploader.component';
 import { DocumentoService } from '../../service/documento.service';
 import { VagaCandidatoService } from '../../service/vaga-candidato.service';
+import { CombopreenchidoDirective } from '../../diretiva/combopreenchido.directive';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -67,6 +68,7 @@ interface UploadEvent {
     LoadingComponent,
     ProgressbarComponent,
     FileUploaderComponent,
+    CombopreenchidoDirective
   ],
 })
 export class CurriculoComponent implements OnInit {
